@@ -1,0 +1,60 @@
+package swfdata.atlas;
+
+import swfdata.atlas.ITexture;
+import swfdata.atlas.TextureTransform;
+
+import com.genome2d.textures.GTexture;
+import com.genome2d.textures.GTextureManager;
+import flash.geom.Rectangle;
+import swfdata.SwfdataInner;
+
+
+
+class GenomeSubTexture implements ITexture
+{
+    public var id(get, never) : Int;
+    public var transform(get, never) : TextureTransform;
+    public var bounds(get, never) : Rectangle;
+
+    private var _id : Int;
+    private var idAsString : String;
+    private var _transform : TextureTransform;
+    private var _bounds : Rectangle;
+    
+    private var atlas : GTexture;
+    
+    public var gTexture : GTexture;
+    
+    public function new(id : Int, bounds : Rectangle, transform : TextureTransform, atlas : GTexture)
+    {
+        this.atlas = atlas;
+        
+        _bounds = bounds;
+        _id = id;
+        idAsString = Std.string(id);
+        _transform = transform;
+        
+        uploadTexture();
+    }
+    
+    public function uploadTexture() : Void
+    {
+        gTexture = GTextureManager.createSubTexture(atlas.id + "::" + idAsString, atlas, _bounds, null, false);
+    }
+    
+    private function get_id() : Int
+    {
+        return _id;
+    }
+    
+    private function get_transform() : TextureTransform
+    {
+        return _transform;
+    }
+    
+    private function get_bounds() : Rectangle
+    {
+        return _bounds;
+    }
+}
+

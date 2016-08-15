@@ -1,0 +1,539 @@
+package swfdata;
+
+import flash.errors.RangeError;
+
+import flash.filters.ColorMatrixFilter;
+
+class ColorMatrix
+{
+    public var filter(get, never) : ColorMatrixFilter;
+
+    // RGB to Luminance conversion constants as found on
+    // Charles A. Poynton's colorspace-faq:
+    // http://www.faqs.org/faqs/graphics/colorspace-faq/
+    private static var r_lum : Float = 0.212671;
+    private static var g_lum : Float = 0.715160;
+    private static var b_lum : Float = 0.072169;
+    
+    private static var IDENTITY : Array<Float> = [
+                1, 0, 0, 0, 0, 
+                0, 1, 0, 0, 0, 
+                0, 0, 1, 0, 0, 
+                0, 0, 0, 1, 0];
+    
+    private static var TEMP_MATRIX : Array<Float> = [1, 0, 0, 0, 0, 
+                0, 1, 0, 0, 0, 
+                0, 0, 1, 0, 0, 
+                0, 0, 0, 1, 0];
+    
+    public var matrix : Array<Float>;
+    
+    private function new(matrix : Array<Float> = null)
+    {
+        if (matrix == null) 
+            matrix = IDENTITY.substring()
+        else if (matrix.length != 20) 
+            throw new RangeError("color matrix should be 4x5");
+        
+        this.matrix = matrix;
+    }
+    
+    public function setMatrix(matrix : Array<Float>) : Void
+    {
+        this.matrix = matrix;
+    }
+    
+    public function reset() : Void
+    {
+        matrix = IDENTITY.substring();
+    }
+    
+    public function clone() : ColorMatrix
+    {
+        return new ColorMatrix(matrix);
+    }
+    
+    /*
+	   Function: adjustSaturation
+
+		  changes the saturation
+
+	   Parameters:
+
+		  s - typical values come in the range 0.0 ... 2.0 where
+					 0.0 means 0% Saturation
+					 0.5 means 50% Saturation
+					 1.0 is 100% Saturation (aka no change)
+					 2.0 is 200% Saturation
+					 
+					 Other values outside of this range are possible
+					 -1.0 will invert the hue but keep the luminance
+							
+		  
+		Returns:
+		
+			nothing
+				
+				
+		*/
+    /*public function adjustSaturation ( s:Number ):void
+		{
+			var iss:Number=1-s;
+			
+			var irlum:Number = iss * r_lum;
+			var iglum:Number = iss * g_lum;
+			var iblum:Number = iss * b_lum;
+			
+			var mat:Array =  [irlum + s, iglum    , iblum    , 0, 0,
+									irlum    , iglum + s, iblum    , 0, 0,
+									irlum    , iglum    , iblum + s, 0, 0,
+									0        , 0        , 0        , 1, 0];
+		
+			concat(mat);
+		}*/
+    
+    public function adjustContrast(r : Float, g : Float, b : Float) : Void
+    {
+        g = g || r;
+        b = b || r;
+        
+        r += 1;
+        g += 1;
+        b += 1;
+        
+        TEMP_MATRIX[0] = r;
+        TEMP_MATRIX[1] = 0;
+        TEMP_MATRIX[2] = 0;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 128 * (1 - r);
+        
+        TEMP_MATRIX[5] = 0;
+        TEMP_MATRIX[6] = g;
+        TEMP_MATRIX[7] = 0;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 128 * (1 - g);
+        
+        TEMP_MATRIX[10] = 0;
+        TEMP_MATRIX[11] = 0;
+        TEMP_MATRIX[12] = b;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 128 * (1 - b);
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function adjustBrightness(r : Float, g : Float, b : Float) : Void
+    {
+        g = g || r;
+        b = b || r;
+        
+        TEMP_MATRIX[0] = 1;
+        TEMP_MATRIX[1] = 0;
+        TEMP_MATRIX[2] = 0;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = r;
+        
+        TEMP_MATRIX[5] = 0;
+        TEMP_MATRIX[6] = 1;
+        TEMP_MATRIX[7] = 0;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = g;
+        
+        TEMP_MATRIX[10] = 0;
+        TEMP_MATRIX[11] = 0;
+        TEMP_MATRIX[12] = 1;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = b;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function adjustHue(angle : Float) : Void
+    {
+        angle *= Math.PI / 180;
+        
+        var c : Float = Math.cos(angle);
+        var s : Float = Math.sin(angle);
+        
+        var f1 : Float = 0.213;
+        var f2 : Float = 0.715;
+        var f3 : Float = 0.072;
+        
+        TEMP_MATRIX[0] = (f1 + (c * (1 - f1))) + (s * (-f1));
+        TEMP_MATRIX[1] = (f2 + (c * (-f2))) + (s * (-f2));
+        TEMP_MATRIX[2] = (f3 + (c * (-f3))) + (s * (1 - f3));
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 0;
+        
+        TEMP_MATRIX[5] = (f1 + (c * (-f1))) + (s * 0.143);
+        TEMP_MATRIX[6] = (f2 + (c * (1 - f2))) + (s * 0.14);
+        TEMP_MATRIX[7] = (f3 + (c * (-f3))) + (s * -0.283);
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 0;
+        
+        TEMP_MATRIX[10] = (f1 + (c * (-f1))) + (s * (-(1 - f1)));
+        TEMP_MATRIX[11] = (f2 + (c * (-f2))) + (s * f2);
+        TEMP_MATRIX[12] = (f3 + (c * (1 - f3))) + (s * f3);
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 0;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        //var mat:Array = [(f1 + (c * (1 - f1))) + (s * (-f1)), (f2 + (c * (-f2))) + (s * (-f2)), (f3 + (c * (-f3))) + (s * (1 - f3)), 0, 0, (f1 + (c * (-f1))) + (s * 0.143), (f2 + (c * (1 - f2))) + (s * 0.14), (f3 + (c * (-f3))) + (s * -0.283), 0, 0, (f1 + (c * (-f1))) + (s * (-(1 - f1))), (f2 + (c * (-f2))) + (s * f2), (f3 + (c * (1 - f3))) + (s * f3), 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1];
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function colorize(rgb : Float, amount : Float = 1) : Void
+    {
+        
+        var r : Float = ((rgb >> 16) & 0xff) / 255;
+        var g : Float = ((rgb >> 8) & 0xff) / 255;
+        var b : Float = (rgb & 0xff) / 255;
+        
+        var inv_amount : Float = 1 - amount;
+        
+        TEMP_MATRIX[0] = inv_amount + amount * r * r_lum;
+        TEMP_MATRIX[1] = amount * r * g_lum;
+        TEMP_MATRIX[2] = amount * r * b_lum;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 0;
+        
+        TEMP_MATRIX[5] = amount * g * r_lum;
+        TEMP_MATRIX[6] = inv_amount + amount * g * g_lum;
+        TEMP_MATRIX[7] = amount * g * b_lum;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 0;
+        
+        TEMP_MATRIX[10] = amount * b * r_lum;
+        TEMP_MATRIX[11] = amount * b * g_lum;
+        TEMP_MATRIX[12] = inv_amount + amount * b * b_lum;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 0;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function setAlpha(alpha : Float) : Void
+    {
+        TEMP_MATRIX[0] = 1;
+        TEMP_MATRIX[1] = 0;
+        TEMP_MATRIX[2] = 0;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 0;
+        
+        TEMP_MATRIX[5] = 0;
+        TEMP_MATRIX[6] = 1;
+        TEMP_MATRIX[7] = 0;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 0;
+        
+        TEMP_MATRIX[10] = 0;
+        TEMP_MATRIX[11] = 0;
+        TEMP_MATRIX[12] = 1;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 0;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = alpha;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function desaturate() : Void
+    {
+        TEMP_MATRIX[0] = r_lum;
+        TEMP_MATRIX[1] = g_lum;
+        TEMP_MATRIX[2] = b_lum;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 0;
+        
+        TEMP_MATRIX[5] = r_lum;
+        TEMP_MATRIX[6] = g_lum;
+        TEMP_MATRIX[7] = b_lum;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 0;
+        
+        TEMP_MATRIX[10] = r_lum;
+        TEMP_MATRIX[11] = g_lum;
+        TEMP_MATRIX[12] = b_lum;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 0;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function invert() : Void
+    {
+        TEMP_MATRIX[0] = -1;
+        TEMP_MATRIX[1] = 0;
+        TEMP_MATRIX[2] = 0;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = 255;
+        
+        TEMP_MATRIX[5] = 0;
+        TEMP_MATRIX[6] = -1;
+        TEMP_MATRIX[7] = 0;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = 255;
+        
+        TEMP_MATRIX[10] = 0;
+        TEMP_MATRIX[11] = 0;
+        TEMP_MATRIX[12] = -1;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = 255;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    public function threshold(t : Float) : Void
+    {
+        TEMP_MATRIX[0] = r_lum * 256;
+        TEMP_MATRIX[1] = g_lum * 256;
+        TEMP_MATRIX[2] = b_lum * 256;
+        TEMP_MATRIX[3] = 0;
+        TEMP_MATRIX[4] = -256 * t;
+        
+        TEMP_MATRIX[5] = r_lum * 256;
+        TEMP_MATRIX[6] = g_lum * 256;
+        TEMP_MATRIX[7] = b_lum * 256;
+        TEMP_MATRIX[8] = 0;
+        TEMP_MATRIX[9] = -256 * t;
+        
+        TEMP_MATRIX[10] = r_lum * 256;
+        TEMP_MATRIX[11] = g_lum * 256;
+        TEMP_MATRIX[12] = b_lum * 256;
+        TEMP_MATRIX[13] = 0;
+        TEMP_MATRIX[14] = -256 * t;
+        
+        TEMP_MATRIX[15] = 0;
+        TEMP_MATRIX[16] = 0;
+        TEMP_MATRIX[17] = 0;
+        TEMP_MATRIX[18] = 1;
+        TEMP_MATRIX[19] = 0;
+        
+        concat(TEMP_MATRIX);
+    }
+    
+    /*public function randomize( amount:Number = 1):void
+		{
+			var inv_amount:Number = 1 - amount;
+			
+			var r1:Number = inv_amount +  amount * ( Math.random() - Math.random() );
+			var g1:Number = amount     * ( Math.random() - Math.random() );
+			var b1:Number = amount     * ( Math.random() - Math.random() );
+			
+			var o1:Number = amount * 255 * (Math.random() - Math.random());
+			
+			var r2:Number = amount     * ( Math.random() - Math.random() );
+			var g2:Number = inv_amount +  amount * ( Math.random() - Math.random() );
+			var b2:Number = amount     * ( Math.random() - Math.random() );
+			
+			var o2:Number = amount * 255 * (Math.random() - Math.random());
+			
+			
+			var r3:Number = amount     * ( Math.random() - Math.random() );
+			var g3:Number = amount     * ( Math.random() - Math.random() );
+			var b3:Number = inv_amount +  amount * ( Math.random() - Math.random() );
+			
+			var o3:Number = amount * 255 * (Math.random() - Math.random());
+			
+			var mat:Array =  [r1, g1, b1, 0, o1, 
+								r2 ,g2, b2, 0, o2, 
+								r3, g3, b3, 0, o3, 
+								0 ,  0,  0, 1, 0]; 
+			
+			concat(mat);
+		}
+		
+		
+		public function setChannels (r:Number, g:Number, b:Number, a:Number ):void
+		{
+			var rf:Number =((r & 1) == 1 ? 1:0) + ((r & 2) == 2 ? 1:0) + ((r & 4) == 4 ? 1:0) + ((r & 8) == 8 ? 1:0); 
+			if (rf>0) rf=1/rf;
+			var gf:Number =((g & 1) == 1 ? 1:0) + ((g & 2) == 2 ? 1:0) + ((g & 4) == 4 ? 1:0) + ((g & 8) == 8 ? 1:0); 
+			if (gf>0) gf=1/gf;
+			var bf:Number =((b & 1) == 1 ? 1:0) + ((b & 2) == 2 ? 1:0) + ((b & 4) == 4 ? 1:0) + ((b & 8) == 8 ? 1:0); 
+			if (bf>0) bf=1/bf;
+			var af:Number =((a & 1) == 1 ? 1:0) + ((a & 2) == 2 ? 1:0) + ((a & 4) == 4 ? 1:0) + ((a & 8) == 8 ? 1:0); 
+			if (af>0) af=1/af;
+			
+			var mat:Array =  [(r & 1) == 1 ? rf:0,(r & 2) == 2 ? rf:0,(r & 4) == 4 ? rf:0,(r & 8) == 8 ? rf:0,0,
+								   (g & 1) == 1 ? gf:0,(g & 2) == 2 ? gf:0,(g & 4) == 4 ? gf:0,(g & 8) == 8 ? gf:0,0,
+								   (b & 1) == 1 ? bf:0,(b & 2) == 2 ? bf:0,(b & 4) == 4 ? bf:0,(b & 8) == 8 ? bf:0,0,
+								   (a & 1) == 1 ? af:0,(a & 2) == 2 ? af:0,(a & 4) == 4 ? af:0,(a & 8) == 8 ? af:0,0];
+			
+			concat(mat);
+			
+		}*/
+    
+    public function blend(m : ColorMatrix, amount : Float) : Void
+    {
+        var inv_amount : Float = 1 - amount;
+        
+        for (i in 0...20){
+            matrix[i] = inv_amount * matrix[i] + amount * m.matrix[i];
+        }
+    }
+    
+    public function premultiply(mat : Array<Float>) : Void
+    {
+        var i : Float = 0;
+        
+        for (y in 0...4){
+            for (x in 0...5){
+                var value : Float = matrix[i] * mat[x] +
+                matrix[i + 1] * mat[x + 5] +
+                matrix[i + 2] * mat[x + 10] +
+                matrix[i + 3] * mat[x + 15] +
+                (x == (4) ? matrix[i + 4] : 0);
+                
+                
+                if (x == 4 && value > 255) 
+                    value = 255;
+                
+                TEMP_MATRIX[i + x] = value;
+            }
+            
+            i += 5;
+        }
+        
+        for (i in 0...20){
+            matrix[i] = TEMP_MATRIX[i];
+        }
+    }
+    
+    public function premultiplyArray(mat : Array<Dynamic>) : Void
+    {
+        var i : Float = 0;
+        
+        for (y in 0...4){
+            for (x in 0...5){
+                var value : Float = matrix[i] * mat[x] +
+                matrix[i + 1] * mat[x + 5] +
+                matrix[i + 2] * mat[x + 10] +
+                matrix[i + 3] * mat[x + 15] +
+                (x == (4) ? matrix[i + 4] : 0);
+                
+                
+                if (x == 4 && value > 255) 
+                    value = 255;
+                
+                TEMP_MATRIX[i + x] = value;
+            }
+            
+            i += 5;
+        }
+        
+        for (i in 0...20){
+            matrix[i] = TEMP_MATRIX[i];
+        }
+    }
+    
+    public function concat(mat : Array<Float>) : Void
+    {
+        var i : Float = 0;
+        
+        for (y in 0...4){
+            for (x in 0...5){
+                var value : Float = mat[i] * matrix[x] +
+                mat[i + 1] * matrix[x + 5] +
+                mat[i + 2] * matrix[x + 10] +
+                mat[i + 3] * matrix[x + 15] +
+                (x == (4) ? mat[i + 4] : 0);
+                
+                
+                if (x == 4 && value > 255) 
+                    value = 255;
+                
+                TEMP_MATRIX[i + x] = value;
+            }
+            
+            i += 5;
+        }
+        
+        for (i in 0...20){
+            matrix[i] = TEMP_MATRIX[i];
+        }
+    }
+    
+    public function concatArray(mat : Array<Dynamic>) : Void
+    {
+        var i : Float = 0;
+        
+        for (y in 0...4){
+            for (x in 0...5){
+                var value : Float = mat[i] * matrix[x] +
+                mat[i + 1] * matrix[x + 5] +
+                mat[i + 2] * matrix[x + 10] +
+                mat[i + 3] * matrix[x + 15] +
+                (x == (4) ? mat[i + 4] : 0);
+                
+                
+                if (x == 4 && value > 255) 
+                    value = 255;
+                
+                TEMP_MATRIX[i + x] = value;
+            }
+            
+            i += 5;
+        }
+        
+        for (i in 0...20){
+            matrix[i] = TEMP_MATRIX[i];
+        }
+    }
+    
+    private function toArray(vec : Array<Float>) : Array<Dynamic>{
+        var ret : Array<Dynamic> = [];
+        
+        for (i in 0...vec.length){
+            ret.push(vec[i]);
+        }
+        
+        return ret;
+    }
+    
+    private function get_filter() : ColorMatrixFilter
+    {
+        return new ColorMatrixFilter(toArray(matrix));
+    }
+}
+

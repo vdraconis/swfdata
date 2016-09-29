@@ -1,11 +1,7 @@
 package swfdata;
 
-
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
-
-
-
 
 class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 {

@@ -4,8 +4,6 @@ import swfdata.DisplayObjectData;
 import swfdata.IDisplayObjectContainer;
 import swfdata.ITimelineContainer;
 
-
-
 class DisplayObjectContainer implements IDisplayObjectContainer
 {
     public var numChildren(get, never) : Int;
@@ -98,7 +96,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     public function gotoAndPlayAll(frameIndex : Int) : Void
     {
-        for (i in 0...displayObjectsCount)
+        for (i in 0...displayObjectsPlacedCount	)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
 			
@@ -111,7 +109,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     public function gotoAndStopAll(frameIndex : Int) : Void
     {
-        for (i in 0...displayObjectsCount)
+        for (i in 0...displayObjectsPlacedCount)
 		{
             var currentDisplayData:DisplayObjectData = _displayObjects[i];
             if (Std.is(currentDisplayData, ITimelineContainer)) 
@@ -121,7 +119,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     public function update() : Void
     {
-        for (i in 0...displayObjectsCount)
+        for (i in 0...displayObjectsPlacedCount)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
 			
@@ -134,8 +132,10 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     private function fillData(obj : DisplayObjectContainer) : Void
     {
-        var objDisplayObjects : Array<DisplayObjectData> = obj.displayObjects;
-        for (i in 0...displayObjectsCount){
+        var objDisplayObjects:Array<DisplayObjectData> = obj.displayObjects;
+		
+        for (i in 0...displayObjectsPlacedCount)
+		{
             //obj.displayObjects.push(_displayObjects[i].clone());
             objDisplayObjects[i] = _displayObjects[i];
         }

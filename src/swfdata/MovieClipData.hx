@@ -3,8 +3,6 @@ package swfdata;
 import swfdata.SpriteData;
 import swfdata.Timeline;
 
-
-
 class MovieClipData extends SpriteData implements ITimeline
 {
     public var framesCount(get, never) : Int;

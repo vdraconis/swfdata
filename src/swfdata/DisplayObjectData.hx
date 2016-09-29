@@ -1,12 +1,9 @@
 package swfdata;
 
-
-import flash.display.Graphics;
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
-
-
-
+import openfl.display.Graphics;
+import openfl.geom.ColorTransform;
+import openfl.geom.Matrix;
+import swfdata.atlas.ITextureAtlas;
 
 class DisplayObjectData
 {
@@ -20,6 +17,8 @@ class DisplayObjectData
     
     //public var layer:LayerData;
     //public var frameData:FrameObjectData;
+	
+	public var atlas:ITextureAtlas;
     
     public var depth : Int = -1;
     public var clipDepth : Int = 0;

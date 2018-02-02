@@ -13,7 +13,7 @@ class DisplayObjectData
 
     private var isCalculatedInPrevFrame : Bool = false;
     
-    public var prototype : DisplayObjectData;
+    public var prototypeDisplayObjectData : DisplayObjectData;
     
     //public var layer:LayerData;
     //public var frameData:FrameObjectData;
@@ -69,7 +69,7 @@ class DisplayObjectData
     
     public function destroy() : Void
     {
-        prototype = null;
+        prototypeDisplayObjectData = null;
         mask = null;
         colorTransform = null;
         transform = null;
@@ -156,7 +156,7 @@ class DisplayObjectData
         objectCloned.depth = depth;
         objectCloned.characterId = characterId;
         objectCloned.libraryLinkage = libraryLinkage;
-        objectCloned.prototype = prototype;
+        objectCloned.prototypeDisplayObjectData = prototypeDisplayObjectData;
         objectCloned.colorTransform = colorTransform;
         objectCloned.isMask = isMask;
         objectCloned.mask = mask;

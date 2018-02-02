@@ -23,8 +23,6 @@ class GLTextureAtlas implements ITextureAtlas
 		this.format = format;
 		this.atlasData = atlasData;
 		this.id = id;
-		
-		
 	}
 	
 	public function uploadToGpu():Void

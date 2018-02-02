@@ -1,7 +1,7 @@
 package swfdata.atlas;
 
-import openfl.display3D.textures.Texture;
 import openfl.display.BitmapData;
+import openfl.display3D.textures.Texture;
 import openfl.geom.Rectangle;
 import renderer.TextureManager;
 import swfdata.atlas.ITexture;

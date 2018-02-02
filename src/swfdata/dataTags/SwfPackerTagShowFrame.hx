@@ -10,7 +10,7 @@ class SwfPackerTagShowFrame extends SwfPackerTag
         type = 1;
     }
     
-    override public function clear() : Void
+    override public function clear():Void
     {
         
         

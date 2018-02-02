@@ -5,8 +5,8 @@ import swfdata.atlas.TextureTransform;
 
 interface ITexture
 {
-    var id(get, never) : Int;    
-    var transform(get, never) : TextureTransform;    
-    var bounds(get, never) : Rectangle;
+    var id(get, never):Int;    
+    var transform(get, never):TextureTransform;    
+    var bounds(get, never):Rectangle;
 }
 

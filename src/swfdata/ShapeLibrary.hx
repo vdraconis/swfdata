@@ -5,8 +5,8 @@ import swfdata.atlas.AtlasDrawer;
 
 class ShapeLibrary
 {
-    public var shapes : Map<Int, ShapeLibraryItem> = new Map<Int, ShapeLibraryItem>();
-    public var numShapes : Int = 0;
+    public var shapes:Map<Int, ShapeLibraryItem> = new Map<Int, ShapeLibraryItem>();
+    public var numShapes:Int = 0;
     
     public function new()
     {
@@ -14,7 +14,7 @@ class ShapeLibrary
         
     }
     
-    public function clear(callDestroy : Bool = true) : Void
+    public function clear(callDestroy:Bool = true):Void
     {
         numShapes = 0;
         if (callDestroy) 
@@ -42,7 +42,7 @@ class ShapeLibrary
 		shapes.set(shapeData.characterId, shapeLibraryItem);
 	}
     
-    public function getShape(id : Int) : ShapeLibraryItem
+    public function getShape(id:Int):ShapeLibraryItem
     {
         return shapes[id];
     }

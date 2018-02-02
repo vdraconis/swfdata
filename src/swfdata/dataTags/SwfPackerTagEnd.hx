@@ -9,7 +9,7 @@ class SwfPackerTagEnd extends SwfPackerTag
         type = 0;
     }
     
-    override public function clear() : Void
+    override public function clear():Void
     {
         
         

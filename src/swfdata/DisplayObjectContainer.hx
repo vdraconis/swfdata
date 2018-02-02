@@ -6,32 +6,32 @@ import swfdata.ITimelineContainer;
 
 class DisplayObjectContainer implements IDisplayObjectContainer
 {
-    public var numChildren(get, never) : Int;
-    public var displayObjects(get, never) : Array<DisplayObjectData>;
+    public var numChildren(get, never):Int;
+    public var displayObjects(get, never):Array<DisplayObjectData>;
 
 	@:allow(swfdata)
-    private var _displayObjects : Array<DisplayObjectData>;
+    private var _displayObjects:Array<DisplayObjectData>;
     
-    private var displayObjectsCount : Int = 0;
-    private var displayObjectsPlacedCount : Int = 0;
+    private var displayObjectsCount:Int = 0;
+    private var displayObjectsPlacedCount:Int = 0;
     
     //public var depthMap:Object;
     //public var charactersMap:Object = { };
     
-    private var depthAndCharactersMapInitialize : Bool = false;
+    private var depthAndCharactersMapInitialize:Bool = false;
     
-    public function new(displayObjectsCount : Int = 0)
+    public function new(displayObjectsCount:Int = 0)
     {
         this.displayObjectsCount = displayObjectsCount;
         _displayObjects = new Array<DisplayObjectData>();
     }
     
-    private function get_numChildren() : Int
+    private function get_numChildren():Int
     {
         return displayObjectsCount;
     }
     
-    public function destroy() : Void
+    public function destroy():Void
     {
         //depthMap = null;
         
@@ -47,7 +47,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
     
-    public function addDisplayObject(displayObjectData : DisplayObjectData) : Void
+    public function addDisplayObject(displayObjectData:DisplayObjectData):Void
     {
         //if (!depthAndCharactersMapInitialize)
         //{
@@ -59,18 +59,18 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         _displayObjects[displayObjectsPlacedCount++] = displayObjectData;
     }
     
-    public function getObjectByDepth(depth : Int) : DisplayObjectData
+    public function getObjectByDepth(depth:Int):DisplayObjectData
     {
         return null;
     }
     
-    public function getChildByName(name : String) : DisplayObjectData
+    public function getChildByName(name:String):DisplayObjectData
     {
-        var currentDisplayObject : DisplayObjectData;
-        var i : Int;
+        var currentDisplayObject:DisplayObjectData;
+        var i:Int;
         
-        var currentDisplayList : Array<DisplayObjectData> = _displayObjects;
-        var childsCount : Int = currentDisplayList.length;
+        var currentDisplayList:Array<DisplayObjectData> = _displayObjects;
+        var childsCount:Int = currentDisplayList.length;
         
         for (i in 0...childsCount){
             currentDisplayObject = currentDisplayList[i];
@@ -94,7 +94,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     //	return charactersMap? charactersMap[characterId]:null;
     //}
     
-    public function gotoAndPlayAll(frameIndex : Int) : Void
+    public function gotoAndPlayAll(frameIndex:Int):Void
     {
         for (i in 0...displayObjectsPlacedCount	)
 		{
@@ -107,7 +107,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
     
-    public function gotoAndStopAll(frameIndex : Int) : Void
+    public function gotoAndStopAll(frameIndex:Int):Void
     {
         for (i in 0...displayObjectsPlacedCount)
 		{
@@ -117,7 +117,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
     
-    public function update() : Void
+    public function update():Void
     {
         for (i in 0...displayObjectsPlacedCount)
 		{
@@ -130,7 +130,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
     
-    private function fillData(obj : DisplayObjectContainer) : Void
+    private function fillData(obj:DisplayObjectContainer):Void
     {
         var objDisplayObjects:Array<DisplayObjectData> = obj.displayObjects;
 		
@@ -143,16 +143,16 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         obj.displayObjectsCount = displayObjectsCount;
     }
     
-    public function clone() : IDisplayObjectContainer
+    public function clone():IDisplayObjectContainer
     {
-        var objectCloned : DisplayObjectContainer = new DisplayObjectContainer(displayObjectsCount);
+        var objectCloned:DisplayObjectContainer = new DisplayObjectContainer(displayObjectsCount);
         
         fillData(objectCloned);
         
         return objectCloned;
     }
     
-    private function get_displayObjects() : Array<DisplayObjectData>
+    private function get_displayObjects():Array<DisplayObjectData>
     {
         return _displayObjects;
     }

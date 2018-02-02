@@ -5,11 +5,11 @@ import swfdata.atlas.TextureTransform;
 import flash.geom.Rectangle;
 class Subtexture
 {
-    public var bounds : Rectangle;
-    public var id : Int;
-    public var transform : TextureTransform;
+    public var bounds:Rectangle;
+    public var id:Int;
+    public var transform:TextureTransform;
     
-    public function new(id : Int, bounds : Rectangle, scaleX : Float, scaleY : Float)
+    public function new(id:Int, bounds:Rectangle, scaleX:Float, scaleY:Float)
     {
         this.bounds = bounds;
         this.id = id;

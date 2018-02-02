@@ -3,6 +3,6 @@
 interface IUpdatable
 {
 
-    function update() : Void;
+    function update():Void;
 }
 

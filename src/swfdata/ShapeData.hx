@@ -5,29 +5,29 @@ import flash.geom.Rectangle;
 
 class ShapeData extends DisplayObjectData
 {
-    public var shapeBounds(get, set) : Rectangle;
+    public var shapeBounds(get, set):Rectangle;
 
-    public var tx : Float;
-    public var ty : Float;
+    public var tx:Float;
+    public var ty:Float;
 	
 	public var width(get, set):Float;
 	public var height(get, set):Float;
     
 	@:allow(swfdata)
-    private var _shapeBounds : Rectangle;
+    private var _shapeBounds:Rectangle;
     
-    public var normalized : Bool;
+    public var normalized:Bool;
     
-    public var usedCount : Int = 0;
+    public var usedCount:Int = 0;
     
-    public function new(characterId : Int = -1, shapeBounds : Rectangle = null)
+    public function new(characterId:Int = -1, shapeBounds:Rectangle = null)
     {
         super(characterId, DisplayObjectTypes.SHAPE_TYPE);
         
         _shapeBounds = shapeBounds;
     }
     
-    override public function destroy() : Void
+    override public function destroy():Void
     {
         super.destroy();
         _shapeBounds = null;
@@ -44,28 +44,28 @@ class ShapeData extends DisplayObjectData
     //	bounds.applyTransform();
     //}
     
-    public function resetBound() : Void
+    public function resetBound():Void
     {
         //bounds.setTo(_shapeBounds.x, _shapeBounds.y, _shapeBounds.width, _shapeBounds.height);
         
     }
     
-    private function get_shapeBounds() : Rectangle
+    private function get_shapeBounds():Rectangle
     {
         return _shapeBounds;
     }
     
-    private function set_shapeBounds(value : Rectangle) : Rectangle
+    private function set_shapeBounds(value:Rectangle):Rectangle
     {
         _shapeBounds = value;
         return value;
     }
     
-    override private function setDataTo(objectCloned : DisplayObjectData) : Void
+    override private function setDataTo(objectCloned:DisplayObjectData):Void
     {
         super.setDataTo(objectCloned);
         
-        var objectAsShapeData : ShapeData = try cast(objectCloned, ShapeData) catch(e:Dynamic) null;
+        var objectAsShapeData:ShapeData = try cast(objectCloned, ShapeData) catch(e:Dynamic) null;
         
         objectAsShapeData.shapeBounds = _shapeBounds;
         
@@ -73,9 +73,9 @@ class ShapeData extends DisplayObjectData
         objectAsShapeData.ty = ty;
     }
     
-    override public function clone() : DisplayObjectData
+    override public function clone():DisplayObjectData
     {
-        var objectCloned : ShapeData = new ShapeData();
+        var objectCloned:ShapeData = new ShapeData();
         setDataTo(objectCloned);
         
         return objectCloned;

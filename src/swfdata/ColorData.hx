@@ -4,12 +4,12 @@ package swfdata;
 
 class ColorData
 {
-    public var a : Float = 1;
-    public var r : Float = 1;
-    public var g : Float = 1;
-    public var b : Float = 1;
+    public var a:Float = 1;
+    public var r:Float = 1;
+    public var g:Float = 1;
+    public var b:Float = 1;
     
-    public function new(r : Float = 1, g : Float = 1, b : Float = 1, a : Float = 1)
+    public function new(r:Float = 1, g:Float = 1, b:Float = 1, a:Float = 1)
     {
         this.a = a;
         this.b = b;
@@ -17,7 +17,7 @@ class ColorData
         this.r = r;
     }
     
-    public function clear() : Void
+    public function clear():Void
     {
         a = 1;
         r = 1;
@@ -25,7 +25,7 @@ class ColorData
         g = 1;
     }
     
-    public function mulColorData(colorData : ColorData) : Void
+    public function mulColorData(colorData:ColorData):Void
     {
         //TODO: Поидеи нужно умножать колор на альфу чтобы премультиплайд колор поулчать но пока посомтрим может и не нужно
         //UPD: Хотя вероятно это единственный вариант как комплексному объекту выставить одинаковую прозрачность

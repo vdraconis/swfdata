@@ -7,67 +7,67 @@ import swfdata.atlas.ITextureAtlas;
 
 class DisplayObjectData
 {
-    public var alpha(get, set) : Float;
-    public var x(get, set) : Float;
-    public var y(get, set) : Float;
+    public var alpha(get, set):Float;
+    public var x(get, set):Float;
+    public var y(get, set):Float;
 
-    private var isCalculatedInPrevFrame : Bool = false;
+    private var isCalculatedInPrevFrame:Bool = false;
     
-    public var prototypeDisplayObjectData : DisplayObjectData;
+    public var prototypeDisplayObjectData:DisplayObjectData;
     
     //public var layer:LayerData;
     //public var frameData:FrameObjectData;
 	
 	public var atlas:ITextureAtlas;
     
-    public var depth : Int = -1;
-    public var clipDepth : Int = 0;
+    public var depth:Int = -1;
+    public var clipDepth:Int = 0;
     
-    public var characterId : Int;
-    public var libraryLinkage : String;
+    public var characterId:Int;
+    public var libraryLinkage:String;
     
-    private var _x : Float = 0;
-    private var _y : Float = 0;
+    private var _x:Float = 0;
+    private var _y:Float = 0;
     
-    public var transform : Matrix;
+    public var transform:Matrix;
     
     //public var bounds:Rectagon;
     
-    public var colorTransform : ColorMatrix;  // = new ColorTransform();  
+    public var colorTransform:ColorMatrix;  // = new ColorTransform();  
     
 	@:allow(swfdata)
-    private var colorData : ColorData;
+    private var colorData:ColorData;
     
 	@:allow(swfdata)
-    private var displayObjectType : Int;
+    private var displayObjectType:Int;
     
-    public var isMask : Bool;
-    public var mask : DisplayObjectData;
+    public var isMask:Bool;
+    public var mask:DisplayObjectData;
     
-    public var hasMoved : Bool = false;
-    public var hasPlaced : Bool = false;
+    public var hasMoved:Bool = false;
+    public var hasPlaced:Bool = false;
     
-    public var name : String;
+    public var name:String;
     
     
-    public function new(characterId : Int = -1, displayObjectType : Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
+    public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
     {
         this.displayObjectType = displayObjectType;
         this.characterId = characterId;
     }
     
-    private function set_alpha(value : Float) : Float
+    private function set_alpha(value:Float):Float
     {
         colorData.a = value;
         return value;
     }
     
-    private function get_alpha() : Float
+    private function get_alpha():Float
     {
         return colorData.a;
     }
     
-    public function destroy() : Void
+    public function destroy():Void
     {
         prototypeDisplayObjectData = null;
         mask = null;
@@ -77,17 +77,17 @@ class DisplayObjectData
         libraryLinkage = null;
     }
     
-    public function setTransformMatrix(matrix : Matrix) : Void
+    public function setTransformMatrix(matrix:Matrix):Void
     {
         transform = matrix;
     }
     
-    public function setTransformFromMatrix(matrix : Matrix) : Void
+    public function setTransformFromMatrix(matrix:Matrix):Void
     {
         setTransformFromRawMatrix(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     }
     
-    public function setTransformFromRawMatrix(a : Float, b : Float, c : Float, d : Float, tx : Float, ty : Float) : Void
+    public function setTransformFromRawMatrix(a:Float, b:Float, c:Float, d:Float, tx:Float, ty:Float):Void
     {
         if (transform == null) 
         {
@@ -99,23 +99,23 @@ class DisplayObjectData
         }
     }
     
-    private function get_x() : Float
+    private function get_x():Float
     {
         return _x;
     }
     
-    private function set_x(value : Float) : Float
+    private function set_x(value:Float):Float
     {
         _x = value;
         return value;
     }
     
-    private function get_y() : Float
+    private function get_y():Float
     {
         return _y;
     }
     
-    private function set_y(value : Float) : Float
+    private function set_y(value:Float):Float
     {
         _y = value;
         return value;
@@ -136,7 +136,7 @@ class DisplayObjectData
     //	graphics.endFill();
     //}
     
-    public function fillFrom(displayObject : DisplayObjectData) : Void
+    public function fillFrom(displayObject:DisplayObjectData):Void
     {
         setTransformFromMatrix(displayObject.transform);
         //setTransformMatrix(displayObject.transform);
@@ -150,7 +150,7 @@ class DisplayObjectData
             libraryLinkage = displayObject.libraryLinkage;
     }
     
-    private function setDataTo(objectCloned : DisplayObjectData) : Void
+    private function setDataTo(objectCloned:DisplayObjectData):Void
     {
         objectCloned.name = name;
         objectCloned.depth = depth;
@@ -164,14 +164,14 @@ class DisplayObjectData
         objectCloned._y = _y;
     }
     
-    public function deepClone() : DisplayObjectData
+    public function deepClone():DisplayObjectData
     {
         return this;
     }
     
-    public function clone() : DisplayObjectData
+    public function clone():DisplayObjectData
     {
-        var objectCloned : DisplayObjectData = new DisplayObjectData();
+        var objectCloned:DisplayObjectData = new DisplayObjectData();
         setDataTo(objectCloned);
         
         return objectCloned;

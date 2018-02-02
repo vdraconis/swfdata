@@ -16,19 +16,19 @@ import flash.geom.Rectangle;
 
 class AtlasDrawer
 {
-    public static var NULL_POINT : Point = new Point();
-    private static var DRAWING_MATRIX : Matrix = new Matrix();
+    public static var NULL_POINT:Point = new Point();
+    private static var DRAWING_MATRIX:Matrix = new Matrix();
     
-    private var lastPosition : Point = new Point();
+    private var lastPosition:Point = new Point();
     
-    public var targetAtlas : BitmapTextureAtlas;
-    private var maxPadding : Float = 0;
+    public var targetAtlas:BitmapTextureAtlas;
+    private var maxPadding:Float = 0;
     
-    private var padding : Int;
-    private var atlasData : BitmapData;
-    public var scale : Float;
+    private var padding:Int;
+    private var atlasData:BitmapData;
+    public var scale:Float;
     
-    public function new(targetAtlas : BitmapTextureAtlas, scale : Float = 1, padding : Int = 4)
+    public function new(targetAtlas:BitmapTextureAtlas, scale:Float = 1, padding:Int = 4)
     {
         this.targetAtlas = targetAtlas;
         this.padding = padding;
@@ -38,19 +38,19 @@ class AtlasDrawer
         clean();
     }
     
-    public function clean() : Void
+    public function clean():Void
     {
         lastPosition.setTo(padding, padding);
     }
     
-    public static function averageColour(source : BitmapData) : Int
+    public static function averageColour(source:BitmapData):Int
     {
-        var red : Int = 0;
-        var green : Int = 0;
-        var blue : Int = 0;
+        var red:Int = 0;
+        var green:Int = 0;
+        var blue:Int = 0;
         
-        var count : Int = 0;
-        var pixel : Int;
+        var count:Int = 0;
+        var pixel:Int;
         
         for (x in 0...source.width)
 		{
@@ -78,16 +78,16 @@ class AtlasDrawer
         return red << 16 | green << 8 | blue;
     }
     
-    public function addShape(shapeId : Int, shape : IBitmapDrawable, defineRect : Rectangle, sceneTransfrm : TextureTransform, drawAdditionalAA : Bool) : Rectangle
+    public function addShape(shapeId:Int, shape:IBitmapDrawable, defineRect:Rectangle, sceneTransfrm:TextureTransform, drawAdditionalAA:Bool):Rectangle
     {
         //Клонируется потому что будет далее использован в атласе, но возможно можно тут избежать пары тройки клонов
-        var shapeBound : Rectangle = defineRect.clone();
+        var shapeBound:Rectangle = defineRect.clone();
         
         DRAWING_MATRIX.identity();
         
         
-        var scaleX : Float;
-        var scaleY : Float;
+        var scaleX:Float;
+        var scaleY:Float;
         
         if (scale != 1) 
         {
@@ -105,10 +105,10 @@ class AtlasDrawer
         
         
         
-        var subtexture : BitmapSubTexture = new BitmapSubTexture(shapeId, shapeBound, sceneTransfrm);
+        var subtexture:BitmapSubTexture = new BitmapSubTexture(shapeId, shapeBound, sceneTransfrm);
         
         //позиция в атласе, рисуется просто последовательно до края и переходит на следующую строку
-        var posX : Float = lastPosition.x - defineRect.x;
+        var posX:Float = lastPosition.x - defineRect.x;
         
         if (posX + defineRect.width * scaleX + padding >= atlasData.width) 
         {
@@ -131,7 +131,7 @@ class AtlasDrawer
         var checkerIndex:Int = Std.int(FastMath.log(powerOf2Size, 2));
         
         
-        var boundChecker : BitmapData = AtlasDrawerUtils.boundCheckers[checkerIndex];
+        var boundChecker:BitmapData = AtlasDrawerUtils.boundCheckers[checkerIndex];
         //boundChecker.drawWithQuality(shape, DRAWING_MATRIX, null, null, null, false, StageQuality.BEST);
         boundChecker.draw(shape, DRAWING_MATRIX, null, null, null, false);
         
@@ -143,7 +143,7 @@ class AtlasDrawer
         
         
         
-        var bitmapBoundRect : Rectangle = boundChecker.getColorBoundsRect(0xFFFFFFFF, 0, false);
+        var bitmapBoundRect:Rectangle = boundChecker.getColorBoundsRect(0xFFFFFFFF, 0, false);
         
         shapeBound.width = bitmapBoundRect.width;
         shapeBound.height = bitmapBoundRect.height;

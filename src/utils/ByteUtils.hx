@@ -2,10 +2,10 @@ package utils;
 
 class ByteUtils
 {
-    public static inline var FIXED_PRECISSION_VALUE : Int = 65536;
-    public static var FIXED_PRECISSION_VALUE_MULTIPLIER : Float = 1 / 65536;
+    public static inline var FIXED_PRECISSION_VALUE:Int = 65536;
+    public static var FIXED_PRECISSION_VALUE_MULTIPLIER:Float = 1 / 65536;
 	
-    private static var LOG_2 : Float = Math.log(2);
+    private static var LOG_2:Float = Math.log(2);
     
     public function new()
     {
@@ -15,7 +15,7 @@ class ByteUtils
     
     @:meta(Inline())
 
-    public static function addBitsValue(mask : Int, value : Int) : Int
+    public static function addBitsValue(mask:Int, value:Int):Int
     {
         if (value >= 0) 
             mask |= value
@@ -25,16 +25,16 @@ class ByteUtils
         return mask;
     }
     
-    public static function calculateMaxFixedBits(signed : Bool, a : Float, b : Float) : Int
+    public static function calculateMaxFixedBits(signed:Bool, a:Float, b:Float):Int
     {
         return calculateMaxBits(signed, Std.int(a * FIXED_PRECISSION_VALUE), Std.int(b * FIXED_PRECISSION_VALUE));
     }
     
-    public static function calculateMaxBits(signed : Bool, a : Int, b : Int) : Int
+    public static function calculateMaxBits(signed:Bool, a:Int, b:Int):Int
     {
-        var i : Int = 0;
-        var bitMask : Int = 0;
-        var valueMax : Int = -2147483648;
+        var i:Int = 0;
+        var bitMask:Int = 0;
+        var valueMax:Int = -2147483648;
         
         if (!signed) 
         {
@@ -52,7 +52,7 @@ class ByteUtils
                 valueMax = b;
         }
         
-        var bits : Int = 0;
+        var bits:Int = 0;
         if (bitMask > 0) 
         {
             bits = calculateBits(bitMask);
@@ -66,11 +66,11 @@ class ByteUtils
     }
     
     
-    public static function calculateMaxBits4(signed : Bool, a : Int, b : Int, c : Int, d : Int) : Int
+    public static function calculateMaxBits4(signed:Bool, a:Int, b:Int, c:Int, d:Int):Int
     {
-        var i : Int = 0;
-        var bitMask : Int = 0;
-        var valueMax : Int = -2147483648;
+        var i:Int = 0;
+        var bitMask:Int = 0;
+        var valueMax:Int = -2147483648;
         
         if (!signed) 
         {
@@ -96,7 +96,7 @@ class ByteUtils
                 valueMax = d;
         }
         
-        var bits : Int = 0;
+        var bits:Int = 0;
         if (bitMask > 0) 
         {
             bits = calculateBits(bitMask);
@@ -111,7 +111,7 @@ class ByteUtils
     
     @:meta(Inline())
 
-    public static function calculateBits(value : Int) : Int
+    public static function calculateBits(value:Int):Int
     {
         if (value == 0) 
             return 1;
@@ -121,9 +121,9 @@ class ByteUtils
     
     @:meta(Inline())
 
-    public static function clampBitsToMaxBytes(value : Int) : Int
+    public static function clampBitsToMaxBytes(value:Int):Int
     {
-        var valueBitsSize : Int = calculateBits(value);
+        var valueBitsSize:Int = calculateBits(value);
         
         if (valueBitsSize < 8) 
             return 1

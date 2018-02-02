@@ -11,12 +11,12 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 	public var mouseX:Float = 0;
 	public var mouseY:Float = 0;
 	
-    public var numChildren(get, never) : Int;
-    public var displayObjects(get, never) : Array<DisplayObjectData>;
+    public var numChildren(get, never):Int;
+    public var displayObjects(get, never):Array<DisplayObjectData>;
 
-    private var displayContainer : DisplayObjectContainer;
+    private var displayContainer:DisplayObjectContainer;
     
-    public function new(characterId : Int = -1, displayObjectType : Int = DisplayObjectTypes.SPRITE_TYPE, isCreateContainer : Bool = true, childsCount : Int = 0)
+    public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.SPRITE_TYPE, isCreateContainer:Bool = true, childsCount:Int = 0)
     {
         super(characterId, displayObjectType);
         
@@ -44,12 +44,12 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 		isMouseDown = true;
 	}
 	
-    private function get_numChildren() : Int
+    private function get_numChildren():Int
     {
         return displayContainer.numChildren;
     }
     
-    override public function destroy() : Void
+    override public function destroy():Void
     {
         super.destroy();
         
@@ -60,26 +60,26 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         }
     }
     
-    public function update() : Void
+    public function update():Void
     {
         displayContainer.update();
     }
     
-    public function updateMasks() : Void
+    public function updateMasks():Void
     {
         
         calculateMasks(this);
     }
     
-    private function calculateMasks(displayObjectContainer : IDisplayObjectContainer) : Void
+    private function calculateMasks(displayObjectContainer:IDisplayObjectContainer):Void
     {
         var currentMask:DisplayObjectData = null;
         
-        var displayObjectsCount : Int = displayObjectContainer.displayObjects.length;
+        var displayObjectsCount:Int = displayObjectContainer.displayObjects.length;
 		
         for (i in 0...displayObjectsCount)
 		{
-            var currentDisplayObject : DisplayObjectData = displayObjectContainer.displayObjects[i];
+            var currentDisplayObject:DisplayObjectData = displayObjectContainer.displayObjects[i];
             
             if (currentDisplayObject == null) 
 				continue;
@@ -91,20 +91,20 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         }
     }
     
-    override private function setDataTo(objectCloned : DisplayObjectData) : Void
+    override private function setDataTo(objectCloned:DisplayObjectData):Void
     {
         super.setDataTo(objectCloned);
         
         if (displayContainer != null) 
         {
-            var objestAsSpriteData : SpriteData = try cast(objectCloned, SpriteData) catch(e:Dynamic) null;
+            var objestAsSpriteData:SpriteData = try cast(objectCloned, SpriteData) catch(e:Dynamic) null;
             objestAsSpriteData.displayContainer = displayContainer;  //.clone() as DisplayObjectContainer;  ;
         }
     }
     
-    override public function clone() : DisplayObjectData
+    override public function clone():DisplayObjectData
     {
-        var objectCloned : SpriteData = new SpriteData(-1, DisplayObjectTypes.SPRITE_TYPE, false);
+        var objectCloned:SpriteData = new SpriteData(-1, DisplayObjectTypes.SPRITE_TYPE, false);
         setDataTo(objectCloned);
         
         return objectCloned;
@@ -122,27 +122,27 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
     //	return displayContainer.getObjectByCharacterId(characterId);
     //}
     
-    public function gotoAndPlayAll(frameIndex : Int) : Void
+    public function gotoAndPlayAll(frameIndex:Int):Void
     {
         displayContainer.gotoAndPlayAll(frameIndex);
     }
     
-    public function gotoAndStopAll(frameIndex : Int) : Void
+    public function gotoAndStopAll(frameIndex:Int):Void
     {
         displayContainer.gotoAndStopAll(frameIndex);
     }
     
-    public function getObjectByDepth(depth : Int) : DisplayObjectData
+    public function getObjectByDepth(depth:Int):DisplayObjectData
     {
         return displayContainer.getObjectByDepth(depth);
     }
     
-    public function getChildByName(name : String) : DisplayObjectData
+    public function getChildByName(name:String):DisplayObjectData
     {
         return displayContainer.getChildByName(name);
     }
     
-    private function get_displayObjects() : Array<DisplayObjectData>
+    private function get_displayObjects():Array<DisplayObjectData>
     {
         return displayContainer._displayObjects;
     }

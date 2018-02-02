@@ -6,10 +6,10 @@ import swfdata.IDisplayObjectContainer;
 
 class FrameData extends DisplayObjectContainer
 {
-    public var frameIndex : Int;
-    public var frameLabel : String;
+    public var frameIndex:Int;
+    public var frameLabel:String;
     
-    public function new(frameIndex : Int, frameLabel : String = null, numChildren : Int = 0)
+    public function new(frameIndex:Int, frameLabel:String = null, numChildren:Int = 0)
     {
         super(numChildren);
         
@@ -19,28 +19,28 @@ class FrameData extends DisplayObjectContainer
         this.frameIndex = frameIndex;
     }
     
-    override public function destroy() : Void
+    override public function destroy():Void
     {
         super.destroy();
         
         frameLabel = null;
     }
     
-    override public function clone() : IDisplayObjectContainer
+    override public function clone():IDisplayObjectContainer
     {
-        var objectCloned : FrameData = new FrameData(frameIndex, frameLabel, numChildren);
+        var objectCloned:FrameData = new FrameData(frameIndex, frameLabel, numChildren);
         
         fillData(objectCloned);
         
         return objectCloned;
     }
     
-    public function toString() : String
+    public function toString():String
     {
         return "FrameData " + frameIndex + " frameObjects=" + displayObjects.length;
     }
     
-    public function clear() : Void
+    public function clear():Void
     {
         frameLabel = null;
     }

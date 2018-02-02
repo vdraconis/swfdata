@@ -10,33 +10,33 @@ class FastMath
 	 */
     @:meta(Inline())
 
-    public static function log(value : Int, base : Int) : Int
+    public static function log(value:Int, base:Int):Int
     {
         return Std.int(Math.log(value) / Math.log(base));
     }
     
     @:meta(Inline())
 
-    public static function convertToRadian(angle : Float) : Float
+    public static function convertToRadian(angle:Float):Float
     {
         return angle * Math.PI / 180;
     }
     
     @:meta(Inline())
 
-    public static function convertToDegree(angle : Float) : Float
+    public static function convertToDegree(angle:Float):Float
     {
         return 180 * angle / Math.PI;
     }
     
     @:meta(Inline())
 
-    public static function uintMin(a : Int, b : Int) : Int
+    public static function uintMin(a:Int, b:Int):Int
     {
-        return a < (b != 0) ? a : b;
+        return a < (b != 0) ? a:b;
     }
     
-    public static function angle(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float
+    public static function angle(x1:Float, y1:Float, x2:Float, y2:Float):Float
     {
         x1 = x1 - x2;
         y1 = y1 - y2;

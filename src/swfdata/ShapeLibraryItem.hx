@@ -5,8 +5,8 @@ import swfdata.atlas.TextureTransform;
 
 class ShapeLibraryItem
 {
-    public var shapeData : ShapeData;
-    public var transform : TextureTransform = new TextureTransform(0, 0);
+    public var shapeData:ShapeData;
+    public var transform:TextureTransform = new TextureTransform(0, 0);
     
     public function new()
     {
@@ -14,7 +14,7 @@ class ShapeLibraryItem
         
     }
     
-    public function clear() : Void
+    public function clear():Void
     {
         shapeData = null;
         transform = null;
@@ -22,7 +22,7 @@ class ShapeLibraryItem
     
     @:meta(Inline())
 
-    @:final public function correctScale(a : Float, a2 : Float) : Float
+    @:final public function correctScale(a:Float, a2:Float):Float
     {
         if (a == a2) 
             return a2;
@@ -36,7 +36,7 @@ class ShapeLibraryItem
 			return a2;
     }
 
-    @:final public function checkTransform(matrix : Matrix, tx : Float, ty : Float) : Void
+    @:final public function checkTransform(matrix:Matrix, tx:Float, ty:Float):Void
     {
         transform.scaleX = correctScale(matrix.a, transform.scaleX);  //Math.max(Math.abs(matrix.a), transform.scaleX);  
         transform.scaleY = correctScale(matrix.d, transform.scaleY);  //Math.max(Math.abs(matrix.d), transform.scaleY);  

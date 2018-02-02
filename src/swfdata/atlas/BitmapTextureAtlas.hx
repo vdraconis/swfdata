@@ -12,18 +12,18 @@ import flash.geom.Rectangle;
 */
 class BitmapTextureAtlas implements ITextureAtlas
 {
-    public var padding(get, set) : Int;
+    public var padding(get, set):Int;
 
-    private var width : Float;
-    private var height : Float;
-    public var atlasData : BitmapData;
+    private var width:Float;
+    private var height:Float;
+    public var atlasData:BitmapData;
     
-    public var texturesCount : Int = 0;
-    public var subTextures : Map<Int, BitmapSubTexture> = new Map<Int, BitmapSubTexture>();
+    public var texturesCount:Int = 0;
+    public var subTextures:Map<Int, BitmapSubTexture> = new Map<Int, BitmapSubTexture>();
     
-    private var _padding : Int = 0;
+    private var _padding:Int = 0;
     
-    public function new(width : Int, height : Int, padding : Int = 0)
+    public function new(width:Int, height:Int, padding:Int = 0)
     {
         this.height = height;
         this.width = width;
@@ -35,7 +35,7 @@ class BitmapTextureAtlas implements ITextureAtlas
     /**
 		 * @inheritDoc
 		 */
-    public function getTexture(textureId : Int) : ITexture
+    public function getTexture(textureId:Int):ITexture
     {
         return subTextures[textureId];
     }
@@ -43,39 +43,39 @@ class BitmapTextureAtlas implements ITextureAtlas
     /**
 		 * @inheritDoc
 		 */
-    public function putTexture(texture : ITexture) : Void
+    public function putTexture(texture:ITexture):Void
     {
         texturesCount++;
         subTextures[texture.id] = cast texture;
     }
     
-    public function createSubTexture(id : Int, region : Rectangle, scaleX : Float, scaleY : Float) : ITexture
+    public function createSubTexture(id:Int, region:Rectangle, scaleX:Float, scaleY:Float):ITexture
     {
-        var subTexture : BitmapSubTexture = new BitmapSubTexture(id, region, new TextureTransform(scaleX, scaleY));
+        var subTexture:BitmapSubTexture = new BitmapSubTexture(id, region, new TextureTransform(scaleX, scaleY));
         putTexture(subTexture);
 		
 		return subTexture;
     }
     
-    public function refrash() : Void
+    public function refrash():Void
     {
         subTextures = new Map<Int, BitmapSubTexture>();
         atlasData.fillRect(atlasData.rect, 0x0);
     }
     
-    public function clear() : Void
+    public function clear():Void
     {
         subTextures = null;
         atlasData.dispose();
         atlasData = null;
     }
     
-    private function get_padding() : Int
+    private function get_padding():Int
     {
         return _padding;
     }
     
-    private function set_padding(value : Int) : Int
+    private function set_padding(value:Int):Int
     {
         _padding = value;
         return value;

@@ -6,15 +6,15 @@ import IUpdatable;
 interface IDisplayObjectContainer extends ITimelineContainer extends IUpdatable
 {
     
-    var numChildren(get, never) : Int;    
-    var displayObjects(get, never) : Array<DisplayObjectData>;
+    var numChildren(get, never):Int;    
+    var displayObjects(get, never):Array<DisplayObjectData>;
 
     
-    function addDisplayObject(displayObjectData : DisplayObjectData) : Void;
+    function addDisplayObject(displayObjectData:DisplayObjectData):Void;
     
-    function getObjectByDepth(depth : Int) : DisplayObjectData;
+    function getObjectByDepth(depth:Int):DisplayObjectData;
     
     //function getObjectByCharacterId(characterId:int):DisplayObjectData;
     
-    function getChildByName(name : String) : DisplayObjectData;
+    function getChildByName(name:String):DisplayObjectData;
 }

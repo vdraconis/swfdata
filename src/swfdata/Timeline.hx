@@ -5,28 +5,28 @@ import openfl.Vector;
 
 class Timeline implements ITimeline implements ITimelineContainer implements IUpdatable
 {
-    public var framesCount(get, never) : Int;
-    public var currentFrame(get, never) : Int;
-    public var isPlaying(get, never) : Bool;
+    public var framesCount(get, never):Int;
+    public var currentFrame(get, never):Int;
+    public var isPlaying(get, never):Bool;
 
-    private var _isPlaying : Bool = true;
+    private var _isPlaying:Bool = true;
     public var frames:Vector<FrameData>;
     
-    public var labelsCount : Int = 0;
-    public var lablesMap : Map<String, Int> = new Map<String, Int>();
-    public var labelsSize : Map<String, Int> = new Map<String, Int>();
+    public var labelsCount:Int = 0;
+    public var lablesMap:Map<String, Int> = new Map<String, Int>();
+    public var labelsSize:Map<String, Int> = new Map<String, Int>();
     
 	@:allow(swfdata)
-    private var _currentFrame : Int = 0;
+    private var _currentFrame:Int = 0;
 	
 	@:allow(swfdata)
-    private var _currentFrameData : FrameData;
+    private var _currentFrameData:FrameData;
     
-    public var _framesCount : Int = 0;
+    public var _framesCount:Int = 0;
     
-    private var currentLable : String;
+    private var currentLable:String;
     
-    public function new(framesCount : Int)
+    public function new(framesCount:Int)
     {
         _framesCount = framesCount;
         frames = new Vector<FrameData>(_framesCount, true);
@@ -34,7 +34,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         _currentFrameData = frames[_currentFrame];
     }
     
-    public function destroy() : Void
+    public function destroy():Void
     {
         lablesMap = null;
         labelsSize = null;
@@ -42,7 +42,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         
         if (frames != null) 
         {
-            var framesCount : Int = frames.length;
+            var framesCount:Int = frames.length;
             for (i in 0...framesCount){
                 frames[i].destroy();
             }
@@ -51,17 +51,17 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         }
     }
     
-    public function getLabelSize(label : String) : Int
+    public function getLabelSize(label:String):Int
     {
         return labelsSize[label];
     }
     
-    public function hasFrame(label : String) : Bool
+    public function hasFrame(label:String):Bool
     {
         return lablesMap[label] != null;
     }
     
-    public function setLabel(labelKey : String, startFrame : Int, framesCount : Int) : Void
+    public function setLabel(labelKey:String, startFrame:Int, framesCount:Int):Void
     {
         if (lablesMap[labelKey] != null) 
             return;
@@ -94,7 +94,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
             _currentFrameData = frameData;
     }
     
-    public function gotoAndPlayAll(frameIndex : Int) : Void
+    public function gotoAndPlayAll(frameIndex:Int):Void
     {
         gotoAndPlay(frameIndex);
         
@@ -103,7 +103,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         }
     }
     
-    public function gotoAndStopAll(frameIndex : Int) : Void
+    public function gotoAndStopAll(frameIndex:Int):Void
     {
         gotoAndStop(frameIndex);
         
@@ -112,30 +112,30 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         }
     }
     
-    public function play() : Void
+    public function play():Void
     {
         this._isPlaying = true;
     }
     
-    public function gotoAndPlay(frame : Dynamic) : Void
+    public function gotoAndPlay(frame:Dynamic):Void
     {
         
         play();
         setFrameByObject(frame);
     }
     
-    public function stop() : Void
+    public function stop():Void
     {
         this._isPlaying = false;
     }
     
-    public function gotoAndStop(frame : Dynamic) : Void
+    public function gotoAndStop(frame:Dynamic):Void
     {
         stop();
         setFrameByObject(frame);
     }
     
-    public function nextFrame() : Void
+    public function nextFrame():Void
     {
         _currentFrame++;
         
@@ -145,7 +145,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         _currentFrameData = frames[_currentFrame];
     }
     
-    public function prevFrame() : Void
+    public function prevFrame():Void
     {
         _currentFrame--;
         
@@ -155,7 +155,7 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         _currentFrameData = frames[_currentFrame];
     }
 	
-    inline public function setFrameByObject(frame : Dynamic) : Void
+    inline public function setFrameByObject(frame:Dynamic):Void
     {
         if (Std.is(frame, String)) 
             _currentFrame = lablesMap.get(cast frame);
@@ -172,15 +172,15 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         _currentFrameData = frames[_currentFrame];
     }
     
-    public function update() : Void
+    public function update():Void
     {
         
-        var displayObjectsList : Array<DisplayObjectData> = _currentFrameData.displayObjects;
-        var displayObjectsCount : Int = displayObjectsList.length;
+        var displayObjectsList:Array<DisplayObjectData> = _currentFrameData.displayObjects;
+        var displayObjectsCount:Int = displayObjectsList.length;
         
         for (i in 0...displayObjectsCount)
 		{
-            var currentDisplayObject : DisplayObjectData = displayObjectsList[i];
+            var currentDisplayObject:DisplayObjectData = displayObjectsList[i];
             
             if (Std.is(currentDisplayObject, IUpdatable)) 
                 cast(currentDisplayObject, IUpdatable).update();
@@ -192,12 +192,12 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         nextFrame();
     }
     
-    public function currentFrameData() : FrameData
+    public function currentFrameData():FrameData
     {
         return _currentFrameData;
     }
     
-    public function advanceFrame(delta : Int) : Void
+    public function advanceFrame(delta:Int):Void
     {
         _currentFrame += delta;
         
@@ -210,17 +210,17 @@ class Timeline implements ITimeline implements ITimelineContainer implements IUp
         _currentFrameData = frames[_currentFrame];
     }
     
-    private function get_framesCount() : Int
+    private function get_framesCount():Int
     {
         return _framesCount;
     }
     
-    private function get_currentFrame() : Int
+    private function get_currentFrame():Int
     {
         return _currentFrame;
     }
     
-    private function get_isPlaying() : Bool
+    private function get_isPlaying():Bool
     {
         return _isPlaying;
     }

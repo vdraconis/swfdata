@@ -7,31 +7,31 @@ import flash.geom.Point;
 
 class Rectagon
 {
-    public var transform(get, set) : Matrix;
+    public var transform(get, set):Matrix;
 
-    public var x : Float;
-    public var y : Float;
-    public var width : Float;
-    public var height : Float;
+    public var x:Float;
+    public var y:Float;
+    public var width:Float;
+    public var height:Float;
     
-    public var localX : Float;
-    public var localY : Float;
-    public var localWidth : Float;
-    public var localHeight : Float;
+    public var localX:Float;
+    public var localY:Float;
+    public var localWidth:Float;
+    public var localHeight:Float;
     
-    public var topLeft : Point = new Point();
-    public var topRight : Point = new Point();
-    public var bottomLeft : Point = new Point();
-    public var bottomRight : Point = new Point();
+    public var topLeft:Point = new Point();
+    public var topRight:Point = new Point();
+    public var bottomLeft:Point = new Point();
+    public var bottomRight:Point = new Point();
     
-    public var resultTopLeft : Point = new Point();
-    public var resultTopRight : Point = new Point();
-    public var resultBottomLeft : Point = new Point();
-    public var resultBottomRight : Point = new Point();
+    public var resultTopLeft:Point = new Point();
+    public var resultTopRight:Point = new Point();
+    public var resultBottomLeft:Point = new Point();
+    public var resultBottomRight:Point = new Point();
     
-    private var _transform : Matrix;
+    private var _transform:Matrix;
     
-    public function new(x : Float, y : Float, width : Float, height : Float, transform : Matrix)
+    public function new(x:Float, y:Float, width:Float, height:Float, transform:Matrix)
     {
         this._transform = transform;
         
@@ -48,19 +48,19 @@ class Rectagon
     
     @:meta(Inline())
 
-    public static function transformX(px : Float, py : Float, transform : Matrix) : Float
+    public static function transformX(px:Float, py:Float, transform:Matrix):Float
     {
         return px * transform.a + py * transform.c + transform.tx;
     }
     
     @:meta(Inline())
 
-    public static function transformY(px : Float, py : Float, transform : Matrix) : Float
+    public static function transformY(px:Float, py:Float, transform:Matrix):Float
     {
         return px * transform.b + py * transform.d + transform.ty;
     }
     
-    public function union(rectagon : Rectagon) : Void
+    public function union(rectagon:Rectagon):Void
     {
         if (_transform == rectagon._transform) 
             _transform = _transform.clone();
@@ -75,7 +75,7 @@ class Rectagon
         setTo(localX, localY, localWidth, localHeight);
     }
     
-    public function clear() : Void
+    public function clear():Void
     {
         localX = 0;
         localY = 0;
@@ -88,7 +88,7 @@ class Rectagon
         bottomRight.setTo(0, 0);
     }
     
-    public function setToWithTransform(x : Float, y : Float, width : Float, height : Float, transform : Matrix) : Void
+    public function setToWithTransform(x:Float, y:Float, width:Float, height:Float, transform:Matrix):Void
     {
         localX = x;
         localY = y;
@@ -105,7 +105,7 @@ class Rectagon
         applyTransform();
     }
     
-    public function setTo(x : Float, y : Float, width : Float, height : Float) : Void
+    public function setTo(x:Float, y:Float, width:Float, height:Float):Void
     {
         localX = x;
         localY = y;
@@ -120,12 +120,12 @@ class Rectagon
         applyTransform();
     }
     
-    private function get_transform() : Matrix
+    private function get_transform():Matrix
     {
         return _transform;
     }
     
-    private function set_transform(value : Matrix) : Matrix
+    private function set_transform(value:Matrix):Matrix
     {
         _transform = value;
         
@@ -133,7 +133,7 @@ class Rectagon
         return value;
     }
     
-    public function applyTransform() : Void
+    public function applyTransform():Void
     {
         if (_transform == null) 
             return;

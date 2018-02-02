@@ -7,15 +7,15 @@ import flash.geom.Rectangle;
 
 class AtlasRegion
 {
-    public var masterBitmap : BitmapData;
+    public var masterBitmap:BitmapData;
     
-    public var bounds : Rectangle;
-    public var width : Int;
-    public var height : Int;
-    public var areaSize : Int;
-    public var name : String;
+    public var bounds:Rectangle;
+    public var width:Int;
+    public var height:Int;
+    public var areaSize:Int;
+    public var name:String;
     
-    public function new(bounds : Rectangle, name : String, masterBitmap : BitmapData)
+    public function new(bounds:Rectangle, name:String, masterBitmap:BitmapData)
     {
         this.masterBitmap = masterBitmap;
         this.name = name;
@@ -27,7 +27,7 @@ class AtlasRegion
         areaSize = width * height;
     }
     
-    public function copyTo(destPoint : Point, destBitmap : BitmapData) : Void
+    public function copyTo(destPoint:Point, destBitmap:BitmapData):Void
     {
         
         

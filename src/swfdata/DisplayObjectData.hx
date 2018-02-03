@@ -48,6 +48,7 @@ class DisplayObjectData
     public var hasPlaced:Bool = false;
     
     public var name:String;
+	public var visible:Bool = true;
     
     
     public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)

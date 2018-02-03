@@ -208,9 +208,8 @@ class MovieClipData extends SpriteData implements ITimeline
         _currentFrameData = timeline._currentFrameData;
     }
     
-    @:meta(Inline())
 
-    @:final public function inlineClone():DisplayObjectData
+    inline public function inlineClone():DisplayObjectData
     {
         var objectCloned:MovieClipData = new MovieClipData(-1, 0);
         setDataTo(objectCloned);

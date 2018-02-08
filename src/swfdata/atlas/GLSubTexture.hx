@@ -1,19 +1,15 @@
 package swfdata.atlas;
+
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 import swfdata.atlas.TextureTransform;
 
-/**
- * ...
- * @author ...
- */
 class GLSubTexture implements ITexture
 {
 	private var _id:Int;
 	private var _bounds:Rectangle;
 	private var _transform:TextureTransform;
 	
-
 	private var _atlas:GLTextureAtlas;
 	
 	public var u:Float = 0;
@@ -79,5 +75,4 @@ class GLSubTexture implements ITexture
 	{
 		return _bounds;
 	}
-	
 }

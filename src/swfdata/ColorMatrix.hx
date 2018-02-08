@@ -1,9 +1,5 @@
 package swfdata;
 
-/**
- * ...
- * @author ...
- */
 class ColorMatrix
 {
 	public var matrix:Dynamic;
@@ -13,12 +9,10 @@ class ColorMatrix
 	public function new(arr:Array<Float>) 
 	{
 		this.arr = arr;
-		
 	}
 	
 	public function premultiply(obj:Dynamic) 
 	{
 		
 	}
-	
 }

@@ -1,5 +1,3 @@
-
-
 class FastMath
 {
     /**
@@ -8,32 +6,24 @@ class FastMath
 	 * @param	base
 	 * @return
 	 */
-    @:meta(Inline())
-
-    public static function log(value:Int, base:Int):Int
+    inline public static function log(value:Int, base:Int):Int
     {
         return Std.int(Math.log(value) / Math.log(base));
     }
     
-    @:meta(Inline())
-
-    public static function convertToRadian(angle:Float):Float
+    inline public static function convertToRadian(angle:Float):Float
     {
         return angle * Math.PI / 180;
     }
     
-    @:meta(Inline())
-
-    public static function convertToDegree(angle:Float):Float
+    inline public static function convertToDegree(angle:Float):Float
     {
         return 180 * angle / Math.PI;
     }
     
-    @:meta(Inline())
-
-    public static function uintMin(a:Int, b:Int):Int
+    inline public static function uintMin(a:Int, b:Int):Int
     {
-        return a < (b != 0) ? a:b;
+        return a < b ? a:b;
     }
     
     public static function angle(x1:Float, y1:Float, x2:Float, y2:Float):Float
@@ -43,9 +33,4 @@ class FastMath
         
         return Math.atan2(x1, y1);
     }
-
-    public function new()
-    {
-    }
 }
-

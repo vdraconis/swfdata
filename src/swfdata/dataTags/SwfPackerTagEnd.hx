@@ -1,6 +1,5 @@
 package swfdata.datatags;
 
-
 class SwfPackerTagEnd extends SwfPackerTag
 {
     public function new()
@@ -11,7 +10,6 @@ class SwfPackerTagEnd extends SwfPackerTag
     
     override public function clear():Void
     {
-        
-        
+		
     }
 }

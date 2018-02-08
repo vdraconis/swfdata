@@ -1,7 +1,6 @@
-
-import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 class GeomMath
 {
@@ -63,9 +62,7 @@ class GeomMath
 	 * @param	matrixB
 	 * @param	dest
 	 */
-    @:meta(Inline())
-
-    public static function concatMatrices(matrixA:Matrix, matrixB:Matrix, dest:Matrix):Void
+    inline public static function concatMatrices(matrixA:Matrix, matrixB:Matrix, dest:Matrix):Void
     {
         var a:Float = matrixA.a * matrixB.a + matrixA.b * matrixB.c;
         var b:Float = matrixA.a * matrixB.b + matrixA.b * matrixB.d;

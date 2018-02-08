@@ -1,8 +1,7 @@
 package swfdata;
 
-import openfl.display.Graphics;
-import openfl.geom.ColorTransform;
 import openfl.geom.Matrix;
+import openfl.geom.Rectangle;
 import swfdata.atlas.ITextureAtlas;
 
 class DisplayObjectData
@@ -26,20 +25,17 @@ class DisplayObjectData
     public var characterId:Int;
     public var libraryLinkage:String;
     
-    private var _x:Float = 0;
-    private var _y:Float = 0;
+    var _x:Float = 0;
+    var _y:Float = 0;
     
     public var transform:Matrix;
     
-    //public var bounds:Rectagon;
+    public var bounds:Rectangle = new Rectangle();
     
     public var colorTransform:ColorMatrix;  // = new ColorTransform();  
     
-	@:allow(swfdata)
-    private var colorData:ColorData;
-    
-	@:allow(swfdata)
-    private var displayObjectType:Int;
+	@:allow(swfdata) var colorData:ColorData;
+	@:allow(swfdata) var displayObjectType:Int;
     
     public var isMask:Bool;
     public var mask:DisplayObjectData;
@@ -49,6 +45,8 @@ class DisplayObjectData
     
     public var name:String;
 	public var visible:Bool = true;
+	
+	public var isUnderMouse:Bool = false;
     
     
     public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
@@ -57,13 +55,13 @@ class DisplayObjectData
         this.characterId = characterId;
     }
     
-    private function set_alpha(value:Float):Float
+    function set_alpha(value:Float):Float
     {
         colorData.a = value;
         return value;
     }
     
-    private function get_alpha():Float
+    function get_alpha():Float
     {
         return colorData.a;
     }
@@ -100,23 +98,23 @@ class DisplayObjectData
         }
     }
     
-    private function get_x():Float
+    function get_x():Float
     {
         return _x;
     }
     
-    private function set_x(value:Float):Float
+    function set_x(value:Float):Float
     {
         _x = value;
         return value;
     }
     
-    private function get_y():Float
+    function get_y():Float
     {
         return _y;
     }
     
-    private function set_y(value:Float):Float
+    function set_y(value:Float):Float
     {
         _y = value;
         return value;
@@ -151,8 +149,9 @@ class DisplayObjectData
             libraryLinkage = displayObject.libraryLinkage;
     }
     
-    private function setDataTo(objectCloned:DisplayObjectData):Void
+    function setDataTo(objectCloned:DisplayObjectData):Void
     {
+        objectCloned.atlas = atlas;
         objectCloned.name = name;
         objectCloned.depth = depth;
         objectCloned.characterId = characterId;

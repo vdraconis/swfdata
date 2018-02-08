@@ -1,0 +1,6 @@
+package swfdata;
+
+interface ITimelineController 
+{
+  
+}

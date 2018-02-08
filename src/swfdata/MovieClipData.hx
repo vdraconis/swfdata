@@ -1,5 +1,6 @@
 package swfdata;
 
+import openfl.geom.Matrix;
 import swfdata.SpriteData;
 import swfdata.Timeline;
 
@@ -11,8 +12,7 @@ class MovieClipData extends SpriteData implements ITimeline
     public var currentFrameData(get, never):FrameData;
 
     public var timeline:Timeline;
-    
-    private var _currentFrameData:FrameData;
+	public var timelineController:TimelineController;
     
     public function new(characterId:Int = -1, framesCount:Int = 0)
     {
@@ -21,18 +21,33 @@ class MovieClipData extends SpriteData implements ITimeline
         if (framesCount > 0) 
         {
             timeline = new Timeline(framesCount);
-            _currentFrameData = timeline._currentFrameData;
+			timelineController = new TimelineController(timeline);
         }
     }
-    
-    override public function destroy():Void
+	
+	override public function get_numChildren():Int 
+	{
+		return currentFrameData.displayObjectsPlacedCount;
+	}
+	
+	override private function get_displayObjects():Array<DisplayObjectData>
     {
-        super.destroy();
-        
-        if (timeline != null) 
-            timeline.destroy();
-        
-        timeline = null;
+        return currentFrameData._displayObjects;
+    }
+    
+    function get_currentFrameData():FrameData
+    {
+        return timelineController.currentFrameData;
+    }
+	
+	function get_framesCount():Int
+    {
+        return timelineController.framesCount;
+    }
+    
+    function get_currentFrame():Int
+    {
+        return timelineController._currentFrame;
     }
     
     override public function updateMasks():Void
@@ -42,74 +57,58 @@ class MovieClipData extends SpriteData implements ITimeline
     
     public function getFrameByIndex(index:Int):FrameData
     {
-        return timeline.frames[index];
+        return timeline.getFrameByIndex(index);
     }
     
     public function nextFrame():Void
     {
-        timeline.nextFrame();
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.nextFrame();
     }
     
     public function prevFrame():Void
     {
-        timeline.prevFrame();
-        _currentFrameData = timeline._currentFrameData;
-    }
-    
-    private function get_framesCount():Int
-    {
-        return timeline.framesCount;
-    }
-    
-    private function get_currentFrame():Int
-    {
-        return timeline._currentFrame;
+        timelineController.prevFrame();
     }
     
     public function addFrame(frameData:FrameData):Void
     {
         timeline.addFrame(frameData);
-        _currentFrameData = timeline._currentFrameData;
+		timelineController.onAddFrame();
     }
     
     public function play():Void
     {
-        timeline.play();
+        timelineController.play();
     }
     
     public function gotoAndPlay(frame:Dynamic):Void
     {
-        timeline.gotoAndPlay(frame);
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.gotoAndPlay(frame);
     }
     
     override public function gotoAndPlayAll(frameIndex:Int):Void
     {
-        timeline.gotoAndPlayAll(frameIndex);
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.gotoAndPlayAll(frameIndex);
     }
     
     public function stop():Void
     {
-        timeline.stop();
+        timelineController.stop();
     }
     
     public function gotoAndStop(frame:Dynamic):Void
     {
-        timeline.gotoAndStop(frame);
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.gotoAndStop(frame);
     }
     
     override public function gotoAndStopAll(frameIndex:Int):Void
     {
-        timeline.gotoAndStopAll(frameIndex);
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.gotoAndStopAll(frameIndex);
     }
     
     private function get_isPlaying():Bool
     {
-        return timeline.isPlaying;
+        return timelineController.isPlaying;
     }
     
     //public function getFrameBounds(frameIndex:int = 0):Rectagon
@@ -135,19 +134,9 @@ class MovieClipData extends SpriteData implements ITimeline
     //	return null;
     //}
     
-    override private function get_displayObjects():Array<DisplayObjectData>
-    {
-        return _currentFrameData._displayObjects;
-    }
-    
-    private function get_currentFrameData():FrameData
-    {
-        return _currentFrameData;
-    }
-    
     override public function addDisplayObject(displayObjectData:DisplayObjectData):Void
     {
-        _currentFrameData.addDisplayObject(displayObjectData);
+        currentFrameData.addDisplayObject(displayObjectData);
     }
     
     override public function getObjectByDepth(depth:Int):DisplayObjectData
@@ -162,10 +151,7 @@ class MovieClipData extends SpriteData implements ITimeline
         var currentDisplayObject:DisplayObjectData;
         var i:Int;
         
-        var currentFrameData:FrameData = _currentFrameData;
-        
-        if (currentFrameData == null) 
-            currentFrameData = timeline._currentFrameData;
+        var currentFrameData:FrameData = currentFrameData;
         
         var currentDisplayList:Array<DisplayObjectData> = currentFrameData.displayObjects;
         var frameChildsCount:Int = currentDisplayList.length;
@@ -189,25 +175,23 @@ class MovieClipData extends SpriteData implements ITimeline
     
     override public function update():Void
     {
-        timeline.update();
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.update();
     }
     
     public function advanceFrame(delta:Int):Void
     {
-        timeline.advanceFrame(delta);
-        _currentFrameData = timeline._currentFrameData;
+        timelineController.advanceFrame(delta);
     }
     
     override private function setDataTo(objectCloned:DisplayObjectData):Void
     {
         super.setDataTo(objectCloned);
         
-        var objestAsSpriteData:MovieClipData = try cast(objectCloned, MovieClipData) catch(e:Dynamic) null;
+        var objestAsSpriteData:MovieClipData = cast(objectCloned, MovieClipData);
+		objestAsSpriteData.transform = new Matrix();
         objestAsSpriteData.timeline = timeline;
-        _currentFrameData = timeline._currentFrameData;
+		objestAsSpriteData.timelineController = new TimelineController(timeline);
     }
-    
 
     inline public function inlineClone():DisplayObjectData
     {
@@ -223,5 +207,15 @@ class MovieClipData extends SpriteData implements ITimeline
         setDataTo(objectCloned);
         
         return objectCloned;
+    }
+	
+	override public function destroy():Void
+    {
+        super.destroy();
+        
+        if (timeline != null) 
+            timeline.destroy();
+        
+        timeline = null;
     }
 }

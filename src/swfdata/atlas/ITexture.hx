@@ -9,4 +9,3 @@ interface ITexture
     var transform(get, never):TextureTransform;    
     var bounds(get, never):Rectangle;
 }
-

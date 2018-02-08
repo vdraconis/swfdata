@@ -1,6 +1,5 @@
 package swfdata.datatags;
 
-
 class SwfPackerTagSymbolClass extends SwfPackerTag
 {
     public var characterIdList:Array<Int>;

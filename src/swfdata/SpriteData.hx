@@ -1,8 +1,5 @@
 package swfdata;
 
-import flash.geom.Matrix;
-import flash.geom.Rectangle;
-
 class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 {
 	public var isMouseDown:Bool = false;
@@ -14,7 +11,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
     public var numChildren(get, never):Int;
     public var displayObjects(get, never):Array<DisplayObjectData>;
 
-    private var displayContainer:DisplayObjectContainer;
+    var displayContainer:DisplayObjectContainer;
     
     public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.SPRITE_TYPE, isCreateContainer:Bool = true, childsCount:Int = 0)
     {
@@ -44,7 +41,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 		isMouseDown = true;
 	}
 	
-    private function get_numChildren():Int
+    function get_numChildren():Int
     {
         return displayContainer.numChildren;
     }
@@ -71,7 +68,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         calculateMasks(this);
     }
     
-    private function calculateMasks(displayObjectContainer:IDisplayObjectContainer):Void
+    function calculateMasks(displayObjectContainer:IDisplayObjectContainer):Void
     {
         var currentMask:DisplayObjectData = null;
         
@@ -97,7 +94,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         
         if (displayContainer != null) 
         {
-            var objestAsSpriteData:SpriteData = try cast(objectCloned, SpriteData) catch(e:Dynamic) null;
+            var objestAsSpriteData:SpriteData = cast(objectCloned, SpriteData);
             objestAsSpriteData.displayContainer = displayContainer;  //.clone() as DisplayObjectContainer;  ;
         }
     }

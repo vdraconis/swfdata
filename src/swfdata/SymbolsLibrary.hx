@@ -1,13 +1,12 @@
 package swfdata;
 
-
 /**
-	 * Библиотека символов, шейпы, спрайты и тд по чар идам или линкейджам 
-	 */
+* Библиотека символов, шейпы, спрайты и тд по чар идам или линкейджам 
+*/
 class SymbolsLibrary
 {
-    private var __library:Map<Int, DisplayObjectData> = new Map<Int, DisplayObjectData>();
-    private var __linkagesLibrary:Map<String, DisplayObjectData> = new Map<String, DisplayObjectData>();
+    var __library:Map<Int, DisplayObjectData> = new Map<Int, DisplayObjectData>();
+    var __linkagesLibrary:Map<String, DisplayObjectData> = new Map<String, DisplayObjectData>();
     
     public var shapesList:Array<ShapeData> = new Array<ShapeData>();
     
@@ -22,7 +21,6 @@ class SymbolsLibrary
     public function clear(callDestroy:Bool = true):Void
     {
         var i:Int;
-        
         
         if (callDestroy) 
         {

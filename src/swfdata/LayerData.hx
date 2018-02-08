@@ -1,6 +1,5 @@
 package swfdata;
 
-
 class LayerData
 {
     public var depth:Int;
@@ -25,7 +24,6 @@ class LayerData
     
     public function addFrame(frameData:FrameData):Void
     {
-        
         
     }
     

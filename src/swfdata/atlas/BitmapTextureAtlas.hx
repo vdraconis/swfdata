@@ -1,11 +1,10 @@
 package swfdata.atlas;
 
+import flash.display.BitmapData;
+import flash.geom.Rectangle;
 import swfdata.atlas.ITexture;
 import swfdata.atlas.ITextureAtlas;
 import swfdata.atlas.TextureTransform;
-
-import flash.display.BitmapData;
-import flash.geom.Rectangle;
 
 /**
 * Для дебага и промежуточного состояния при формировании атласа пакером
@@ -33,16 +32,16 @@ class BitmapTextureAtlas implements ITextureAtlas
     }
     
     /**
-		 * @inheritDoc
-		 */
+	 * @inheritDoc
+	 */
     public function getTexture(textureId:Int):ITexture
     {
         return subTextures[textureId];
     }
     
     /**
-		 * @inheritDoc
-		 */
+	 * @inheritDoc
+	 */
     public function putTexture(texture:ITexture):Void
     {
         texturesCount++;
@@ -81,4 +80,3 @@ class BitmapTextureAtlas implements ITextureAtlas
         return value;
     }
 }
-

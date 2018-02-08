@@ -1,7 +1,6 @@
 package swfdata;
 
-import flash.geom.Matrix;
-import flash.geom.Rectangle;
+import flash.geom.*;
 
 class ShapeData extends DisplayObjectData
 {
@@ -47,7 +46,6 @@ class ShapeData extends DisplayObjectData
     public function resetBound():Void
     {
         //bounds.setTo(_shapeBounds.x, _shapeBounds.y, _shapeBounds.width, _shapeBounds.height);
-        
     }
     
     private function get_shapeBounds():Rectangle

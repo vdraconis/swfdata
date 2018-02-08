@@ -2,8 +2,6 @@ package swfdata;
 
 import swfdata.IDisplayObjectContainer;
 
-
-
 class FrameData extends DisplayObjectContainer
 {
     public var frameIndex:Int;
@@ -35,13 +33,13 @@ class FrameData extends DisplayObjectContainer
         return objectCloned;
     }
     
-    public function toString():String
-    {
-        return "FrameData " + frameIndex + " frameObjects=" + displayObjects.length;
-    }
-    
     public function clear():Void
     {
         frameLabel = null;
+    }
+	
+	public function toString():String
+    {
+        return "FrameData " + frameIndex + " frameObjects=" + displayObjects.length;
     }
 }

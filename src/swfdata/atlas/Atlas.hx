@@ -1,14 +1,13 @@
 package swfdata.atlas;
 
+import openfl.display.BitmapData;
+import openfl.display.Shape;
+import openfl.display.StageQuality;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 import swfdata.atlas.Subtexture;
 import swfdata.atlas.TextureTransform;
-
-import flash.display.BitmapData;
-import flash.display.Shape;
-import flash.display.StageQuality;
-import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
 
 class Atlas
 {

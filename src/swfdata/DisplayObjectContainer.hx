@@ -8,17 +8,15 @@ class DisplayObjectContainer implements IDisplayObjectContainer
 {
     public var numChildren(get, never):Int;
     public var displayObjects(get, never):Array<DisplayObjectData>;
-
-	@:allow(swfdata)
-    private var _displayObjects:Array<DisplayObjectData>;
-    
-    private var displayObjectsCount:Int = 0;
-    private var displayObjectsPlacedCount:Int = 0;
+	
+    @:allow(swfdata) var _displayObjects:Array<DisplayObjectData>;
+    var displayObjectsCount:Int = 0;
+    @:allow(swfdata) var displayObjectsPlacedCount:Int = 0;
     
     //public var depthMap:Object;
     //public var charactersMap:Object = { };
     
-    private var depthAndCharactersMapInitialize:Bool = false;
+    var depthAndCharactersMapInitialize:Bool = false;
     
     public function new(displayObjectsCount:Int = 0)
     {
@@ -28,7 +26,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     private function get_numChildren():Int
     {
-        return displayObjectsCount;
+        return displayObjectsPlacedCount;
     }
     
     public function destroy():Void
@@ -37,7 +35,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         
         if (_displayObjects != null) 
         {
-            for (i in 0...displayObjectsCount)
+            for (i in 0...displayObjectsPlacedCount)
 			{
                 if (_displayObjects[i] != null) 
                     _displayObjects[i].destroy();
@@ -140,7 +138,8 @@ class DisplayObjectContainer implements IDisplayObjectContainer
             objDisplayObjects[i] = _displayObjects[i];
         }
         
-        obj.displayObjectsCount = displayObjectsCount;
+        obj.displayObjectsCount = displayObjectsPlacedCount;
+		obj.displayObjectsPlacedCount = displayObjectsPlacedCount;
     }
     
     public function clone():IDisplayObjectContainer

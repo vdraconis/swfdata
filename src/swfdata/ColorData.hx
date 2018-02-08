@@ -1,7 +1,5 @@
 package swfdata;
 
-
-
 class ColorData
 {
     public var a:Float = 1;

@@ -1,6 +1,5 @@
 package swfdata.datatags;
 
-
 import swfdata.FrameData;
 
 class SwfPackerTagDefineSprite extends SwfPackerTag
@@ -32,5 +31,3 @@ class SwfPackerTagDefineSprite extends SwfPackerTag
         tags = null;
     }
 }
-
-

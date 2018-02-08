@@ -1,7 +1,5 @@
 package utils;
 
-
-
 class BitMask
 {
     public var mask:Int;
@@ -21,16 +19,12 @@ class BitMask
         mask &= ~(1 << bitIndex);
     }
     
-    @:meta(Inline())
-
-    @:final public function setBit(bitIndex:Int):Void
+   inline public function setBit(bitIndex:Int):Void
     {
         mask |= (1 << bitIndex);
     }
     
-    @:meta(Inline())
-
-    @:final public function isBitSet(bitIndex:Int):Bool
+   inline public function isBitSet(bitIndex:Int):Bool
     {
         return mask & (1 << bitIndex) != 0;
     }

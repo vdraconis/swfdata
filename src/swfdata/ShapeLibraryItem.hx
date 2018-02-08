@@ -11,7 +11,6 @@ class ShapeLibraryItem
     public function new()
     {
         
-        
     }
     
     public function clear():Void
@@ -20,9 +19,7 @@ class ShapeLibraryItem
         transform = null;
     }
     
-    @:meta(Inline())
-
-    @:final public function correctScale(a:Float, a2:Float):Float
+    inline public function correctScale(a:Float, a2:Float):Float
     {
         if (a == a2) 
             return a2;
@@ -36,7 +33,7 @@ class ShapeLibraryItem
 			return a2;
     }
 
-    @:final public function checkTransform(matrix:Matrix, tx:Float, ty:Float):Void
+    inline public function checkTransform(matrix:Matrix, tx:Float, ty:Float):Void
     {
         transform.scaleX = correctScale(matrix.a, transform.scaleX);  //Math.max(Math.abs(matrix.a), transform.scaleX);  
         transform.scaleY = correctScale(matrix.d, transform.scaleY);  //Math.max(Math.abs(matrix.d), transform.scaleY);  

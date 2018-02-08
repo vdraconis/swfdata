@@ -1,6 +1,5 @@
 package swfdata.atlas;
 
-
 class TextureTransform
 {
     public var tx:Float;
@@ -25,9 +24,7 @@ class TextureTransform
         recalculate();
     }
     
-    @:meta(Inline())
-
-    @:final public function recalculate():Void
+    inline public function recalculate():Void
     {
         if (scaleX == 0 || scaleY == 0) 
             return;

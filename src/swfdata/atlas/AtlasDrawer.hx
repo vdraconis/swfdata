@@ -1,32 +1,27 @@
 package swfdata.atlas;
 
+import openfl.display.BitmapData;
 import openfl.display.IBitmapDrawable;
+import openfl.filters.GlowFilter;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 import swfdata.atlas.BitmapSubTexture;
 import swfdata.atlas.BitmapTextureAtlas;
 import swfdata.atlas.TextureTransform;
 
-import flash.display.BitmapData;
-import flash.display.Shape;
-import flash.display.StageQuality;
-import flash.filters.BlurFilter;
-import flash.filters.GlowFilter;
-import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-
 class AtlasDrawer
 {
     public static var NULL_POINT:Point = new Point();
-    private static var DRAWING_MATRIX:Matrix = new Matrix();
-    
-    private var lastPosition:Point = new Point();
+    static var DRAWING_MATRIX:Matrix = new Matrix();
     
     public var targetAtlas:BitmapTextureAtlas;
-    private var maxPadding:Float = 0;
-    
-    private var padding:Int;
-    private var atlasData:BitmapData;
     public var scale:Float;
+	
+	var lastPosition:Point = new Point();
+	var maxPadding:Float = 0;
+    var padding:Int;
+    var atlasData:BitmapData;
     
     public function new(targetAtlas:BitmapTextureAtlas, scale:Float = 1, padding:Int = 4)
     {

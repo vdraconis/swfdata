@@ -2,8 +2,6 @@ package swfdata;
 
 import swfdata.LayerData;
 
-import flash.geom.Matrix;
-
 class FrameObjectData
 {
     public var depth:Int;

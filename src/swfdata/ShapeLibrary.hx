@@ -1,7 +1,6 @@
 package swfdata;
 
 import swfdata.ShapeLibraryItem;
-import swfdata.atlas.AtlasDrawer;
 
 class ShapeLibrary
 {
@@ -10,8 +9,7 @@ class ShapeLibrary
     
     public function new()
     {
-        
-        
+		
     }
     
     public function clear(callDestroy:Bool = true):Void

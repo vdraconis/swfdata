@@ -1,10 +1,5 @@
 package swfdata.datatags;
 
-
-/**
-	 * ...
-	 * @author ...
-	 */
 class RawClassSymbol
 {
     public var characterId:Int;

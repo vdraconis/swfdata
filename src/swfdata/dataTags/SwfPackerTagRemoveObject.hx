@@ -1,7 +1,5 @@
 package swfdata.datatags;
 
-
-
 class SwfPackerTagRemoveObject extends SwfPackerTag
 {
     public var characterId:Int;
@@ -18,7 +16,6 @@ class SwfPackerTagRemoveObject extends SwfPackerTag
     
     override public function clear():Void
     {
-        
         
     }
     

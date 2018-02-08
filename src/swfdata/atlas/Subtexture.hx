@@ -1,8 +1,8 @@
 package swfdata.atlas;
 
+import openfl.geom.Rectangle;
 import swfdata.atlas.TextureTransform;
 
-import flash.geom.Rectangle;
 class Subtexture
 {
     public var bounds:Rectangle;

@@ -1,8 +1,5 @@
 package swfdata.datatags;
 
-
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
 import swfdata.ColorMatrix;
 
 class SwfPackerTagPlaceObject extends SwfPackerTag

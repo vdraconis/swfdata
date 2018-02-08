@@ -1,7 +1,5 @@
 package swfdata;
 
-
-
 class MaskData
 {
     public var maskId:Int;
@@ -11,7 +9,5 @@ class MaskData
     public function new()
     {
         
-        
     }
 }
-

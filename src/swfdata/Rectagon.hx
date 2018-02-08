@@ -1,7 +1,5 @@
 package swfdata;
 
-
-import flash.display.Graphics;
 import flash.geom.Matrix;
 import flash.geom.Point;
 

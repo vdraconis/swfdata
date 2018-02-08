@@ -1,9 +1,8 @@
 package swfdata.atlas;
 
+import openfl.geom.Rectangle;
 import swfdata.atlas.ITexture;
 import swfdata.atlas.TextureTransform;
-
-import flash.geom.Rectangle;
 
 class BitmapSubTexture implements ITexture
 {
@@ -14,8 +13,7 @@ class BitmapSubTexture implements ITexture
     private var _bounds:Rectangle;
     private var _id:Int;
 	
-	@:allow(swfdata)
-    private var _transform:TextureTransform;
+	@:allow(swfdata) private var _transform:TextureTransform;
     
     public function new(id:Int, bounds:Rectangle, transform:TextureTransform)
     {
@@ -23,8 +21,6 @@ class BitmapSubTexture implements ITexture
         _id = id;
         _transform = transform;
     }
-    
-    /* INTERFACE swfdata.atlas.ITexture */
     
     private function get_id():Int
     {

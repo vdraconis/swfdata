@@ -116,7 +116,7 @@ class ByteUtils
         if (value == 0) 
             return 1;
         
-        return Math.floor((Math.log(Std.int(value)) / LOG_2) + 1);
+        return Math.floor((Math.log(value) / LOG_2) + 1);
     }
     
     @:meta(Inline())

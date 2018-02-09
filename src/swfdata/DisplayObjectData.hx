@@ -44,7 +44,8 @@ class DisplayObjectData
     public var hasPlaced:Bool = false;
     
     public var name:String;
-	public var visible:Bool = true;
+    public var blendMode:Int = 0;
+    public var visible:Bool = true;
 	
 	public var isUnderMouse:Bool = false;
     
@@ -162,6 +163,7 @@ class DisplayObjectData
         objectCloned.mask = mask;
         objectCloned._x = _x;
         objectCloned._y = _y;
+        objectCloned.blendMode = blendMode;
     }
     
     public function deepClone():DisplayObjectData

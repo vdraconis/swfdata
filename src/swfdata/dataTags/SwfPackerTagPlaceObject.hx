@@ -19,7 +19,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public var hasMove:Bool;
     //public var hasVisible:Boolean;
     //public var hasImage:Boolean;
-    //public var hasBlendMode:Boolean;
+    public var hasBlendMode:Bool;
     //public var hasFilterList:Boolean;
     
     public var characterId:Int;
@@ -79,7 +79,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public var clipDepth:Int;
     
     // Forward declarations for TagPlaceObject3
-    //public var blendMode:int;
+    public var blendMode:Int;
     //public var bitmapCache:int;
     //public var bitmapBackgroundColor:int;
     public var visible:Int;
@@ -107,7 +107,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public function toString():String
     {
         return "[SwfPackerTagPlaceObject depth=" + depth + " characterId=" + characterId + " placeMode=" + placeMode +
-        " hasMatrix=" + hasMatrix + " clipDepth=" + clipDepth + " instanceName=" + instanceName + "]";
+        " hasMatrix=" + hasMatrix + " clipDepth=" + clipDepth + " instanceName=" + instanceName + " hasBlendMode=" + hasBlendMode +" blendMode="+ blendMode + "]";
     }
     
     public function fillData(_placeMode:Int, _depth:Int, _hasClipDepth:Bool, _hasName:Bool, _hasMatrix:Bool, _hasCharacter:Bool, _instanceName:String, _clipDepth:Int, _characterId:Int):Void

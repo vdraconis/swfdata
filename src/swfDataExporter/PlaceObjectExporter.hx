@@ -206,7 +206,12 @@ class PlaceObjectExporter extends SwfPackerTagExporter
             bitMask.setBit(3);
         
         if (tagAsPlaceObject.hasColorTransform) 
-            bitMask.setBit(4);  //	bitMask.setBit(11);    //if (tagAsPlaceObject.hasFilterList)    //	bitMask.setBit(10);    //if (tagAsPlaceObject.hasBlendMode)    //	bitMask.setBit(9);    //if (tagAsPlaceObject.hasImage)    //	bitMask.setBit(8);    //if (tagAsPlaceObject.hasVisible)    //	bitMask.setBit(7);    //if (tagAsPlaceObject.hasMove)    //  ;   
+            bitMask.setBit(4);  //	bitMask.setBit(11);    //if (tagAsPlaceObject.hasFilterList)    //	bitMask.setBit(10);
+
+        if (tagAsPlaceObject.hasBlendMode)
+            bitMask.setBit(9);
+
+            // if (tagAsPlaceObject.hasImage)    //	bitMask.setBit(8);    //if (tagAsPlaceObject.hasVisible)    //	bitMask.setBit(7);    //if (tagAsPlaceObject.hasMove)    //  ;
         
         output[output.position++] = (bitMask.mask);
         
@@ -252,7 +257,8 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         var hasMatrix:Bool = bitMask.isBitSet(2);
         var hasCharacter:Bool = bitMask.isBitSet(3);
         var hasColorTransform:Bool = bitMask.isBitSet(4);
-        
+        var hasBlendMode:Bool = bitMask.isBitSet(9);
+
         var instanceName:String = null;
         var clipDepth:Int = 0;
         var characterId:Int = 0;

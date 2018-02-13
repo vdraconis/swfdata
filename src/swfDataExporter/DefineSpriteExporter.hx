@@ -69,7 +69,7 @@ class DefineSpriteExporter extends SwfPackerTagExporter
     {
         super.importTag(tag, input);
         
-        var tagAsSpriteDefine:SwfPackerTagDefineSprite = try cast(tag, SwfPackerTagDefineSprite) catch(e:Dynamic) null;
+        var tagAsSpriteDefine:SwfPackerTagDefineSprite = cast(tag, SwfPackerTagDefineSprite);
         
         var characterId:Int = input.readShort();
         var frameCount:Int = input.readShort();
@@ -83,7 +83,7 @@ class DefineSpriteExporter extends SwfPackerTagExporter
         
         var i:Int;
         
-        for (i in 0...frameCount){
+        for (i in 0...frameCount) {
             var numChildren:Int = input.readShort();
             var currentFrameData:FrameData = new FrameData(i, null, numChildren);
             
@@ -100,8 +100,6 @@ class DefineSpriteExporter extends SwfPackerTagExporter
             tagAsSpriteDefine.tags = new Array<SwfPackerTag>();
             
             for (i in 0...tagsCount){
-                //try
-                //{
                 tagAsSpriteDefine.tags[i] = swfTagExporter.importSingleTag(input);
             }
         }

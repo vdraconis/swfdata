@@ -14,12 +14,13 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public var hasName:Bool;
     //public var hasRatio:Boolean;
     public var hasColorTransform:Bool;
+    public var hasBlendMode:Bool;
     public var hasMatrix:Bool;
     public var hasCharacter:Bool;
     public var hasMove:Bool;
     //public var hasVisible:Boolean;
     //public var hasImage:Boolean;
-    public var hasBlendMode:Bool;
+    //public var hasBlendMode:Boolean;
     //public var hasFilterList:Boolean;
     
     public var characterId:Int;
@@ -34,8 +35,20 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public var tx:Float = 0;
     public var ty:Float = 0;
     //matrix
+	
+	public var redMultiplier:Float = 1;
+	public var greenMultiplier:Float = 1;
+	public var blueMultiplier:Float = 1;
+	public var alphaMultiplier:Float = 1;
+	
+	public var redAdd:Int = 255;
+	public var greenAdd:Int = 255;
+	public var blueAdd:Int = 255;
+	public var alphaAdd:Int = 255;
+	
+	public var blendMode:Int;	
     
-    public var redColor0:Float = 0;
+    /*public var redColor0:Float = 0;
     public var redColor1:Float = 0;
     public var redColor2:Float = 0;
     public var redColor3:Float = 0;
@@ -67,7 +80,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
         "\n" + greenColor0 + "\t" + greenColor1 + "\t" + greenColor2 + "\t" + greenColor3 + "\t" + greenColorOffset +
         "\n" + blueColor0 + "\t" + blueColor1 + "\t" + blueColor2 + "\t" + blueColor3 + "\t" + blueColorOffset +
         "\n" + alpha0 + "\t" + alpha1 + "\t" + alpha2 + "\t" + alpha3 + "\t" + alphaOffset + "\n]";
-    }
+    }*/
     
     //public var colorTransform:ColorMatrix;
     
@@ -79,7 +92,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     public var clipDepth:Int;
     
     // Forward declarations for TagPlaceObject3
-    public var blendMode:Int;
+    //public var blendMode:int;
     //public var bitmapCache:int;
     //public var bitmapBackgroundColor:int;
     public var visible:Int;
@@ -102,12 +115,6 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
         //matrix = null;
         //colorTransform = null;
         instanceName = null;
-    }
-    
-    public function toString():String
-    {
-        return "[SwfPackerTagPlaceObject depth=" + depth + " characterId=" + characterId + " placeMode=" + placeMode +
-        " hasMatrix=" + hasMatrix + " clipDepth=" + clipDepth + " instanceName=" + instanceName + " hasBlendMode=" + hasBlendMode +" blendMode="+ blendMode + "]";
     }
     
     public function fillData(_placeMode:Int, _depth:Int, _hasClipDepth:Bool, _hasName:Bool, _hasMatrix:Bool, _hasCharacter:Bool, _instanceName:String, _clipDepth:Int, _characterId:Int):Void
@@ -133,7 +140,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
         this.ty = ty;
     }
     
-    private var colorMatrix:ColorMatrix;
+    /*private var colorMatrix:ColorMatrix;
     
     public function getColorTransformMatrix():ColorMatrix
     {
@@ -148,5 +155,11 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
         }
         
         return colorMatrix;
+    }*/
+	
+	override public function toString():String
+    {
+        return "[SwfPackerTagPlaceObject depth=" + depth + " characterId=" + characterId + " placeMode=" + placeMode +
+        " hasMatrix=" + hasMatrix + " clipDepth=" + clipDepth + " instanceName=" + instanceName + "]";
     }
 }

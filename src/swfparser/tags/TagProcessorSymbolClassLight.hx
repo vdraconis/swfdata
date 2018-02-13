@@ -6,8 +6,8 @@ import swfdata.datatags.SwfPackerTag;
 import swfdata.datatags.SwfPackerTagSymbolClass;
 import swfparser.SwfParserContext;
 /**
-	 * Тут получаем список ликейджев из библиотеки. Они идут парами characterId, linkageId
-	 */
+* Тут получаем список ликейджев из библиотеки. Они идут парами characterId, linkageId
+*/
 class TagProcessorSymbolClassLight extends TagProcessorBase
 {
     public function new(context:SwfParserContext)

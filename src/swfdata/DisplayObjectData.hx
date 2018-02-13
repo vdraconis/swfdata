@@ -58,13 +58,13 @@ class DisplayObjectData
     
     function set_alpha(value:Float):Float
     {
-        colorData.a = value;
+        colorData.alphaMultiplier = value;
         return value;
     }
     
     function get_alpha():Float
     {
-        return colorData.a;
+        return colorData.alphaMultiplier;
     }
     
     public function destroy():Void
@@ -76,6 +76,14 @@ class DisplayObjectData
         name = null;
         libraryLinkage = null;
     }
+
+	public function setColorData(mr:Float = 1, mg:Float = 1, mb:Float = 1, ma:Float = 1, ar:Int = 0, ag:Int = 0, ab:Int = 0, aa:Int = 0)
+	{
+		if (colorData == null)
+			colorData = new ColorData(mr, mg, mb, ma, ar, ag, ab, aa);
+		else
+			colorData.setTo(mr, mg, mb, ma, ar, ag, ab, aa);
+	}
     
     public function setTransformMatrix(matrix:Matrix):Void
     {

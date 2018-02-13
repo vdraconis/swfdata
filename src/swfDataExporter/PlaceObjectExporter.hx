@@ -120,7 +120,7 @@ class PlaceObjectExporter extends SwfPackerTagExporter
     
     inline public function readColorMatrix(tag:SwfPackerTagPlaceObject, input:ByteArray):Void
     {
-        tag.redColor0 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+        /*tag.redColor0 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
         tag.redColor1 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
         tag.redColor2 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
         tag.redColor3 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
@@ -142,13 +142,13 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         tag.alpha1 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
         tag.alpha2 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
         tag.alpha3 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-        tag.alphaOffset = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+        tag.alphaOffset = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;*/
     }
     
     inline public function writeColorMatrix(tag:SwfPackerTagPlaceObject, output:ByteArray):Void
     {
         //trace(tag.instanceName, "write color matrix", tag.toColorMatrixString());
-        var hasOffset:Bool = tag.redColorOffset != 0 || tag.greenColorOffset != 0 || tag.blueColorOffset != 0 || tag.alphaOffset != 0;
+       /* var hasOffset:Bool = tag.redColorOffset != 0 || tag.greenColorOffset != 0 || tag.blueColorOffset != 0 || tag.alphaOffset != 0;
         var hasRed:Bool = tag.redColor0 != 0 || tag.redColor1 != 0 || tag.redColor2 != 0 || tag.redColor3 != 0;
         var hasGreen:Bool = tag.greenColor0 != 0 || tag.greenColor1 != 0 || tag.greenColor2 != 0 || tag.greenColor3 != 0;
         var hasBlue:Bool = tag.blueColor0 != 0 || tag.blueColor1 != 0 || tag.blueColor2 != 0 || tag.blueColor3 != 0;
@@ -178,14 +178,40 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         output.writeInt(Std.int(tag.alpha1 * ByteUtils.FIXED_PRECISSION_VALUE));
         output.writeInt(Std.int(tag.alpha2 * ByteUtils.FIXED_PRECISSION_VALUE));
         output.writeInt(Std.int(tag.alpha3 * ByteUtils.FIXED_PRECISSION_VALUE));
-        output.writeInt(Std.int(tag.alphaOffset * ByteUtils.FIXED_PRECISSION_VALUE));
+        output.writeInt(Std.int(tag.alphaOffset * ByteUtils.FIXED_PRECISSION_VALUE));*/
     }
+	
+	public function readColorTransform(tag:SwfPackerTagPlaceObject, input:ByteArray)
+	{
+		tag.redMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+		tag.greenMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+		tag.blueMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+		tag.alphaMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+		
+		tag.redAdd = input.readInt();
+		tag.blueAdd = input.readInt();
+		tag.greenAdd = input.readInt();
+		tag.alphaAdd = input.readInt();
+	}
+	
+	public function writeColorTransform(tag:SwfPackerTagPlaceObject, output:ByteArray)
+	{
+		//output.writeInt32(tag.redMultiplier * Constants.FIXED_PRECISSION_VALUE);
+		//output.writeInt32(tag.greenMultiplier * Constants.FIXED_PRECISSION_VALUE);
+		//output.writeInt32(tag.blueMultiplier * Constants.FIXED_PRECISSION_VALUE);
+		//output.writeInt32(tag.alphaMultiplier * Constants.FIXED_PRECISSION_VALUE);
+		
+		//output.writeInt32(tag.redAdd);
+		//output.writeInt32(tag.blueAdd);
+		//output.writeInt32(tag.greenAdd);
+		//output.writeInt32(tag.alphaAdd);
+	}
     
     inline override public function exportTag(tag:SwfPackerTag, output:ByteArray):Void
     {
         super.exportTag(tag, output);
         
-        var tagAsPlaceObject:SwfPackerTagPlaceObject = try cast(tag, SwfPackerTagPlaceObject) catch(e:Dynamic) null;
+        var tagAsPlaceObject:SwfPackerTagPlaceObject = cast(tag, SwfPackerTagPlaceObject);
         
         
         bitMask.mask = 0;
@@ -206,12 +232,7 @@ class PlaceObjectExporter extends SwfPackerTagExporter
             bitMask.setBit(3);
         
         if (tagAsPlaceObject.hasColorTransform) 
-            bitMask.setBit(4);  //	bitMask.setBit(11);    //if (tagAsPlaceObject.hasFilterList)    //	bitMask.setBit(10);
-
-        if (tagAsPlaceObject.hasBlendMode)
-            bitMask.setBit(9);
-
-            // if (tagAsPlaceObject.hasImage)    //	bitMask.setBit(8);    //if (tagAsPlaceObject.hasVisible)    //	bitMask.setBit(7);    //if (tagAsPlaceObject.hasMove)    //  ;
+            bitMask.setBit(4);  //	bitMask.setBit(11);    //if (tagAsPlaceObject.hasFilterList)    //	bitMask.setBit(10);    //if (tagAsPlaceObject.hasBlendMode)    //	bitMask.setBit(9);    //if (tagAsPlaceObject.hasImage)    //	bitMask.setBit(8);    //if (tagAsPlaceObject.hasVisible)    //	bitMask.setBit(7);    //if (tagAsPlaceObject.hasMove)    //  ;   
         
         output[output.position++] = (bitMask.mask);
         
@@ -239,14 +260,11 @@ class PlaceObjectExporter extends SwfPackerTagExporter
             writeColorMatrix(tagAsPlaceObject, output);
         }  //output.end(false);  
     }
-    
-    var totalTime:Float = 0;
-    var totalTime2:Float = 0;
+	
     inline override public function importTag(tag:SwfPackerTag, input:ByteArray):Void
     {
         var tagAsPlaceObject:SwfPackerTagPlaceObject = try cast(tag, SwfPackerTagPlaceObject) catch(e:Dynamic) null;
         
-        //var currentTime:Number = getTimer();
         var mask:Int = input.readUnsignedByte();
         bitMask.mask = mask;
         
@@ -257,13 +275,12 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         var hasMatrix:Bool = bitMask.isBitSet(2);
         var hasCharacter:Bool = bitMask.isBitSet(3);
         var hasColorTransform:Bool = bitMask.isBitSet(4);
-        var hasBlendMode:Bool = bitMask.isBitSet(9);
-
+        var hasBlendMode:Bool = bitMask.isBitSet(5);
+        
         var instanceName:String = null;
         var clipDepth:Int = 0;
         var characterId:Int = 0;
-        //totalTime += getTimer() - currentTime;
-        //trace("total time", totalTime);
+		
         if (hasClipDepth) 
         {
             clipDepth = input.readUnsignedByte();
@@ -276,7 +293,6 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         
         if (hasMatrix) 
         {
-            //currentTime = getTimer()
             readMATRIX(input, tagAsPlaceObject);
         }
         
@@ -289,9 +305,14 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         
         if (hasColorTransform) 
         {
-            
             tagAsPlaceObject.hasColorTransform = true;
-            readColorMatrix(tagAsPlaceObject, input);
+            readColorTransform(tagAsPlaceObject, input);
         }
+		
+		if (hasBlendMode)
+		{
+			tagAsPlaceObject.hasBlendMode = true;
+			tagAsPlaceObject.blendMode = input.readUnsignedByte();
+		}
     }
 }

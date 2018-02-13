@@ -15,13 +15,16 @@ class SwfPackerTagExporter
     
     public function exportTag(tag:SwfPackerTag, output:ByteArray):Void
     {
-        
         output[output.position++] = (type);
     }
     
     public function importTag(tag:SwfPackerTag, input:ByteArray):Void
     {
         
-        
     }
+	
+	public function toString():String 
+	{
+		return '[${Type.getClassName(Type.getClass(this))} type=$type]';
+	}
 }

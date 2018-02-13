@@ -71,7 +71,6 @@ class SwfExporter
     
     public function importSwfGL(input:ByteArray, shapesList:ShapeLibrary, tagsList:Array<SwfPackerTag>):GLTextureAtlas
 	{
-		
 		#if cpp
 			var bytes:ByteArray = new ByteArray();
 			Uncompress.run(input, 0, input.length, bytes, 0);

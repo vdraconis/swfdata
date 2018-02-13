@@ -26,7 +26,6 @@ class GLDisplayListDrawer implements IDrawer
     public var isHitMouse(get, never):Bool;
     public var hightlightSize(get, set):Int;
     public var hightlight(never, set):Bool;
-    public var grassWind(get, set):Bool;
     public var debugConvas(never, set):Graphics;
     public var smooth(never, set):Bool;
 	
@@ -114,10 +113,14 @@ class GLDisplayListDrawer implements IDrawer
         drawingData.transform = transform;
         drawingData.bound = bound;
         
-        //if (colorData != null) 
-            //drawingData.colorData.mulColorData(colorData)
-        //else if (displayObject.colorData != null) 
-           // drawingData.colorData.mulColorData(displayObject.colorData);
+        if (colorData != null)
+        {
+            drawingData.colorData.preMultiply(colorData);
+        }
+        else if (displayObject.colorData != null)
+        {
+            drawingData.colorData.preMultiply(displayObject.colorData);
+        }
         
         draw(displayObject, drawingData);
     }
@@ -131,8 +134,14 @@ class GLDisplayListDrawer implements IDrawer
         
         if (drawer != null) 
             drawer.draw(displayObject, drawingData)
-        else 
+        else
+		{
+			#if debug
 			throw new Error("drawer for " + displayObject + " is not defined");
+			#else
+			trace("drawer for " + displayObject + " is not defined");
+			#end
+		}
     }
     
     public function setHightlightColor(value:Int, alpha:Float):Void
@@ -162,18 +171,6 @@ class GLDisplayListDrawer implements IDrawer
     {
         shapeDrawer.hightlight = value;
         return value;
-    }
-    
-    //TODO: Вынести такие штуки в парамтеры фильтров в DisplayObject
-    function set_grassWind(value:Bool):Bool
-    {
-        shapeDrawer.isUseGrassWind = value;
-        return value;
-    }
-    
-    function get_grassWind():Bool
-    {
-        return shapeDrawer.isUseGrassWind;
     }
     
     /**

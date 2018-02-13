@@ -7,22 +7,25 @@ import renderer.TextureManager;
 import swfdata.atlas.ITexture;
 
 class GLTextureAtlas implements ITextureAtlas
-{
-	var texturesCount:Int = 0;
-	
-	var subTextures:Map<Int, ITexture> = new Map<Int, ITexture>();
-	
-	var id:String;
+{	
+	@:isVar 
+	public var padding(get, set):Int;
 	public var atlasData:BitmapData;
-	var format:String;
-	var gpuData:Texture;
+	public var gpuData:Texture;
 
+	var texturesCount:Int = 0;
+	var subTextures:Map<Int, ITexture> = new Map<Int, ITexture>();
+	var id:String;
+	var format:String;
+	
 	public function new(id:String, atlasData:BitmapData, format:String, padding:Int = 0)
 	{
 		this.padding = padding;
 		this.format = format;
 		this.atlasData = atlasData;
 		this.id = id;
+		
+		uploadToGpu();
 	}
 	
 	public function uploadToGpu():Void
@@ -30,8 +33,6 @@ class GLTextureAtlas implements ITextureAtlas
 		gpuData = TextureManager.createTexture(id, atlasData, format);
 		gpuData.uploadFromBitmapData(atlasData, 0);
 	}
-	
-	@:isVar public var padding(get, set):Int;
 	
 	function get_padding():Int 
 	{

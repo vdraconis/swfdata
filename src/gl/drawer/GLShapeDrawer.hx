@@ -1,19 +1,18 @@
 package gl.drawer;
-import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import swfdata.atlas.ITextureAtlas;
+
+import gl.drawer.GLDrawer;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
 import swfdata.DisplayObjectData;
 import swfdata.ShapeData;
-import swfdata.SwfdataInner;
+import swfdata.atlas.ITextureAtlas;
 import swfdrawer.data.DrawingData;
-import gl.drawer.GLDrawer;
 
 class GLShapeDrawer extends GLDrawer
 {
     public var atlas(never, set):ITextureAtlas;
 
-    private var myMatrix:Matrix = new Matrix();
+    var _drawMatrix:Matrix = new Matrix();
     
     public function new(atlas:ITextureAtlas, mousePoint:Point)
     {
@@ -22,29 +21,29 @@ class GLShapeDrawer extends GLDrawer
         this.textureAtlas = atlas;
     }
     
-    private function set_atlas(value:ITextureAtlas):ITextureAtlas
+    function set_atlas(value:ITextureAtlas):ITextureAtlas
     {
         textureAtlas = value;
         return value;
     }
     
 	@:access(swfdata)
-    override public function draw(drawable:DisplayObjectData, drawingData:swfdrawer.data.DrawingData):Void
+    override public function draw(drawable:DisplayObjectData, drawingData:DrawingData):Void
     {
         super.draw(drawable, drawingData);
         
-        myMatrix.identity();
+        _drawMatrix.identity();
         
         if (drawable.transform != null) 
         {
-            myMatrix.concat(drawable.transform);
+            GeomMath.concatMatrices(_drawMatrix, drawable.transform, _drawMatrix);
         }
         
-        myMatrix.concat(drawingData.transform);
+        GeomMath.concatMatrices(_drawMatrix, drawingData.transform, _drawMatrix);
         
-        var drawableAsShape:ShapeData = cast drawable;
+        var drawableAsShape:ShapeData = cast(drawable, ShapeData);
         
-        drawRectangle(drawableAsShape._shapeBounds, myMatrix);
+        drawRectangle(drawableAsShape._shapeBounds, _drawMatrix);
         
         cleanDrawStyle();
     }

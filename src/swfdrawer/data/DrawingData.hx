@@ -6,6 +6,7 @@ import swfdata.ColorData;
 import swfdata.ColorMatrix;
 import swfdata.DisplayObjectData;
 
+@:access(swfdata)
 class DrawingData
 {
     private var isClear:Bool = true;
@@ -17,24 +18,24 @@ class DrawingData
     public var isMasked:Bool = false;
     
     public var transform:Matrix = null;
+	public var blendMode:Int = 0;
     
-    public var isApplyColorTrasnform:Bool = false;
-    public var colorTransform:ColorMatrix = new ColorMatrix(null);
+    //public var isApplyColorTrasnform:Bool = false;
+    //public var colorTransform:ColorMatrix = new ColorMatrix(null);
     
     public var colorData:ColorData = new ColorData();
     
     public function new()
     {
-        
-        
+		
     }
     
-    public function addColorTransform(colorTransformToApply:ColorMatrix):Void
+    /*public function addColorTransform(colorTransformToApply:ColorMatrix):Void
     {
         isApplyColorTrasnform = true;
         //this.colorTransform.reset();
         this.colorTransform.premultiply(colorTransformToApply.matrix);
-    }
+    }*/
     
     public function clear():Void
     {
@@ -44,7 +45,7 @@ class DrawingData
         //isClear = true;
         colorData.clear();
         
-        isApplyColorTrasnform = false;
+        //isApplyColorTrasnform = false;
         //colorTransform.reset();// [0] = -1234;
         
         maskId = -1;
@@ -57,7 +58,7 @@ class DrawingData
     public function mulColorData(colorData:ColorData):Void
     {
         //isClear = false;
-        //this.colorData.mulColorData(colorData);
+        this.colorData.concat(colorData);
     }
     
     public function setFromDisplayObject(drawable:DisplayObjectData):Void
@@ -66,5 +67,9 @@ class DrawingData
         
         isMask = isMask || drawable.isMask;
         isMasked = isMasked || (drawable.mask != null);
+		
+		//TODO: в SpriteDrawer и MovieClipDrawer нужно сохранять состояние колора для каждого из потдеревьев потомков
+		if(drawable.colorData != null)
+			colorData.preMultiply(drawable.colorData);
     }
 }

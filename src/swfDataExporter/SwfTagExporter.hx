@@ -69,7 +69,6 @@ class SwfTagExporter
         {
             var constructor:Class<Dynamic> = tagConstructorsObject[tagType];
             var tag:SwfPackerTag = Type.createInstance(constructor, []);
-            
             importer.importTag(tag, input);
             
             return tag;

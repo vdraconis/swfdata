@@ -15,4 +15,9 @@ class SwfPackerTag
     {
         throw new Error("no default method implementation");
     }
+	
+	public function toString():String 
+	{
+		return '[${Type.getClass(this)} type=$type]';
+	}
 }

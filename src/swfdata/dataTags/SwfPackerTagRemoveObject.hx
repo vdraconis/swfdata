@@ -24,7 +24,7 @@ class SwfPackerTagRemoveObject extends SwfPackerTag
         return tagRemoveObject.characterId == characterId && tagRemoveObject.depth == depth;
     }
     
-    public function toString():String
+    override public function toString():String
     {
         return "[SwfPackerTagRemoveObject characterId=" + characterId + " depth=" + depth + "]";
     }

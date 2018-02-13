@@ -141,7 +141,8 @@ class TagProcessorPlaceObject extends TagProcessorBase
         
         if (tag.hasColorTransform) 
         {
-            currentDisplayObject.colorTransform = tag.getColorTransformMatrix();
+            currentDisplayObject.setColorData(tag.redMultiplier, tag.greenMultiplier, tag.blueMultiplier, tag.alphaMultiplier, tag.redAdd, tag.greenAdd, tag.blueAdd, tag.alphaAdd);
+            //currentDisplayObject.colorTransform = tag.getColorTransformMatrix();
         }
         
         if (tag.hasName) 

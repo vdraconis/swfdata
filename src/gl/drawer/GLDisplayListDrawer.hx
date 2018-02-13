@@ -114,10 +114,10 @@ class GLDisplayListDrawer implements IDrawer
         drawingData.transform = transform;
         drawingData.bound = bound;
         
-        if (colorData != null) 
-            drawingData.colorData.mulColorData(colorData)
-        else if (displayObject.colorData != null) 
-            drawingData.colorData.mulColorData(displayObject.colorData);
+        //if (colorData != null) 
+            //drawingData.colorData.mulColorData(colorData)
+        //else if (displayObject.colorData != null) 
+           // drawingData.colorData.mulColorData(displayObject.colorData);
         
         draw(displayObject, drawingData);
     }

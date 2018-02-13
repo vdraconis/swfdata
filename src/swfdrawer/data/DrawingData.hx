@@ -57,7 +57,7 @@ class DrawingData
     public function mulColorData(colorData:ColorData):Void
     {
         //isClear = false;
-        this.colorData.mulColorData(colorData);
+        //this.colorData.mulColorData(colorData);
     }
     
     public function setFromDisplayObject(drawable:DisplayObjectData):Void

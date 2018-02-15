@@ -42,7 +42,7 @@ class DisplayObjectContext
         }
         else 
         {
-            currentDisplayObjectAsMovieClip = try cast(currentDisplayObject, MovieClipData) catch(e:Dynamic) null;
+            currentDisplayObjectAsMovieClip = cast(currentDisplayObject, MovieClipData);
             updateFrame();
         }
     }

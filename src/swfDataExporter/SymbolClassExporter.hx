@@ -18,7 +18,7 @@ class SymbolClassExporter extends SwfPackerTagExporter
     {
         super.exportTag(tag, output);
         
-        var tagAsSymbolClass:SwfPackerTagSymbolClass = try cast(tag, SwfPackerTagSymbolClass) catch(e:Dynamic) null;
+        var tagAsSymbolClass:SwfPackerTagSymbolClass = cast(tag, SwfPackerTagSymbolClass);
         var symbolsCount:Int = tagAsSymbolClass.length;
         
         output.writeShort(symbolsCount);
@@ -40,7 +40,7 @@ class SymbolClassExporter extends SwfPackerTagExporter
     {
         super.importTag(tag, input);
         
-        var tagAsSymbolClass:SwfPackerTagSymbolClass = try cast(tag, SwfPackerTagSymbolClass) catch(e:Dynamic) null;
+        var tagAsSymbolClass:SwfPackerTagSymbolClass = cast(tag, SwfPackerTagSymbolClass);
         
         var symbolsCount:Int = input.readShort();
         

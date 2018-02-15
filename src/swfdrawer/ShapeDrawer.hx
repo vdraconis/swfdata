@@ -41,7 +41,7 @@ class ShapeDrawer extends BitmapDrawer
         
         draginMatrix.concat(drawingData.transform);
         
-        var drawableAsShape:ShapeData = try cast(drawable, ShapeData) catch(e:Dynamic) null;
+        var drawableAsShape:ShapeData = cast(drawable, ShapeData);
         
         drawRectangle(drawableAsShape._shapeBounds, draginMatrix);
         

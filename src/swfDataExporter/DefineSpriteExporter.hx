@@ -32,7 +32,7 @@ class DefineSpriteExporter extends SwfPackerTagExporter
     {
         super.exportTag(tag, output);
         
-        var tagAsSpriteDefine:SwfPackerTagDefineSprite = try cast(tag, SwfPackerTagDefineSprite) catch(e:Dynamic) null;
+        var tagAsSpriteDefine:SwfPackerTagDefineSprite = cast(tag, SwfPackerTagDefineSprite);
         
         var tagsCount:Int = tagAsSpriteDefine.tags.length;
         var frameCount:Int = tagAsSpriteDefine.frameCount;

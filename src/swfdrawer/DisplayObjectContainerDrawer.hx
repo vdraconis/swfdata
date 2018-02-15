@@ -18,7 +18,7 @@ class DisplayObjectContainerDrawer implements IDrawer
     
     public function draw(drawable:DisplayObjectData, drawingData:DrawingData)
     {
-        var displayObjectContainer:IDisplayObjectContainer = try cast(drawable, IDisplayObjectContainer) catch(e:Dynamic) null;
+        var displayObjectContainer:IDisplayObjectContainer = cast(drawable, IDisplayObjectContainer);
         
         var drawableTrasnform:Matrix = drawable.transform;
         

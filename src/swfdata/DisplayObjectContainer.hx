@@ -81,7 +81,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
             currentDisplayObject = currentDisplayList[i];
             
             if (Std.is(currentDisplayObject, IDisplayObjectContainer)) 
-                return (try cast(currentDisplayObject, IDisplayObjectContainer) catch(e:Dynamic) null).getChildByName(name);
+                return cast(currentDisplayObject, IDisplayObjectContainer).getChildByName(name);
         }
         
         return null;

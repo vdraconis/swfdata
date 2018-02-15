@@ -86,18 +86,18 @@ class GLDrawer implements IDrawer
         
         //TODO: если эта дата считается уже в ShapeLibrary и в итоге сохраняется уже умноженой, то поидеи этот момент не нужен
         /**
-			 * Т.е
-			 * 
-			 * Мы берем шейпы как они были например баунд 10, 10, 100, 100
-			 * После рисования в аталс и расчета его размеров со скейлом мы выесняем что он рисуется в
-			 * 5, 5, 50, 50 размерах
-			 * т.к в ShapeLibrary уже посчитан новый размер шейпа и размер текстуры ему соотвествует без скейла то этот скейл сдесь не нужен
-			 * 
-			 * Далее, для баунда считается хит тест, для этого нужно востановить баунд от скейла, что и делается в коде ниже т.е тут монжо довольно
-			 * много операций исключить.
-			 * 
-			 * Вместе с тем еще можно пивоты текстур сразу сдвинуть в левый врехний угол
-			 */
+		 * Т.е
+		 * 
+		 * Мы берем шейпы как они были например баунд 10, 10, 100, 100
+		 * После рисования в аталс и расчета его размеров со скейлом мы выесняем что он рисуется в
+		 * 5, 5, 50, 50 размерах
+		 * т.к в ShapeLibrary уже посчитан новый размер шейпа и размер текстуры ему соотвествует без скейла то этот скейл сдесь не нужен
+		 * 
+		 * Далее, для баунда считается хит тест, для этого нужно востановить баунд от скейла, что и делается в коде ниже т.е тут монжо довольно
+		 * много операций исключить.
+		 * 
+		 * Вместе с тем еще можно пивоты текстур сразу сдвинуть в левый врехний угол
+		 */
         drawMatrix.a *= mulX;
         drawMatrix.d *= mulY;
         drawMatrix.b *= mulX;
@@ -128,7 +128,7 @@ class GLDrawer implements IDrawer
         
         if (transformedPoint.x > transformedDrawingX && transformedPoint.x < transformedDrawingX + transformedDrawingWidth) 
             if (transformedPoint.y > transformedDrawingY && transformedPoint.y < transformedDrawingY + transformedDrawingHeight) 
-            isHit = true;
+				isHit = true;
         
         if (pixelPerfect && isHit) 
         {
@@ -223,7 +223,7 @@ class GLDrawer implements IDrawer
         //else 
         //Genome2D.g2d_instance.g2d_context.drawMatrix(texture, drawMatrix.a, drawMatrix.b, drawMatrix.c, drawMatrix.d, transform.tx, transform.ty, color.r, color.g, color.b, color.a);
     
-		renderer.draw(texture, drawMatrix, color);
+		renderer.draw(texture, drawMatrix, color, drawingData.blendMode);
 		
         //clearMaskData();
         

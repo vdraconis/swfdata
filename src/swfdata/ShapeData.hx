@@ -63,7 +63,7 @@ class ShapeData extends DisplayObjectData
     {
         super.setDataTo(objectCloned);
         
-        var objectAsShapeData:ShapeData = try cast(objectCloned, ShapeData) catch(e:Dynamic) null;
+        var objectAsShapeData:ShapeData = cast(objectCloned, ShapeData);
         
         objectAsShapeData.shapeBounds = _shapeBounds;
         

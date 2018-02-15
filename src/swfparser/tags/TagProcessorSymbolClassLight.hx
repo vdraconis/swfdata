@@ -19,7 +19,7 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagSymbolClass:SwfPackerTagSymbolClass = try cast(tag, SwfPackerTagSymbolClass) catch(e:Dynamic) null;
+        var tagSymbolClass:SwfPackerTagSymbolClass = cast(tag, SwfPackerTagSymbolClass);
         var symbolsLength:Int = tagSymbolClass.length;
         
         for (i in 0...symbolsLength)

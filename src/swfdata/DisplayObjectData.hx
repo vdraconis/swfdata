@@ -37,13 +37,13 @@ class DisplayObjectData
 	@:allow(swfdata) var colorData:ColorData;
 	@:allow(swfdata) var displayObjectType:Int;
     
-    public var isMask:Bool;
+    public var isMask:Bool = false;
     public var mask:DisplayObjectData;
     
     public var hasMoved:Bool = false;
     public var hasPlaced:Bool = false;
     
-    public var name:String;
+    public var name:String = null;
     public var blendMode:Int = 0;
     public var visible:Bool = true;
 	

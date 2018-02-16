@@ -46,7 +46,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
 	public var blueAdd:Int = 255;
 	public var alphaAdd:Int = 255;
 	
-	public var blendMode:Int;	
+	public var blendMode:Int = 0;
     
     /*public var redColor0:Float = 0;
     public var redColor1:Float = 0;

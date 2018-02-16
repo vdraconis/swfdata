@@ -49,10 +49,10 @@ class TagProcessorPlaceObject extends TagProcessorBase
     private function getObject(id:Int, tag:SwfPackerTagPlaceObject, preveousTransform:Matrix):DisplayObjectData
     {
         /**
-			 * Если в этом кадре ложатся несколько объектов с одинаковым айди но на разные глубины
-			 * то нужно для них соотвественно смотреть где есть похожие объекты на таких же глубинах
-			 * в предидущих кадрах, и нужно ли их клонировать.
-			 */
+		 * Если в этом кадре ложатся несколько объектов с одинаковым айди но на разные глубины
+		 * то нужно для них соотвественно смотреть где есть похожие объекты на таких же глубинах
+		 * в предидущих кадрах, и нужно ли их клонировать.
+		 */
         
         var isNeedClone:Bool = tag.hasMatrix || tag.hasColorTransform;
         var placedDO:DisplayObjectData;
@@ -142,11 +142,14 @@ class TagProcessorPlaceObject extends TagProcessorBase
         if (tag.hasColorTransform) 
         {
             currentDisplayObject.setColorData(tag.redMultiplier, tag.greenMultiplier, tag.blueMultiplier, tag.alphaMultiplier, tag.redAdd, tag.greenAdd, tag.blueAdd, tag.alphaAdd);
-            //currentDisplayObject.colorTransform = tag.getColorTransformMatrix();
         }
         
         if (tag.hasName) 
             currentDisplayObject.name = tag.instanceName;
+			
+		// TODO вот это странное место, но если не проверять на уже установленный, то затирается в 0, что делать, если это реально нужно?
+		if(currentDisplayObject.blendMode == 0 || tag.blendMode != 0)
+			currentDisplayObject.blendMode = tag.blendMode;
         
         currentDisplayObject.hasMoved = tag.hasMove;
     }
@@ -158,8 +161,6 @@ class TagProcessorPlaceObject extends TagProcessorBase
         var tagPlaceObject:SwfPackerTagPlaceObject = cast tag;
         var currentDisplayObject:SpriteData = cast displayObjectContext.currentDisplayObject;
         
-        //trace('\tplace object', tag['constructor'], tagPlaceObject.placeMode, currentDisplayObject != null);
-        
         if (currentDisplayObject == null) 
             return;  //probably main time line  ;
         
@@ -169,20 +170,22 @@ class TagProcessorPlaceObject extends TagProcessorBase
 		
 		if (Std.is(currentDisplayObject, MovieClipData))
 			doAsMovieClip = cast currentDisplayObject;
-        
-        //trace('place object', doAsMovieClip? doAsMovieClip.currentFrame:"noframe", tagPlaceObject.hasMatrix, tagPlaceObject.placeMode, tagPlaceObject.characterId, tagPlaceObject.instanceName, tagPlaceObject.depth);
-        
-        var hasMatrix:Bool = tagPlaceObject.hasMatrix;
-        //trace('place do', tagPlaceObject.placeMode, tagPlaceObject.characterId, hasMatrix);
-        
+			
+        var hasMatrix = tagPlaceObject.hasMatrix;
+		var hasColorTransform = tagPlaceObject.hasColorTransform;
+		var hasBlendMode = tagPlaceObject.hasBlendMode;
+		var isNeedClone = hasMatrix || hasColorTransform || hasBlendMode;
+		
         var preveousFrameDO:DisplayObjectData;
         
         if (tagPlaceObject.placeMode == SwfPackerTagPlaceObject.PLACE_MODE_PLACE) 
         {
-            //положили объект в таймлайн в первый раз скорее всего поэтому тут поидеи есть чарактер айди и можно взять его из библиотеки
-            placedDO = getObjectFromLibrary(tagPlaceObject.characterId, hasMatrix);
+			//положили объект в таймлайн в первый раз скорее всего поэтому тут поидеи есть чарактер айди и можно взять его из библиотеки
+			//placedDO = getObjectFromLibrary(tagPlaceObject.characterId, isNeedClone);
+			//Вот тут в оригинале не клонировалось, если была колорматрица, нужно ли клонировать с блендом?
+            placedDO = getObjectFromLibrary(tagPlaceObject.characterId, isNeedClone);
             
-            if (placedDO == null)                   //но его там может не быть т.к морфы не парсятся к примеру  
+            if (placedDO == null)//но его там может не быть т.к морфы не парсятся к примеру  
 				return;
             
             fillFromTag(placedDO, tagPlaceObject);
@@ -196,7 +199,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
         {
             preveousFrameDO = context.placeObjectsMap[tagPlaceObject.depth];
             
-            if (preveousFrameDO == null)   //не положили его в плейсинге т.к не было в библиотеке  
+            if (preveousFrameDO == null)//не положили его в плейсинге т.к не было в библиотеке  
             {
                 trace("placing error");
                 return;
@@ -210,6 +213,11 @@ class TagProcessorPlaceObject extends TagProcessorBase
                 placedDO.setTransformMatrix(preveousFrameDO.transform);
             }
             
+			if (!hasBlendMode)
+			{
+				placedDO.blendMode = preveousFrameDO.blendMode;
+			}
+			
             if (context.placeObjectsMap[placedDO.depth] != placedDO) 
             {
                 context.placeObjectsMap[placedDO.depth] = placedDO;
@@ -219,13 +227,13 @@ class TagProcessorPlaceObject extends TagProcessorBase
         {
             preveousFrameDO = context.placeObjectsMap[tagPlaceObject.depth];
             
-            if (preveousFrameDO == null)   //не положили его в плейсинге т.к не было в библиотеке  
+            if (preveousFrameDO == null)//не положили его в плейсинге т.к не было в библиотеке  
             {
                 trace("placing error");
                 return;
             }
             
-            if (hasMatrix) 
+            if (isNeedClone) 
             {
                 placedDO = preveousFrameDO.clone();
                 fillFromTag(placedDO, tagPlaceObject);

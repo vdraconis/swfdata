@@ -31,7 +31,7 @@ class GLDrawer implements IDrawer
     
     private var drawMatrix:Matrix = new Matrix();
     
-    public var convas:Graphics;
+    public var canvas:Graphics;
     
     //TODO: заменить на объект типа Options с параметрами такого типа
     public var isDebugDraw:Bool = false;
@@ -118,24 +118,59 @@ class GLDrawer implements IDrawer
         drawingData.setFromDisplayObject(drawable);
         
         textureId = drawable.characterId;
-        //this.texturePadding = textureAtlas.padding;
+        this.texturePadding = textureAtlas.padding;
         this.texturePadding2 = textureAtlas.padding * 2;
     }
+	
+	public function drawDebugInfo()
+	{
+		if (drawingData.bound != null && hitTestResult)
+		{
+			canvas.lineStyle(1.6, 0xFF0000, 0.8);
+			canvas.drawRect(drawingRectagon.x, drawingRectagon.y, drawingRectagon.width, drawingRectagon.height);
+			
+			canvas.lineStyle(1.6, 0x00FF00, 0.8);
+			canvas.moveTo(drawingRectagon.resultTopLeft.x, drawingRectagon.resultTopLeft.y);
+			canvas.lineTo(drawingRectagon.resultTopRight.x, drawingRectagon.resultTopRight.y);
+			canvas.lineTo(drawingRectagon.resultBottomRight.x, drawingRectagon.resultBottomRight.y);
+			canvas.lineTo(drawingRectagon.resultBottomLeft.x, drawingRectagon.resultBottomLeft.y);
+			canvas.lineTo(drawingRectagon.resultTopLeft.x, drawingRectagon.resultTopLeft.y);
+		}
+	}
+	
+	public function drawHitBounds(deltaX:Float, deltaY:Float, transformedDrawingX:Float, transformedDrawingY:Float, transformedDrawingWidth:Float, transformedDrawingHeight:Float, transformedPoint:Point)
+	{
+		var color = hitTestResult? 0xFF0000:Std.int(0xFFFFFF * (currentSubTexture.id / 100));
+		
+		canvas.lineStyle(1.6, color, 0.8);
+		canvas.moveTo(transformedDrawingX + deltaX, transformedDrawingY + deltaY);
+		canvas.lineTo(transformedDrawingX + transformedDrawingWidth + deltaX, transformedDrawingY + deltaY);
+		canvas.lineTo(transformedDrawingX + transformedDrawingWidth + deltaX, transformedDrawingY + transformedDrawingHeight + deltaY);
+		canvas.lineTo(transformedDrawingX + deltaX, transformedDrawingY + transformedDrawingHeight + deltaY);
+		canvas.lineTo(transformedDrawingX + deltaX, transformedDrawingY + deltaY);
+
+		canvas.drawCircle(transformedPoint.x + deltaX, transformedPoint.y + deltaY, 5);
+	}
     
 	inline public function hitTest(pixelPerfect:Bool, texture:GLSubTexture, transformedDrawingX:Float, transformedDrawingY:Float, transformedDrawingWidth:Float, transformedDrawingHeight:Float, transformedPoint:Point):Bool
     {
         var isHit:Bool = false;
         
-        if (transformedPoint.x > transformedDrawingX && transformedPoint.x < transformedDrawingX + transformedDrawingWidth) 
-            if (transformedPoint.y > transformedDrawingY && transformedPoint.y < transformedDrawingY + transformedDrawingHeight) 
+        //if (transformedPoint.x > transformedDrawingX && transformedPoint.x < transformedDrawingX + transformedDrawingWidth) 
+        //    if (transformedPoint.y > transformedDrawingY && transformedPoint.y < transformedDrawingY + transformedDrawingHeight) 
 				isHit = true;
         
         if (pixelPerfect && isHit) 
         {
             var u:Float = (transformedPoint.x - transformedDrawingX) / (transformedDrawingWidth + texturePadding2);
             var v:Float = (transformedPoint.y - transformedDrawingY) / (transformedDrawingHeight + texturePadding2);
+			
+			canvas.beginFill(0xFF0000, 1);
+			canvas.drawCircle(texture.getU(u), texture.getV(v), 3);
+			canvas.endFill();
             
             isHit = texture.getAlphaAtUV(u, v) > 0x05;
+			trace('${texture.getAlphaAtUV(u, v)}, ${transformedPoint}');
         }
         
         return isHit;
@@ -179,61 +214,22 @@ class GLDrawer implements IDrawer
         texture.pivotY = -(drawingBounds.y * textureTransform.scaleY + (texture.height - texturePadding2) / 2);
         
         setMaskData();
-        
-        var filter:GLFilter = null;
-        
-        //if (isUseGrassWind)
-        //	filter = grassWind;
-        
-        //filter = outline;
-        
-        //var filteringType:Int = GLTextureFilteringType.NEAREST;
-        
-        //if (smooth) 
-        //    filteringType = GLTextureFilteringType.LINEAR;
-        
-        //if (filteringType != texture.g2d_filteringType) 
-        //    texture.g2d_filteringType = filteringType;
-        
+		
         var isMask:Bool = drawingData.isMask;
-        
         var color:ColorData = drawingData.colorData;
         
-        //if (drawingData.isApplyColorTrasnform) 
-        //{
-        //    filter = colorFilter.getColorFilter();
-        //    (try cast(filter, GColorMatrixFilter) catch(e:Dynamic) null).setMatrix(drawingData.colorTransform.matrix);
-        //}
-        
-        //if (hightlight) 
-        //{
-        //    filter = outline;
-		//}
-        
-        //if (filter != null) 
-        //{
-            //if (color.a != 1 || color.b != 1)
-            //	trace("###");
-            
-            //color.a = 0.5;
-            //grassWind.setColor(color.a, color.r, color.g, color.b);
-            //grassWind.setColor(0.5, 1, 1, 1);
-        //    Genome2D.g2d_instance.g2d_context.drawMatrix(texture, drawMatrix.a, drawMatrix.b, drawMatrix.c, drawMatrix.d, transform.tx, transform.ty, color.r, color.g, color.b, color.a, GBlendMode.NORMAL, filter);
-        //}
-        //else 
-        //Genome2D.g2d_instance.g2d_context.drawMatrix(texture, drawMatrix.a, drawMatrix.b, drawMatrix.c, drawMatrix.d, transform.tx, transform.ty, color.r, color.g, color.b, color.a);
-    
-		renderer.draw(texture, drawMatrix, color, drawingData.blendMode);
-		
-        //clearMaskData();
+		if(!isMask)
+			renderer.draw(texture, drawMatrix, color, drawingData.blendMode);
+			
+        clearMaskData();
         
         //transform mesh bounds to deformed mesh
-        var transformedDrawingX:Float = drawingBounds.x * currentSubTexture.transform.scaleX;
-        var transformedDrawingY:Float = drawingBounds.y * currentSubTexture.transform.scaleY;
+        var transformedDrawingX:Float = drawingBounds.x * currentSubTexture.transform.scaleX - texturePadding;
+        var transformedDrawingY:Float = drawingBounds.y * currentSubTexture.transform.scaleY - texturePadding;
         var transformedDrawingWidth:Float = (drawingBounds.width * 2 * currentSubTexture.transform.scaleX) / 2;
         var transformedDrawingHeight:Float = (drawingBounds.height * 2 * currentSubTexture.transform.scaleY) / 2;
         
-		if (!isMask && checkBounds || isDebugDraw) 
+		if (!isMask && checkBounds || isDebugDraw)
             drawingRectagon.setTo(transformedDrawingX, transformedDrawingY, transformedDrawingWidth, transformedDrawingHeight);
         
         if (!isMask && !hitTestResult && checkMouseHit) 
@@ -245,19 +241,24 @@ class GLDrawer implements IDrawer
             
             hitTestResult = hitTest(true, texture, transformedDrawingX, transformedDrawingY, transformedDrawingWidth, transformedDrawingHeight, transformedMousePoint);
             
-            //if (isDebugDraw) 
+            if (isDebugDraw) 
                 //may draw debug hit/bound visualisation
-            //drawHitBounds(400, 50, transformedDrawingX, transformedDrawingY, transformedDrawingWidth, transformedDrawingHeight, transformedMousePoint);
+				drawHitBounds(400, 150, transformedDrawingX, transformedDrawingY, transformedDrawingWidth, transformedDrawingHeight, transformedMousePoint);
         }
         
-        //if (isDebugDraw) 
-         //   drawDebugInfo();
+		if (isDebugDraw) 
+			drawDebugInfo();
         
-        if (!isMask && checkBounds) 
-        {
+		/*if (!isMask && checkBounds || isDebugDraw) 
+		{
+			currentBoundForDraw.setTo(drawingRectagon.x, drawingRectagon.y, drawingRectagon.width, drawingRectagon.height);
+			GeomMath.rectangleUnion(drawingData.bound, currentBoundForDraw);
 			
-            currentBoundForDraw.setTo(drawingRectagon.x, drawingRectagon.y, drawingRectagon.width, drawingRectagon.height);
-            GeomMath.rectangleUnion(drawingData.bound, currentBoundForDraw);
-        }
+			if (isDebugDraw)
+			{
+				canvas.lineStyle(1, 0x0000FF, 0.5);
+				canvas.drawRect(drawingData.bound.x, drawingData.bound.y, drawingData.bound.width, drawingData.bound.height);
+			}
+		}*/
     }
 }

@@ -55,6 +55,18 @@ class GLSubTexture implements ITexture
         return bitmapData.getPixel32(Std.int((this.u + u) * bitmapData.width), Std.int((this.v + v) * bitmapData.height)) >> 24 & 0xFF;
 	}
 	
+	public function getU(u:Float):Int {
+		var bitmapData:BitmapData = _atlas.atlasData;
+		u = (u * width) / bitmapData.width;
+		return Std.int((this.u + u) * bitmapData.width);
+	}
+	
+	public function getV(v:Float):Int {
+		var bitmapData:BitmapData = _atlas.atlasData;
+		v = (v * height) / bitmapData.height;
+		return Std.int((this.v + v) * bitmapData.height);
+	}
+	
 	public var id(get, never):Int;
 	
 	function get_id():Int 

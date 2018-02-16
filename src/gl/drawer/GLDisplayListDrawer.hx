@@ -178,7 +178,7 @@ class GLDisplayListDrawer implements IDrawer
 	 */
     function set_debugConvas(value:Graphics):Graphics
     {
-        shapeDrawer.convas = value;
+        shapeDrawer.canvas = value;
         return value;
     }
     

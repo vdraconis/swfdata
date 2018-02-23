@@ -129,6 +129,8 @@ class GLDrawer implements IDrawer
 			canvas.lineStyle(1.6, 0xFF0000, 0.8);
 			canvas.drawRect(drawingRectagon.x, drawingRectagon.y, drawingRectagon.width, drawingRectagon.height);
 			
+			//trace('drawingRectagon.x=${drawingRectagon.x}, drawingRectagon.y=${drawingRectagon.y}');
+			
 			canvas.lineStyle(1.6, 0x00FF00, 0.8);
 			canvas.moveTo(drawingRectagon.resultTopLeft.x, drawingRectagon.resultTopLeft.y);
 			canvas.lineTo(drawingRectagon.resultTopRight.x, drawingRectagon.resultTopRight.y);
@@ -162,15 +164,15 @@ class GLDrawer implements IDrawer
         
         if (pixelPerfect && isHit) 
         {
-            var u:Float = (transformedPoint.x - transformedDrawingX) / (transformedDrawingWidth + texturePadding2);
-            var v:Float = (transformedPoint.y - transformedDrawingY) / (transformedDrawingHeight + texturePadding2);
+            var u:Float = (transformedPoint.x - transformedDrawingX) / (transformedDrawingWidth);
+            var v:Float = (transformedPoint.y - transformedDrawingY) / (transformedDrawingHeight);
 			
 			canvas.beginFill(0xFF0000, 1);
 			canvas.drawCircle(texture.getU(u), texture.getV(v), 3);
 			canvas.endFill();
             
             isHit = texture.getAlphaAtUV(u, v) > 0x05;
-			trace('${texture.getAlphaAtUV(u, v)}, ${transformedPoint}');
+			//trace('${texture.getAlphaAtUV(u, v)}, ${transformedPoint}');
         }
         
         return isHit;
@@ -208,10 +210,15 @@ class GLDrawer implements IDrawer
         var texture:GLSubTexture = currentSubTexture;
         
         var textureTransform:TextureTransform = currentSubTexture._transform;
+		
+		//trace('drawingBounds ${drawingBounds.x}, ${drawingBounds.y}');
         
         //TODO: можно вынести в тот же трансформ т.к это нужно всего единажды считать т.к это статические данные
         texture.pivotX = -(drawingBounds.x * textureTransform.scaleX + (texture.width - texturePadding2) / 2);
         texture.pivotY = -(drawingBounds.y * textureTransform.scaleY + (texture.height - texturePadding2) / 2);
+		
+		//trace('${texture.pivotX}, ${texture.pivotY}');
+		//trace('${drawMatrix}');
         
         setMaskData();
 		
@@ -228,6 +235,8 @@ class GLDrawer implements IDrawer
         var transformedDrawingY:Float = drawingBounds.y * currentSubTexture.transform.scaleY - texturePadding;
         var transformedDrawingWidth:Float = (drawingBounds.width * 2 * currentSubTexture.transform.scaleX) / 2;
         var transformedDrawingHeight:Float = (drawingBounds.height * 2 * currentSubTexture.transform.scaleY) / 2;
+		
+		//trace('transformedDrawingX=${transformedDrawingX}, transformedDrawingY=${transformedDrawingY}');
         
 		if (!isMask && checkBounds || isDebugDraw)
             drawingRectagon.setTo(transformedDrawingX, transformedDrawingY, transformedDrawingWidth, transformedDrawingHeight);

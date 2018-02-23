@@ -46,11 +46,7 @@ class DrawerShader
 		attribute vec4 va1;
 		attribute vec4 va2;
 		uniform mat4 vc0;
-		uniform vec4 vc6;
-		uniform vec4 vc8;
-		uniform vec4 vc5;
-		uniform vec4 vc4;
-		uniform vec4 vc7;
+		uniform vec4 vc4[200];
 		varying vec4 v2;
 		varying vec4 v1;
 		varying vec4 v0;
@@ -62,22 +58,23 @@ class DrawerShader
 			vec4 vt2;
 			vt0 = va2; // mov
 			vt0 = va0; // mov
-			vt1 = va0.xyyy * vc5.zwww; // mul
-			vt2 = vt1.xyyy * vc4.xyyy; // mul
+			int index = int(va2.x);
+			vt1 = va0.xyyy * vc4[index + 1].zwww; // mul
+			vt2 = vt1.xyyy * vc4[index].xyyy; // mul
 			vt2.x = vt2.x + vt2.y; // add
-			vt2.x = vt2.x + vc5.x; // add
-			vt3 = vt1.xyyy * vc4.zwww; // mul
+			vt2.x = vt2.x + vc4[index + 1].x; // add
+			vt3 = vt1.xyyy * vc4[index].zwww; // mul
 			vt3.x = vt3.x + vt3.y; // add
-			vt3.x = vt3.x + vc5.y; // add
+			vt3.x = vt3.x + vc4[index + 1].y; // add
 			vt2.y = vt3.x; // mov
 			vt2.zw = vt0.ww; // mov
 			vt3 = vt2 * vc0; // m44
 			gl_Position = vt3; // mov
-			vt0.xy = va1.xy * vc6.zw; // mul
-			vt0.xy = vt0.xy + vc6.xy; // add
+			vt0.xy = va1.xy * vc4[index + 2].zw; // mul
+			vt0.xy = vt0.xy + vc4[index + 2].xy; // add
 			v0 = vt0; // mov
-			v1 = vc7; // mov
-			v2 = vc8; // mov
+			v1 = vc4[index + 3]; // mov
+			v2 = vc4[index + 4]; // mov
 			gl_Position *= vcPositionScale;
 		}
 		"

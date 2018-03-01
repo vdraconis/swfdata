@@ -65,7 +65,7 @@ class TagProcessorDefineSprite extends TagProcessorBase
         else 
 			currentDisplayObject = new SpriteData(characterId, DisplayObjectTypes.SPRITE_TYPE, true, tagDefineSprite.frames[0].numChildren);
         
-        context.library.addDisplayObject(currentDisplayObject);
+        context.library.addDisplayObject(currentDisplayObject.characterId, currentDisplayObject);
         displayObjectContext.setCurrentDisplayObject(currentDisplayObject);
         
         //TODO: KAKOITOBAG

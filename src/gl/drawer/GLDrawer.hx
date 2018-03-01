@@ -11,6 +11,7 @@ import swfdata.DisplayObjectData;
 import swfdata.Rectagon;
 import swfdata.atlas.GLSubTexture;
 import swfdata.atlas.ITextureAtlas;
+import swfdata.atlas.TextureStorage;
 import swfdata.atlas.TextureTransform;
 import swfdrawer.IDrawer;
 import swfdrawer.data.DrawingData;
@@ -51,7 +52,7 @@ class GLDrawer implements IDrawer
     private var texturePadding:Float;
     private var texturePadding2:Float;
     
-    private var textureAtlas:ITextureAtlas;
+    private var textureStorage:TextureStorage;
     
     private var drawingData:DrawingData;
     
@@ -78,9 +79,9 @@ class GLDrawer implements IDrawer
     {
         //trace('apply daraw', textureId);
         
-        currentSubTexture = cast textureAtlas.getTexture(textureId);
+        currentSubTexture = cast(textureStorage.getGexture(textureId), GLSubTexture);
         
-        var transform:TextureTransform = currentSubTexture._transform;
+        var transform:TextureTransform = currentSubTexture.transform;
         var mulX:Float = transform.positionMultiplierX;
         var mulY:Float = transform.positionMultiplierY;
         
@@ -102,6 +103,9 @@ class GLDrawer implements IDrawer
         drawMatrix.d *= mulY;
         drawMatrix.b *= mulX;
         drawMatrix.c *= mulY;
+		
+		//this.texturePadding = textureAtlas.padding;
+        this.texturePadding2 = currentSubTexture.padding * 2;
     }
     
     public function cleanDrawStyle():Void
@@ -112,14 +116,11 @@ class GLDrawer implements IDrawer
     
     public function draw(drawable:DisplayObjectData, drawingData:swfdrawer.data.DrawingData):Void
     {
-        
         this.drawingData = drawingData;
         
         drawingData.setFromDisplayObject(drawable);
         
         textureId = drawable.characterId;
-        //this.texturePadding = textureAtlas.padding;
-        this.texturePadding2 = textureAtlas.padding * 2;
     }
     
 	inline public function hitTest(pixelPerfect:Bool, texture:GLSubTexture, transformedDrawingX:Float, transformedDrawingY:Float, transformedDrawingWidth:Float, transformedDrawingHeight:Float, transformedPoint:Point):Bool
@@ -172,7 +173,7 @@ class GLDrawer implements IDrawer
         
         var texture:GLSubTexture = currentSubTexture;
         
-        var textureTransform:TextureTransform = currentSubTexture._transform;
+        var textureTransform:TextureTransform = currentSubTexture.transform;
         
         //TODO: можно вынести в тот же трансформ т.к это нужно всего единажды считать т.к это статические данные
         texture.pivotX = -(drawingBounds.x * textureTransform.scaleX + (texture.width - texturePadding2) / 2);

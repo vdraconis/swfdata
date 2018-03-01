@@ -3,6 +3,7 @@ package swfdata;
 import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
 import swfdata.atlas.ITextureAtlas;
+import swfdata.atlas.TextureId;
 
 class DisplayObjectData
 {
@@ -16,13 +17,11 @@ class DisplayObjectData
     
     //public var layer:LayerData;
     //public var frameData:FrameObjectData;
-	
-	public var atlas:ITextureAtlas;
     
     public var depth:Int = -1;
     public var clipDepth:Int = 0;
     
-    public var characterId:Int;
+    public var characterId:TextureId;
     public var libraryLinkage:String;
     
     var _x:Float = 0;
@@ -160,7 +159,6 @@ class DisplayObjectData
     
     function setDataTo(objectCloned:DisplayObjectData):Void
     {
-        objectCloned.atlas = atlas;
         objectCloned.name = name;
         objectCloned.depth = depth;
         objectCloned.characterId = characterId;

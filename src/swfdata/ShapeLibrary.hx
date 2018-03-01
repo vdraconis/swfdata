@@ -37,7 +37,7 @@ class ShapeLibrary
 		//shapeLibraryItem.shape = shape;
 		shapeLibraryItem.shapeData = shapeData;
 		
-		shapes.set(shapeData.characterId, shapeLibraryItem);
+		shapes.set(shapeData.characterId.textureId, shapeLibraryItem);
 	}
     
     public function getShape(id:Int):ShapeLibraryItem

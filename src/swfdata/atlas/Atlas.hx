@@ -6,7 +6,7 @@ import openfl.display.StageQuality;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
-import swfdata.atlas.Subtexture;
+import swfdata.atlas.SubTexture;
 import swfdata.atlas.TextureTransform;
 
 class Atlas
@@ -63,7 +63,7 @@ class Atlas
         lastPosition.setTo(padding, padding);
     }
     
-    public function getSubTexture(shapeId:Int):Subtexture
+    public function getSubTexture(shapeId:Int):SubTexture
     {
         return subTextures[shapeId];
     }
@@ -78,7 +78,7 @@ class Atlas
         var scaleX:Float = sceneTransfrm.scaleX = sceneTransfrm.scaleX * scale;
         var scaleY:Float = sceneTransfrm.scaleY = sceneTransfrm.scaleY * scale;
         sceneTransfrm.recalculate();
-        var subtexture:Subtexture = new Subtexture(shapeId, shapeBound, scaleX, scaleY);
+        var subtexture:SubTexture = new SubTexture(shapeId, shapeBound, scaleX, scaleY);
         
         var posX:Float = lastPosition.x - defineRect.x;
         

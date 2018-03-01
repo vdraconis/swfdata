@@ -54,12 +54,12 @@ class SymbolsLibrary
 		linkagesList = new Array<SpriteData>();
     }
     
-    public function addDisplayObject(displayObject:DisplayObjectData):Void
+    public function addDisplayObject(id:Int, displayObject:DisplayObjectData):Void
     {
         if (Std.is(displayObject, ShapeData)) 
             shapesList.push(cast(displayObject, ShapeData));  //	spritesList.push(displayObject);    //if (displayObject is SpriteData)  ;
         
-        __library[displayObject.characterId] = displayObject;
+        __library[id] = displayObject;
     }
     
     public function getDisplayObject(characterId:Int):DisplayObjectData
@@ -85,7 +85,7 @@ class SymbolsLibrary
     {
         for (shapeData/* AS3HX WARNING could not determine type for var: shapeData exp: EField(EIdent(shapeLibrary),shapes) type: null */ in shapeLibrary.shapes)
         {
-            addDisplayObject(shapeData.shapeData);
+            addDisplayObject(shapeData.shapeData.characterId.textureId, shapeData.shapeData);
         }
     }
 }

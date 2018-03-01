@@ -4,22 +4,22 @@ package swfdataexporter;
 import format.lz4.Uncompress;
 #end
 import openfl.utils.ByteArray;
+import renderer.TextureManager;
 import swfdata.ShapeLibrary;
-import swfdata.atlas.BitmapTextureAtlas;
-import swfdata.atlas.GLTextureAtlas;
+import swfdata.atlas.TextureStorage;
 import swfdata.datatags.SwfPackerTag;
 import swfdataexporter.SwfAtlasExporter;
 import swfdataexporter.SwfTagExporter;
 
 class SwfExporter
 {
-    private var atlasExporter:SwfAtlasExporter = new SwfAtlasExporter();
-    private var dataExporter:SwfTagExporter = new SwfTagExporter();
+    private var atlasExporter:SwfAtlasExporter;
+    private var dataExporter:SwfTagExporter;
     
-    public function new()
+    public function new(textureStorage:TextureStorage, textureManager:TextureManager)
     {
-        
-        
+        atlasExporter = new SwfAtlasExporter(textureStorage, textureManager);
+        dataExporter = new SwfTagExporter();
     }
     
     public function clear():Void
@@ -69,7 +69,7 @@ class SwfExporter
         return atlas;
     }*/
     
-    public function importSwfGL(input:ByteArray, shapesList:ShapeLibrary, tagsList:Array<SwfPackerTag>):GLTextureAtlas
+    public function importSwfGL(input:ByteArray, shapesList:ShapeLibrary, tagsList:Array<SwfPackerTag>)
 	{
 		#if cpp
 			var bytes:ByteArray = new ByteArray();
@@ -79,14 +79,12 @@ class SwfExporter
 			input.inflate();
         #end
 		
-        var atlas:GLTextureAtlas = atlasExporter.impotGLAtlas("none", input, shapesList);
+        atlasExporter.impotGLAtlas("none", input, shapesList);
         input.position = input.position;
         dataExporter.importTags(tagsList, input);
-        
-        return atlas;
 	}
 	
-    public function importSwf(input:ByteArray, shapesList:ShapeLibrary, tagsList:Array<SwfPackerTag>):BitmapTextureAtlas
+    /*public function importSwf(input:ByteArray, shapesList:ShapeLibrary, tagsList:Array<SwfPackerTag>):BitmapTextureAtlas
     {
         input.inflate();
 		
@@ -96,5 +94,5 @@ class SwfExporter
         dataExporter.importTags(tagsList, input);
         
         return atlas;
-    }
+    }*/
 }

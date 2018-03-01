@@ -6,25 +6,18 @@ import openfl.geom.Point;
 import swfdata.DisplayObjectData;
 import swfdata.ShapeData;
 import swfdata.atlas.ITextureAtlas;
+import swfdata.atlas.TextureStorage;
 import swfdrawer.data.DrawingData;
 
 class GLShapeDrawer extends GLDrawer
 {
-    public var atlas(never, set):ITextureAtlas;
-
     var _drawMatrix:Matrix = new Matrix();
     
-    public function new(atlas:ITextureAtlas, mousePoint:Point)
+    public function new(textureStorage:TextureStorage, mousePoint:Point)
     {
         super(mousePoint);
         
-        this.textureAtlas = atlas;
-    }
-    
-    function set_atlas(value:ITextureAtlas):ITextureAtlas
-    {
-        textureAtlas = value;
-        return value;
+        this.textureStorage = textureStorage;
     }
     
 	@:access(swfdata)

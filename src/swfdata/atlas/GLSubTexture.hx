@@ -1,16 +1,19 @@
 package swfdata.atlas;
 
 import openfl.display.BitmapData;
+import openfl.display3D.Context3DTextureFormat;
 import openfl.geom.Rectangle;
 import swfdata.atlas.TextureTransform;
 
 class GLSubTexture implements ITexture
 {
-	private var _id:Int;
-	private var _bounds:Rectangle;
-	private var _transform:TextureTransform;
+	public var id:Int;
+	public var bounds:Rectangle;
+	public var transform:TextureTransform;
 	
-	private var _atlas:GLTextureAtlas;
+	public var textureSource:TextureSource;
+	
+	public var padding:Int = 0;
 	
 	public var u:Float = 0;
 	public var v:Float = 0;
@@ -25,26 +28,27 @@ class GLSubTexture implements ITexture
 	public var pivotY:Float = 0;
 
 	@:access(swfdata)
-	public function new(id:Int, bounds:Rectangle, transform:TextureTransform, atlas:GLTextureAtlas, scaleFactor:Float = 1) 
+	public function new(id:Int, bounds:Rectangle, transform:TextureTransform, textureSource:TextureSource, padding:Int, textureFormat:Context3DTextureFormat, scaleFactor:Float = 1) 
 	{
-		_id = id;
-		_bounds = bounds;
-		_transform = transform;
-		_atlas = atlas;
+		this.id = id;
+		this.bounds = bounds;
+		this.transform = transform;
+		this.textureSource = textureSource;
+		this.padding = padding;
 		
-		width = _bounds.width * scaleFactor;
-		height = _bounds.height * scaleFactor;
+		width = bounds.width * scaleFactor;
+		height = bounds.height * scaleFactor;
 		
-		u = _bounds.x / atlas.atlasData.width;
-		v = _bounds.y / atlas.atlasData.height;
+		u = bounds.x / textureSource.source.width;
+		v = bounds.y / textureSource.source.height;
 		
-		uscale = width / atlas.atlasData.width;
-		vscale = height / atlas.atlasData.height;
+		uscale = width / textureSource.source.width;
+		vscale = height / textureSource.source.height;
 	}
 	
 	public function getAlphaAtUV(u:Float, v:Float):Float
 	{
-		var bitmapData:BitmapData = _atlas.atlasData;
+		var bitmapData:BitmapData = textureSource.source;
 		
         if (bitmapData == null)  
 			return 255;
@@ -53,26 +57,5 @@ class GLSubTexture implements ITexture
 		v = (v * height) / bitmapData.height;
 		
         return bitmapData.getPixel32(Std.int((this.u + u) * bitmapData.width), Std.int((this.v + v) * bitmapData.height)) >> 24 & 0xFF;
-	}
-	
-	public var id(get, never):Int;
-	
-	function get_id():Int 
-	{
-		return _id;
-	}
-	
-	public var transform(get, never):TextureTransform;
-	
-	function get_transform():TextureTransform 
-	{
-		return _transform;
-	}
-	
-	public var bounds(get, never):Rectangle;
-	
-	function get_bounds():Rectangle 
-	{
-		return _bounds;
 	}
 }

@@ -3,7 +3,7 @@ package swfdata.atlas;
 import openfl.geom.Rectangle;
 import swfdata.atlas.TextureTransform;
 
-class Subtexture
+class SubTexture
 {
     public var bounds:Rectangle;
     public var id:Int;

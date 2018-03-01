@@ -12,6 +12,7 @@ import swfdata.ColorData;
 import swfdata.DisplayObjectData;
 import swfdata.DisplayObjectTypes;
 import swfdata.atlas.ITextureAtlas;
+import swfdata.atlas.TextureStorage;
 import swfdrawer.IDrawer;
 import swfdrawer.MovieClipDrawer;
 import swfdrawer.SpriteDrawer;
@@ -19,7 +20,6 @@ import swfdrawer.data.DrawingData;
 
 class GLDisplayListDrawer implements IDrawer
 {
-    public var atlas(never, set):ITextureAtlas;
     public var checkBounds(never, set):Bool;
     public var checkMouseHit(never, set):Bool;
     public var debugDraw(never, set):Bool;
@@ -37,21 +37,14 @@ class GLDisplayListDrawer implements IDrawer
     
     var drawingData:DrawingData = new DrawingData();
     
-    var _atlas:ITextureAtlas;
+    var textureStorage:TextureStorage;
     
-    public function new(atlas:ITextureAtlas = null, mousePoint:Point = null)
+    public function new(textureStorage:TextureStorage, mousePoint:Point = null)
     {
         this.mousePoint = mousePoint;
         
-        _atlas = atlas;
+        this.textureStorage = textureStorage;
         initialize();
-    }
-    
-    function set_atlas(atlas:ITextureAtlas):ITextureAtlas
-    {
-        _atlas = atlas;
-        shapeDrawer.atlas = atlas;
-        return atlas;
     }
     
     /**
@@ -89,7 +82,7 @@ class GLDisplayListDrawer implements IDrawer
     
     function initialize():Void
     {
-        shapeDrawer = new GLShapeDrawer(_atlas, mousePoint);
+        shapeDrawer = new GLShapeDrawer(textureStorage, mousePoint);
         
         var spriteDrawer:SpriteDrawer = new SpriteDrawer(this);
         var movieClipDrawer:MovieClipDrawer = new MovieClipDrawer(this);

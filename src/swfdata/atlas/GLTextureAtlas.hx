@@ -30,8 +30,8 @@ class GLTextureAtlas implements ITextureAtlas
 	
 	public function uploadToGpu():Void
 	{
-		gpuData = TextureManager.createTexture(id, atlasData, format);
-		gpuData.uploadFromBitmapData(atlasData, 0);
+		//gpuData = TextureManager.createTexture(0, atlasData, format);
+		//gpuData.uploadFromBitmapData(atlasData, 0);
 	}
 	
 	function get_padding():Int 
@@ -57,17 +57,19 @@ class GLTextureAtlas implements ITextureAtlas
 	
 	public function createSubTexture(id:Int, region:Rectangle, scaleX:Float, scaleY:Float):ITexture 
 	{
-		var subTexture:GLSubTexture = new GLSubTexture(id, region, new TextureTransform(scaleX, scaleY), this);
-        putTexture(subTexture);
+		//var subTexture:GLSubTexture = new GLSubTexture(id, region, new TextureTransform(scaleX, scaleY), null, null);
+        //putTexture(subTexture);
 		
-		return subTexture;
+		//return subTexture;
+		return null;
 	}
 	
 	public function createSubTexture2(id:Int, region:Rectangle, scaleX:Float, scaleY:Float, scaleFactor:Float) 
 	{
-		var subTexture:GLSubTexture = new GLSubTexture(id, region, new TextureTransform(scaleX, scaleY), this, scaleFactor);
-        putTexture(subTexture);
+		//var subTexture:GLSubTexture = new GLSubTexture(id, region, new TextureTransform(scaleX, scaleY), null, null, scaleFactor);
+        //putTexture(subTexture);
 		
-		return subTexture;
+		//return subTexture;
+		return null;
 	}
 }

@@ -6,7 +6,7 @@ class PooledMatrix extends Matrix
 {
 	private static var availableInstance:PooledMatrix;
 	
-	public static function get(a:Float, b:Float, c:Float, d:Float, tx:Float, ty:Float):PooledMatrix 
+	inline public static function get(a:Float, b:Float, c:Float, d:Float, tx:Float, ty:Float):PooledMatrix 
 	{
 		var instance:PooledMatrix = PooledMatrix.availableInstance;
 		
@@ -45,7 +45,7 @@ class PooledMatrix extends Matrix
 		disposed = true;
 	}
 	
-	override public function concat(m:Matrix)
+	inline override public function concat(m:Matrix)
 	{
 		var ma:Float = m.a;
 		var mb:Float = m.b;

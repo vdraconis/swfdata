@@ -13,7 +13,6 @@ class DrawerShader
 {
 	@:glFragmentSource( 
 		"
-		#version 100
 		precision highp float;
 		uniform vec4 fc0;
 		uniform vec4 fc1;
@@ -40,7 +39,6 @@ class DrawerShader
 	@:glVertexSource( 
 		
 		"
-		#version 100
 		precision highp float;
 		attribute vec4 va0;
 		attribute vec4 va1;

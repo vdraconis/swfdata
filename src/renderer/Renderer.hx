@@ -202,7 +202,9 @@ class Renderer
 				context3D.setBlendFactors(blendMode.src, blendMode.dst);
 			}
 			
-			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, Std.int(currentDrawingList.data.length / 4));
+			//TODO: move that to shader and shader should make map of uniforms because index 1 can be used for other registers with difference shaders
+			@:privateAccess _program3D.__vertexUniformMap.__uniforms[1].regCount = currentDrawingList.registersSize;
+			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, currentDrawingList.registersSize);
 			context3D.drawTriangles(drawingGeometry.indexBuffer, 0, trianglesNum);
 			
 			currentDrawingList.clear();

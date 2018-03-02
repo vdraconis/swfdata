@@ -61,7 +61,7 @@ class DrawingData
         this.colorData.concat(colorData);
     }
     
-    public function setFromDisplayObject(drawable:DisplayObjectData):Void
+    inline public function setFromDisplayObject(drawable:DisplayObjectData):Void
     {
         //isClear = false;
         

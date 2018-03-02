@@ -179,8 +179,8 @@ class Renderer
         for (i in 0...length)
         {
             var currentDrawingList:DrawingList = drawingList[i];
-            if (currentDrawingList == null)
-				return;
+            if (currentDrawingList == null || currentDrawingList.length == 0)
+				continue;
 				
 			setTexture(currentDrawingList.texture.textureSource.glData, context3D);
 			

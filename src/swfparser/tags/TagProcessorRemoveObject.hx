@@ -16,7 +16,7 @@ class TagProcessorRemoveObject extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagRemoveObject:SwfPackerTagRemoveObject = cast tag;
+        var tagRemoveObject:SwfPackerTagRemoveObject = Lang.as(tag, SwfPackerTagRemoveObject);
         //var currentDisplayObject:SpriteData = displayObjectContext.currentDisplayObject;
 		
 		context.placeObjectsMap.remove(tagRemoveObject.depth);

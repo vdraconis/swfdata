@@ -94,7 +94,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         
         if (displayContainer != null) 
         {
-            var objestAsSpriteData:SpriteData = cast(objectCloned, SpriteData);
+            var objestAsSpriteData:SpriteData = Lang.as(objectCloned, SpriteData);
             objestAsSpriteData.displayContainer = displayContainer;  //.clone() as DisplayObjectContainer;  ;
         }
     }

@@ -158,18 +158,15 @@ class TagProcessorPlaceObject extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagPlaceObject:SwfPackerTagPlaceObject = cast tag;
-        var currentDisplayObject:SpriteData = cast displayObjectContext.currentDisplayObject;
+        var tagPlaceObject:SwfPackerTagPlaceObject = Lang.as(tag, SwfPackerTagPlaceObject);
+        var currentDisplayObject:SpriteData = Lang.as(displayObjectContext.currentDisplayObject, SpriteData);
         
         if (currentDisplayObject == null) 
             return;  //probably main time line  ;
         
         var placedDO:DisplayObjectData = null;
         
-        var doAsMovieClip:MovieClipData = null;
-		
-		if (Std.is(currentDisplayObject, MovieClipData))
-			doAsMovieClip = cast currentDisplayObject;
+        var doAsMovieClip:MovieClipData = Lang.as(currentDisplayObject, MovieClipData);
 			
         var hasMatrix = tagPlaceObject.hasMatrix;
 		var hasColorTransform = tagPlaceObject.hasColorTransform;

@@ -18,7 +18,7 @@ class RemoveObjectExporter extends SwfPackerTagExporter
     {
         super.exportTag(tag, output);
         
-        var tagAsRemoveObject:SwfPackerTagRemoveObject = cast(tag, SwfPackerTagRemoveObject);
+        var tagAsRemoveObject:SwfPackerTagRemoveObject = Lang.as(tag, SwfPackerTagRemoveObject);
         
         if (tagAsRemoveObject.depth > 32767 || tagAsRemoveObject.depth < 0) 
             throw new Error("out of range");
@@ -31,7 +31,7 @@ class RemoveObjectExporter extends SwfPackerTagExporter
     {
         super.importTag(tag, input);
         
-        var tagAsRemoveObject:SwfPackerTagRemoveObject = cast(tag, SwfPackerTagRemoveObject);
+        var tagAsRemoveObject:SwfPackerTagRemoveObject = Lang.as(tag, SwfPackerTagRemoveObject);
         
         tagAsRemoveObject.depth = input.readShort();
         tagAsRemoveObject.characterId = input.readShort();

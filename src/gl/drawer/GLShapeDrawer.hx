@@ -34,7 +34,7 @@ class GLShapeDrawer extends GLDrawer
         
         GeomMath.concatMatrices(_drawMatrix, drawingData.transform, _drawMatrix);
         
-        var drawableAsShape:ShapeData = cast(drawable, ShapeData);
+        var drawableAsShape:ShapeData = Lang.as(drawable, ShapeData);
         
         drawRectangle(drawableAsShape._shapeBounds, _drawMatrix);
         

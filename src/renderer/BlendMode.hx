@@ -47,4 +47,17 @@ class BlendMode
         this.dst = dst;
         this.src = src;
     }
+	
+	public function copyFrom(other:BlendMode)
+	{
+		this.src = other.src;
+		this.dst = other.dst;
+	}
+	
+	public function equalse(other:BlendMode):Bool
+	{
+		if (this.src != other.src) return false;
+		else if (this.dst != other.dst) return false;
+		else return true;
+	}
 }

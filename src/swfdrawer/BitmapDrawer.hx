@@ -60,7 +60,7 @@ class BitmapDrawer implements IDrawer
 	@:access(swfdata)
 	function applyDrawStyle():Void
 	{
-		currentSubTexture = cast textureAtlas.getTexture(textureId);
+		currentSubTexture = Lang.as(textureAtlas.getTexture(textureId), BitmapSubTexture);
         
         var transform:TextureTransform = currentSubTexture._transform;
         var mulX:Float = transform.positionMultiplierX;

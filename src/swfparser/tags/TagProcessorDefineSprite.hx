@@ -38,7 +38,7 @@ class TagProcessorDefineSprite extends TagProcessorBase
         
         spritesDefined++;
         
-        var tagDefineSprite:SwfPackerTagDefineSprite = cast tag;
+        var tagDefineSprite:SwfPackerTagDefineSprite = Lang.as(tag, SwfPackerTagDefineSprite);
         var characterId:Int = tagDefineSprite.characterId;
         var frameCount:Int = tagDefineSprite.frameCount;
         

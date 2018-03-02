@@ -19,7 +19,7 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagSymbolClass:SwfPackerTagSymbolClass = cast(tag, SwfPackerTagSymbolClass);
+        var tagSymbolClass:SwfPackerTagSymbolClass = Lang.as(tag, SwfPackerTagSymbolClass);
         var symbolsLength:Int = tagSymbolClass.length;
         
         for (i in 0...symbolsLength)
@@ -36,7 +36,7 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
             }
             
             displayObject.libraryLinkage = currentLinkage;
-            context.library.addDisplayObjectByLinkage(cast(displayObject, SpriteData));
+            context.library.addDisplayObjectByLinkage(Lang.as(displayObject, SpriteData));
         }
     }
 }

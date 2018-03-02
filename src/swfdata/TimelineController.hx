@@ -120,8 +120,9 @@ class TimelineController implements ITimelineController
 	
     inline public function setFrameByObject(frame:Dynamic):Void
     {
-        if (Std.is(frame, String)) 
-            _currentFrame = timeline.lablesMap.get(cast frame);
+		var asString = Lang.as(frame, String);
+        if (asString != null) 
+            _currentFrame = timeline.lablesMap.get(asString);
         else 
         {
             _currentFrame = cast frame;
@@ -146,9 +147,10 @@ class TimelineController implements ITimelineController
         for (i in 0...displayObjectsCount)
 		{
             var currentDisplayObject:DisplayObjectData = displayObjectsList[i];
+			var currentUpdatableDisplayObject = Lang.as(currentDisplayObject, IUpdatable);
             
-            if (Std.is(currentDisplayObject, IUpdatable)) 
-                cast(currentDisplayObject, IUpdatable).update();
+            if (currentUpdatableDisplayObject != null) 
+                currentUpdatableDisplayObject.update();
         }
     }
     

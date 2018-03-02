@@ -79,7 +79,7 @@ class GLDrawer implements IDrawer
     {
         //trace('apply daraw', textureId);
         
-        currentSubTexture = cast(textureStorage.getGexture(textureId), GLSubTexture);
+        currentSubTexture = Lang.as(textureStorage.getGexture(textureId), GLSubTexture);
         
         var transform:TextureTransform = currentSubTexture.transform;
         var mulX:Float = transform.positionMultiplierX;

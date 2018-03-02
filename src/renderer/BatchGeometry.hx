@@ -12,6 +12,7 @@ class BatchGeometry extends BaseMesh
 	public var orderBuffer:VertexBuffer3D;
 	
 	public var uploaded:Bool = false;
+	public var setted:Bool = false;
 	
 	public function new(batchSize:Int, registersPerGeometry:Int) 
 	{
@@ -63,8 +64,12 @@ class BatchGeometry extends BaseMesh
 	
 	public function setToContext(context3D:Context3D) 
 	{
-		context3D.setVertexBufferAt(0, vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);
-		context3D.setVertexBufferAt(1, uvBuffer, 0, Context3DVertexBufferFormat.FLOAT_2);
-		context3D.setVertexBufferAt(2, orderBuffer, 0, Context3DVertexBufferFormat.FLOAT_1);
+		if (!setted)
+		{
+			setted = true;
+			context3D.setVertexBufferAt(0, vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);
+			context3D.setVertexBufferAt(1, uvBuffer, 0, Context3DVertexBufferFormat.FLOAT_2);
+			context3D.setVertexBufferAt(2, orderBuffer, 0, Context3DVertexBufferFormat.FLOAT_1);
+		}
 	}
 }

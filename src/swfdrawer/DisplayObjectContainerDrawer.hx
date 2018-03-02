@@ -18,7 +18,7 @@ class DisplayObjectContainerDrawer implements IDrawer
     
     public function draw(drawable:DisplayObjectData, drawingData:DrawingData)
     {
-        var displayObjectContainer:IDisplayObjectContainer = cast(drawable, IDisplayObjectContainer);
+        var displayObjectContainer:IDisplayObjectContainer = Lang.as(drawable, IDisplayObjectContainer);
         
         var drawableTrasnform:Matrix = drawable.transform;
         

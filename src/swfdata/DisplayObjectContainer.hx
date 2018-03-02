@@ -29,7 +29,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         return displayObjectsPlacedCount;
     }
     
-    public function destroy():Void
+    public function destroy()
     {
         //depthMap = null;
         
@@ -45,7 +45,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
     
-    public function addDisplayObject(displayObjectData:DisplayObjectData):Void
+    public function addDisplayObject(displayObjectData:DisplayObjectData)
     {
         //if (!depthAndCharactersMapInitialize)
         //{
@@ -79,9 +79,11 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         
         for (i in 0...childsCount){
             currentDisplayObject = currentDisplayList[i];
+			
+			var currentContainer = Lang.as(currentDisplayObject, IDisplayObjectContainer);
             
-            if (Std.is(currentDisplayObject, IDisplayObjectContainer)) 
-                return cast(currentDisplayObject, IDisplayObjectContainer).getChildByName(name);
+            if (currentContainer != null) 
+                return currentContainer.getChildByName(name);
         }
         
         return null;
@@ -92,43 +94,43 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     //	return charactersMap? charactersMap[characterId]:null;
     //}
     
-    public function gotoAndPlayAll(frameIndex:Int):Void
+    public function gotoAndPlayAll(frameIndex:Int)
     {
         for (i in 0...displayObjectsPlacedCount	)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
+			var currentTimlineContainer = Lang.as(currentChild, ITimelineContainer);
 			
-            if (Std.is(currentChild, ITimelineContainer)) 
-            {
-                cast(_displayObjects[i], ITimelineContainer).gotoAndPlayAll(frameIndex);
-            }
+            if (currentTimlineContainer != null) 
+                currentTimlineContainer.gotoAndPlayAll(frameIndex);
         }
     }
     
-    public function gotoAndStopAll(frameIndex:Int):Void
+    public function gotoAndStopAll(frameIndex:Int)
     {
         for (i in 0...displayObjectsPlacedCount)
 		{
-            var currentDisplayData:DisplayObjectData = _displayObjects[i];
-            if (Std.is(currentDisplayData, ITimelineContainer)) 
-                cast(currentDisplayData, ITimelineContainer).gotoAndStopAll(frameIndex);
+            var currentChild:DisplayObjectData = _displayObjects[i];
+			var currentTimlineContainer = Lang.as(currentChild, ITimelineContainer);
+			
+            if (currentTimlineContainer != null) 
+                currentTimlineContainer.gotoAndStopAll(frameIndex);
         }
     }
     
-    public function update():Void
+    public function update()
     {
         for (i in 0...displayObjectsPlacedCount)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
+			//var currentChildAsUpdatable = Lang.as(currentChild, IUpdatable);
 			
-            if (Std.is(currentChild, IUpdatable)) 
-            {
-				cast (currentChild, IUpdatable).update();
-            }
+			if(currentChild.displayObjectType >= 2)
+				untyped currentChild.update();
         }
     }
     
-    private function fillData(obj:DisplayObjectContainer):Void
+    private function fillData(obj:DisplayObjectContainer)
     {
         var objDisplayObjects:Array<DisplayObjectData> = obj.displayObjects;
 		

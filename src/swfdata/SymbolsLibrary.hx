@@ -56,8 +56,9 @@ class SymbolsLibrary
     
     public function addDisplayObject(id:Int, displayObject:DisplayObjectData):Void
     {
-        if (Std.is(displayObject, ShapeData)) 
-            shapesList.push(cast(displayObject, ShapeData));  //	spritesList.push(displayObject);    //if (displayObject is SpriteData)  ;
+		var asShapeData = Lang.as(displayObject, ShapeData);
+        if (asShapeData != null) 
+            shapesList.push(asShapeData);  //	spritesList.push(displayObject);    //if (displayObject is SpriteData)  ;
         
         __library[id] = displayObject;
     }

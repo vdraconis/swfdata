@@ -44,6 +44,8 @@ class Renderer
     
     var currentTexture:TextureBase = null;
     var currentSamplerData:SamplerData;
+	
+	var currentBlendMode:BlendMode = new BlendMode(null, null);
     
     var useBlendModeRendering:Bool = true;
     
@@ -52,6 +54,7 @@ class Renderer
 	var context3D:Context3D;
 	
 	var projection:ProjectionMatrix = new ProjectionMatrix().ortho(800, 800, null);
+	var isViewportUpdated:Bool = true;
     
     public function new(context3D:Context3D, textureStorage:TextureStorage)
     {
@@ -163,9 +166,13 @@ class Renderer
         //context.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //normal
         //context.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //layer
         context3D.setProgram(_program3D);
-        context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, projection, true);
-        context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
-        context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
+		if (isViewportUpdated)
+		{
+			isViewportUpdated = false;
+			context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, projection, true);
+			context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
+			context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
+		}
 		
 		drawingGeometry.setToContext(context3D);
 		currentSamplerData.apply(context3D, 0);
@@ -188,9 +195,14 @@ class Renderer
 			var trianglesNum:Int = Std.int(registersSize * triangleToRegisterRate);
 			
 			var blendMode:BlendMode = blendModes[currentDrawingList.blendMode];
-			context3D.setBlendFactors(blendMode.src, blendMode.dst);
 			
-			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, currentDrawingList.data.length);
+			if (!currentBlendMode.equalse(blendMode)) 
+			{
+				currentBlendMode.copyFrom(blendMode);
+				context3D.setBlendFactors(blendMode.src, blendMode.dst);
+			}
+			
+			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, Std.int(currentDrawingList.data.length / 4));
 			context3D.drawTriangles(drawingGeometry.indexBuffer, 0, trianglesNum);
 			
 			currentDrawingList.clear();

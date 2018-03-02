@@ -7,6 +7,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import renderer.ProjectionMatrix;
 import renderer.Renderer;
 import swfdata.DisplayObjectContainer;
 import swfdata.DisplayObjectData;
@@ -34,8 +35,11 @@ class GlStage extends DisplayObjectContainer
 		
 		this.stage = stage;
 		
+		
 		mouseData = new MouseData();
 		renderer = new Renderer(context3D, textureStorage);
+		@:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
+		
 		drawer = new GLDisplayListDrawer(textureStorage, mouseData.mousePosition);
 		drawer.target = renderer;
 		
@@ -90,10 +94,7 @@ class GlStage extends DisplayObjectContainer
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
 			
-            if (Std.is(currentChild, IUpdatable)) 
-            {
-				cast (currentChild, IUpdatable).update();
-            }
+            Lang.as(currentChild, IUpdatable).update();
         }
 		
 		

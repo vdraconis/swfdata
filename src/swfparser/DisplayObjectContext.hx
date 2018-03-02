@@ -42,7 +42,7 @@ class DisplayObjectContext
         }
         else 
         {
-            currentDisplayObjectAsMovieClip = cast(currentDisplayObject, MovieClipData);
+            currentDisplayObjectAsMovieClip = Lang.as(currentDisplayObject, MovieClipData);
             updateFrame();
         }
     }

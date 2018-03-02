@@ -45,7 +45,7 @@ class BitmapTextureAtlas implements ITextureAtlas
     public function putTexture(texture:ITexture):Void
     {
         texturesCount++;
-        subTextures[texture.id] = Lang.as(texture, BitmapSubTexture);
+        subTextures[texture.id] = Lang.as2(texture, BitmapSubTexture);
     }
     
     public function createSubTexture(id:Int, region:Rectangle, scaleX:Float, scaleY:Float):ITexture

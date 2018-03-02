@@ -32,7 +32,7 @@ class DefineSpriteExporter extends SwfPackerTagExporter
     {
         super.exportTag(tag, output);
         
-        var tagAsSpriteDefine:SwfPackerTagDefineSprite = Lang.as(tag, SwfPackerTagDefineSprite);
+        var tagAsSpriteDefine:SwfPackerTagDefineSprite = Lang.as2(tag, SwfPackerTagDefineSprite);
         
         var tagsCount:Int = tagAsSpriteDefine.tags.length;
         var frameCount:Int = tagAsSpriteDefine.frameCount;
@@ -69,7 +69,7 @@ class DefineSpriteExporter extends SwfPackerTagExporter
     {
         super.importTag(tag, input);
         
-        var tagAsSpriteDefine:SwfPackerTagDefineSprite = Lang.as(tag, SwfPackerTagDefineSprite);
+        var tagAsSpriteDefine:SwfPackerTagDefineSprite = Lang.as2(tag, SwfPackerTagDefineSprite);
         
         var characterId:Int = input.readShort();
         var frameCount:Int = input.readShort();

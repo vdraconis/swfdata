@@ -211,7 +211,7 @@ class PlaceObjectExporter extends SwfPackerTagExporter
     {
         super.exportTag(tag, output);
         
-        var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as(tag, SwfPackerTagPlaceObject);
+        var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as2(tag, SwfPackerTagPlaceObject);
         
         
         bitMask.mask = 0;
@@ -263,7 +263,7 @@ class PlaceObjectExporter extends SwfPackerTagExporter
 	
     inline override public function importTag(tag:SwfPackerTag, input:ByteArray):Void
     {
-        var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as(tag, SwfPackerTagPlaceObject);
+        var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as2(tag, SwfPackerTagPlaceObject);
         
         var mask:Int = input.readUnsignedByte();
         bitMask.mask = mask;

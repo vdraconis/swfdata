@@ -7,6 +7,7 @@ import swfdata.ShapeData;
 import swfdata.atlas.BitmapTextureAtlas;
 import swfdata.atlas.ITextureAtlas;
 import swfdrawer.data.DrawingData;
+import utils.DisplayObjectUtils;
 
 class ShapeDrawer extends BitmapDrawer
 {
@@ -18,12 +19,12 @@ class ShapeDrawer extends BitmapDrawer
     {
         super(mousePoint);
         
-        this.textureAtlas = Lang.as(atlas, BitmapTextureAtlas);
+        this.textureAtlas = Lang.as2(atlas, BitmapTextureAtlas);
     }
     
     function set_atlas(value:ITextureAtlas):ITextureAtlas
     {
-        textureAtlas = Lang.as(value, BitmapTextureAtlas);
+        textureAtlas = Lang.as2(value, BitmapTextureAtlas);
         return value;
     }
     
@@ -39,7 +40,7 @@ class ShapeDrawer extends BitmapDrawer
         
         draginMatrix.concat(drawingData.transform);
         
-        var drawableAsShape:ShapeData = Lang.as(drawable, ShapeData);
+        var drawableAsShape:ShapeData = DisplayObjectUtils.asShape2(drawable, ShapeData);
         
         drawRectangle(drawableAsShape._shapeBounds, draginMatrix);
         

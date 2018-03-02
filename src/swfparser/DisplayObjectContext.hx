@@ -7,6 +7,7 @@ import swfdata.DisplayObjectTypes;
 import swfdata.MovieClipData;
 import swfdata.SpriteData;
 import swfdata.SwfdataInner;
+import utils.DisplayObjectUtils;
 
 
 
@@ -42,7 +43,7 @@ class DisplayObjectContext
         }
         else 
         {
-            currentDisplayObjectAsMovieClip = Lang.as(currentDisplayObject, MovieClipData);
+            currentDisplayObjectAsMovieClip = DisplayObjectUtils.asMovieClip2(currentDisplayObject);
             updateFrame();
         }
     }

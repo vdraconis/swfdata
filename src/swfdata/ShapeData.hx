@@ -1,6 +1,7 @@
 package swfdata;
 
 import flash.geom.*;
+import utils.DisplayObjectUtils;
 
 class ShapeData extends DisplayObjectData
 {
@@ -63,7 +64,7 @@ class ShapeData extends DisplayObjectData
     {
         super.setDataTo(objectCloned);
         
-        var objectAsShapeData:ShapeData = Lang.as(objectCloned, ShapeData);
+        var objectAsShapeData:ShapeData = DisplayObjectUtils.asShape2(objectCloned);
         
         objectAsShapeData.shapeBounds = _shapeBounds;
         

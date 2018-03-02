@@ -12,6 +12,7 @@ import renderer.Renderer;
 import swfdata.DisplayObjectContainer;
 import swfdata.DisplayObjectData;
 import swfdata.atlas.TextureStorage;
+import utils.DisplayObjectUtils;
 
 class GlStage extends DisplayObjectContainer
 {
@@ -90,13 +91,10 @@ class GlStage extends DisplayObjectContainer
 		if (handleMouse)
 			onMouseMove();
 			
-	   for (i in 0...displayObjectsPlacedCount)
+		for (i in 0...displayObjectsPlacedCount)
 		{
-			var currentChild:DisplayObjectData = _displayObjects[i];
-			
-            Lang.as(currentChild, IUpdatable).update();
+            DisplayObjectUtils.asUpdatable2(_displayObjects[i]).update();
         }
-		
 		
 		renderer.begin();
 		

@@ -60,7 +60,7 @@ class GraphicsDrawer implements IDrawer
 	@:access(swfdata)
 	function applyDrawStyle():Void
 	{
-		currentSubTexture = Lang.as(textureAtlas.getTexture(textureId), BitmapSubTexture);
+		currentSubTexture = Lang.as2(textureAtlas.getTexture(textureId), BitmapSubTexture);
         
         var transform:TextureTransform = currentSubTexture._transform;
         var mulX:Float = transform.positionMultiplierX;

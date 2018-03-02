@@ -6,6 +6,7 @@ import swfdata.DisplayObjectData;
 import swfdata.IDisplayObjectContainer;
 import swfdrawer.data.DrawingData;
 import swfdrawer.data.PooledMatrix;
+import utils.DisplayObjectUtils;
 
 class DisplayObjectContainerDrawer implements IDrawer
 {
@@ -18,7 +19,7 @@ class DisplayObjectContainerDrawer implements IDrawer
     
     public function draw(drawable:DisplayObjectData, drawingData:DrawingData)
     {
-        var displayObjectContainer:IDisplayObjectContainer = Lang.as(drawable, IDisplayObjectContainer);
+        var displayObjectContainer:IDisplayObjectContainer = DisplayObjectUtils.asDisplayObjectContainer2(drawable);
         
         var drawableTrasnform:Matrix = drawable.transform;
         

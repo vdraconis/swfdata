@@ -1,4 +1,5 @@
 package swfdata;
+import utils.DisplayObjectUtils;
 
 class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 {
@@ -94,7 +95,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         
         if (displayContainer != null) 
         {
-            var objestAsSpriteData:SpriteData = Lang.as(objectCloned, SpriteData);
+            var objestAsSpriteData:SpriteData = DisplayObjectUtils.asSpriteData2(objectCloned);
             objestAsSpriteData.displayContainer = displayContainer;  //.clone() as DisplayObjectContainer;  ;
         }
     }

@@ -1,4 +1,5 @@
 package swfdata;
+import utils.DisplayObjectUtils;
 
 /**
 * Библиотека символов, шейпы, спрайты и тд по чар идам или линкейджам 
@@ -56,7 +57,7 @@ class SymbolsLibrary
     
     public function addDisplayObject(id:Int, displayObject:DisplayObjectData):Void
     {
-		var asShapeData = Lang.as(displayObject, ShapeData);
+		var asShapeData = DisplayObjectUtils.asShape(displayObject);
         if (asShapeData != null) 
             shapesList.push(asShapeData);  //	spritesList.push(displayObject);    //if (displayObject is SpriteData)  ;
         

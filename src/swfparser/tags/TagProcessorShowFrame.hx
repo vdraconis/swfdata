@@ -28,7 +28,7 @@ class TagProcessorShowFrame extends TagProcessorBase
         if (currentDisplayObject == null) 
             return;
         
-        var tagShowFrame:SwfPackerTagShowFrame = Lang.as(tag, SwfPackerTagShowFrame);
+        var tagShowFrame:SwfPackerTagShowFrame = Lang.as2(tag, SwfPackerTagShowFrame);
         
         var container:DisplayObjectContainer = displayObjectContext.currentContainer;
         //trace('show frame', context.displayObjectContext.currentDisplayObjectAsMovieClip? context.displayObjectContext.currentDisplayObjectAsMovieClip.currentFrame:"");

@@ -3,6 +3,7 @@ package swfdata;
 import swfdata.DisplayObjectData;
 import swfdata.IDisplayObjectContainer;
 import swfdata.ITimelineContainer;
+import utils.DisplayObjectUtils;
 
 class DisplayObjectContainer implements IDisplayObjectContainer
 {
@@ -80,7 +81,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         for (i in 0...childsCount){
             currentDisplayObject = currentDisplayList[i];
 			
-			var currentContainer = Lang.as(currentDisplayObject, IDisplayObjectContainer);
+			var currentContainer = DisplayObjectUtils.asDisplayObjectContainer(currentDisplayObject);
             
             if (currentContainer != null) 
                 return currentContainer.getChildByName(name);
@@ -96,10 +97,10 @@ class DisplayObjectContainer implements IDisplayObjectContainer
     
     public function gotoAndPlayAll(frameIndex:Int)
     {
-        for (i in 0...displayObjectsPlacedCount	)
+        for (i in 0...displayObjectsPlacedCount)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
-			var currentTimlineContainer = Lang.as(currentChild, ITimelineContainer);
+			var currentTimlineContainer = DisplayObjectUtils.asTimlineContainer(currentChild);
 			
             if (currentTimlineContainer != null) 
                 currentTimlineContainer.gotoAndPlayAll(frameIndex);
@@ -111,7 +112,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         for (i in 0...displayObjectsPlacedCount)
 		{
             var currentChild:DisplayObjectData = _displayObjects[i];
-			var currentTimlineContainer = Lang.as(currentChild, ITimelineContainer);
+			var currentTimlineContainer = DisplayObjectUtils.asTimlineContainer(currentChild);
 			
             if (currentTimlineContainer != null) 
                 currentTimlineContainer.gotoAndStopAll(frameIndex);
@@ -123,9 +124,9 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         for (i in 0...displayObjectsPlacedCount)
 		{
 			var currentChild:DisplayObjectData = _displayObjects[i];
-			//var currentChildAsUpdatable = Lang.as(currentChild, IUpdatable);
+			var currentChildAsUpdatable = DisplayObjectUtils.asUpdatable(currentChild);
 			
-			if(currentChild.displayObjectType >= 2)
+			if(currentChildAsUpdatable != null)
 				untyped currentChild.update();
         }
     }

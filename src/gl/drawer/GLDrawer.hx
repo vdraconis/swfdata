@@ -223,8 +223,9 @@ class GLDrawer implements IDrawer
         //}
         //else 
         //Genome2D.g2d_instance.g2d_context.drawMatrix(texture, drawMatrix.a, drawMatrix.b, drawMatrix.c, drawMatrix.d, transform.tx, transform.ty, color.r, color.g, color.b, color.a);
-    
-		renderer.draw(texture, drawMatrix, color, drawingData.blendMode);
+        // TODO рендерить маску как маску, а не как спрайт (пока убрал)
+        if (!isMask)
+            renderer.draw(texture, drawMatrix, color, drawingData.blendMode);
 		
         //clearMaskData();
         

@@ -69,10 +69,6 @@ class Renderer
             drawingGeometry.uploadToGpu(context3D);
         }
         
-        #if debug
-			context3D.enableErrorChecking = true;
-		#end
-        
         _program3D = new BaseAgalShader().makePrgoram(context3D);
     }
     
@@ -122,9 +118,10 @@ class Renderer
             ty = ty - pivotX * b - pivotY * d;
         }
         
-        //TODO: менять лист ка ктолько поменяется текстура
+        //TODO: optimisation
         var currentDrawingList:DrawingList = getDrawingList();
-        if (currentDrawingList.isFull || (useBlendModeRendering && currentDrawingList.blendMode != blendMode))
+		var currentDrawingTexture = currentDrawingList.texture;
+        if ((currentDrawingTexture != null && currentDrawingTexture.textureSource.glData != texture.textureSource.glData) || currentDrawingList.isFull || (useBlendModeRendering && currentDrawingList.blendMode != blendMode))
         {
             drawingListSize++;
             currentDrawingList = getDrawingList();

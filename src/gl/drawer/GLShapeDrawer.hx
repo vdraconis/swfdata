@@ -29,11 +29,9 @@ class GLShapeDrawer extends GLDrawer
         _drawMatrix.identity();
         
         if (drawable.transform != null) 
-        {
-            GeomMath.concatMatrices(_drawMatrix, drawable.transform, _drawMatrix);
-        }
+            _drawMatrix.concat(drawable.transform);
         
-        GeomMath.concatMatrices(_drawMatrix, drawingData.transform, _drawMatrix);
+        _drawMatrix.concat(drawingData.transform);
         
         var drawableAsShape:ShapeData = DisplayObjectUtils.asShape2(drawable);
         

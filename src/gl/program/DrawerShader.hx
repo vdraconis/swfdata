@@ -1,17 +1,10 @@
 package gl.program;
 
-import openfl.display.Shader;
-import openfl.utils.ByteArray;
-
-#if (!display && !macro)
-@:autoBuild(openfl._internal.macros.ShaderMacro.build())
-@:build(openfl._internal.macros.ShaderMacro.build())
-#end
-
+import renderer.Renderer;
 
 class DrawerShader
 {
-	@:glFragmentSource( 
+	var __glFragmentSource:String = 
 		"
 		precision highp float;
 		uniform vec4 fc0;
@@ -33,18 +26,16 @@ class DrawerShader
 			if (any(lessThan(ft1.wwww, vec4(0)))) discard;
 			gl_FragColor = ft0; // mov
 		}
-		"
-	)
+		";
 	
-	@:glVertexSource( 
-		
+	var __glVertexSource:String = 
 		"
 		precision highp float;
 		attribute vec4 va0;
 		attribute vec4 va1;
 		attribute vec4 va2;
 		uniform mat4 vc0;
-		uniform vec4 vc4[200];
+		uniform vec4 vc4["+ Renderer.MAX_VERTEX_CONSTANTS +"];
 		varying vec4 v2;
 		varying vec4 v1;
 		varying vec4 v0;
@@ -75,15 +66,10 @@ class DrawerShader
 			v2 = vc4[index + 4]; // mov
 			gl_Position *= vcPositionScale;
 		}
-		"
-		
-	)
+		";
 	
 	public var glVertexSource(get, set):String;
 	public var glFragmentSource(get, set):String;
-	
-	var __glVertexSource:String;
-	var __glFragmentSource:String;
 	
 	public function new () 
 	{

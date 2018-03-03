@@ -34,7 +34,7 @@ class PooledMatrix extends Matrix
 		super(a, b, c, d, tx, ty);
 	}
 	
-	public function dispose() 
+	inline public function dispose() 
 	{
 		if (disposed)
 			return;

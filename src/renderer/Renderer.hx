@@ -22,7 +22,7 @@ class Renderer
     public var alphaThreshold(get, set):Float;
 
     static inline var DEFAULT_THRESHOLD:Float = 0.1;
-    static inline var MAX_VERTEX_CONSTANTS:Int = 204;  //may change in different profiles  
+    public static inline var MAX_VERTEX_CONSTANTS:Int = 204;  //may change in different profiles  
     
     static var registersPerGeometry:Int = 5;
     static var batchRegistersSize:Int = (MAX_VERTEX_CONSTANTS - 4);
@@ -33,7 +33,7 @@ class Renderer
     
     static var blendModes:Vector<BlendMode> = BlendMode.getBlendModesList();
 	
-	static var _program3D:Program3D;
+	static var glProgram:BaseGlProgram;
     static var drawingList:Array<DrawingList> = new Array<DrawingList>();
     
 	public var textureStorage:TextureStorage;
@@ -72,7 +72,8 @@ class Renderer
             drawingGeometry.uploadToGpu(context3D);
         }
         
-        _program3D = new BaseAgalShader().makePrgoram(context3D);
+        glProgram = new BaseGlProgram();
+		glProgram.makePrgoram(context3D);
     }
     
     private function set_smooth(value:Bool):Bool
@@ -165,7 +166,7 @@ class Renderer
         
         //context.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //normal
         //context.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //layer
-        context3D.setProgram(_program3D);
+        context3D.setProgram(glProgram.program);
 		if (isViewportUpdated)
 		{
 			isViewportUpdated = false;
@@ -202,8 +203,7 @@ class Renderer
 				context3D.setBlendFactors(blendMode.src, blendMode.dst);
 			}
 			
-			//TODO: move that to shader and shader should make map of uniforms because index 1 can be used for other registers with difference shaders
-			@:privateAccess _program3D.__vertexUniformMap.__uniforms[1].regCount = currentDrawingList.registersSize;
+			glProgram.setUniformRegistersCount("vc4", currentDrawingList.registersSize);
 			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, currentDrawingList.registersSize);
 			context3D.drawTriangles(drawingGeometry.indexBuffer, 0, trianglesNum);
 			

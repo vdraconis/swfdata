@@ -37,7 +37,7 @@ class GlStage extends DisplayObjectContainer
 		
 		mouseData = new MouseData();
 		renderer = new Renderer(context3D, textureStorage);
-		@:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
+		@:privateAccess renderer.projection = ProjectionMatrix.getOrtho(stage.stageWidth, stage.stageHeight, null);
 		
 		drawer = new GLDisplayListDrawer(textureStorage, mouseData.mousePosition);
 		drawer.target = renderer;
@@ -52,7 +52,7 @@ class GlStage extends DisplayObjectContainer
 	private function onResize(e:Event):Void
     {
         @:privateAccess renderer.isViewportUpdated = true;
-        @:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
+        @:privateAccess renderer.projection = ProjectionMatrix.getOrtho(stage.stageWidth, stage.stageHeight, null);
     }
 
 	private function onRightDown(e:MouseEvent):Void

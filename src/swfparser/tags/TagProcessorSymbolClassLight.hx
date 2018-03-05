@@ -5,6 +5,7 @@ import swfdata.SpriteData;
 import swfdata.datatags.SwfPackerTag;
 import swfdata.datatags.SwfPackerTagSymbolClass;
 import swfparser.SwfParserContext;
+import utils.DisplayObjectUtils;
 /**
 * Тут получаем список ликейджев из библиотеки. Они идут парами characterId, linkageId
 */
@@ -19,7 +20,7 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagSymbolClass:SwfPackerTagSymbolClass = cast(tag, SwfPackerTagSymbolClass);
+        var tagSymbolClass:SwfPackerTagSymbolClass = Lang.as2(tag, SwfPackerTagSymbolClass);
         var symbolsLength:Int = tagSymbolClass.length;
         
         for (i in 0...symbolsLength)
@@ -36,7 +37,7 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
             }
             
             displayObject.libraryLinkage = currentLinkage;
-            context.library.addDisplayObjectByLinkage(cast(displayObject, SpriteData));
+            context.library.addDisplayObjectByLinkage(DisplayObjectUtils.asSpriteData2(displayObject));
         }
     }
 }

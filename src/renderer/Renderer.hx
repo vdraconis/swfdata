@@ -22,7 +22,7 @@ class Renderer
     public var alphaThreshold(get, set):Float;
 
     static inline var DEFAULT_THRESHOLD:Float = 0.1;
-    static inline var MAX_VERTEX_CONSTANTS:Int = 204;  //may change in different profiles  
+    public static inline var MAX_VERTEX_CONSTANTS:Int = 204;  //may change in different profiles  
     
     static var registersPerGeometry:Int = 5;
     static var batchRegistersSize:Int = (MAX_VERTEX_CONSTANTS - 4);
@@ -33,7 +33,7 @@ class Renderer
     
     static var blendModes:Vector<BlendMode> = BlendMode.getBlendModesList();
 	
-	static var _program3D:Program3D;
+	static var glProgram:BaseGlProgram;
     static var drawingList:Array<DrawingList> = new Array<DrawingList>();
     
 	public var textureStorage:TextureStorage;
@@ -44,6 +44,8 @@ class Renderer
     
     var currentTexture:TextureBase = null;
     var currentSamplerData:SamplerData;
+	
+	var currentBlendMode:BlendMode = new BlendMode(null, null);
     
     var useBlendModeRendering:Bool = true;
     
@@ -51,7 +53,8 @@ class Renderer
 	
 	var context3D:Context3D;
 	
-	public var projection:ProjectionMatrix;
+	var projection:ProjectionMatrix = new ProjectionMatrix().ortho(800, 800, null);
+	var isViewportUpdated:Bool = true;
     
     public function new(context3D:Context3D, textureStorage:TextureStorage)
     {
@@ -69,7 +72,8 @@ class Renderer
             drawingGeometry.uploadToGpu(context3D);
         }
         
-        _program3D = new BaseAgalShader().makePrgoram(context3D);
+        glProgram = new BaseGlProgram();
+		glProgram.makePrgoram(context3D);
     }
     
     private function set_smooth(value:Bool):Bool
@@ -162,10 +166,14 @@ class Renderer
         
         //context.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //normal
         //context.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA); //layer
-        context3D.setProgram(_program3D);
-        context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, projection, true);
-        context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
-        context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
+        context3D.setProgram(glProgram.program);
+		if (isViewportUpdated)
+		{
+			isViewportUpdated = false;
+			context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, projection, true);
+			context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
+			context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
+		}
 		
 		drawingGeometry.setToContext(context3D);
 		currentSamplerData.apply(context3D, 0);
@@ -188,9 +196,15 @@ class Renderer
 			var trianglesNum:Int = Std.int(registersSize * triangleToRegisterRate);
 			
 			var blendMode:BlendMode = blendModes[currentDrawingList.blendMode];
-			context3D.setBlendFactors(blendMode.src, blendMode.dst);
 			
-			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, currentDrawingList.data.length);
+			if (!currentBlendMode.equalse(blendMode)) 
+			{
+				currentBlendMode.copyFrom(blendMode);
+				context3D.setBlendFactors(blendMode.src, blendMode.dst);
+			}
+			
+			glProgram.setUniformRegistersCount("vc4", currentDrawingList.registersSize);
+			context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, currentDrawingList.data, currentDrawingList.registersSize);
 			context3D.drawTriangles(drawingGeometry.indexBuffer, 0, trianglesNum);
 			
 			currentDrawingList.clear();

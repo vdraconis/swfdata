@@ -2,13 +2,12 @@ package swfdrawer;
 
 import openfl.geom.Matrix;
 import openfl.geom.Point;
-import openfl.geom.Rectangle;
-import swfdata.atlas.ITextureAtlas;
 import swfdata.DisplayObjectData;
 import swfdata.ShapeData;
-import swfdata.SwfdataInner;
-import swfdrawer.GraphicsDrawer;
+import swfdata.atlas.BitmapTextureAtlas;
+import swfdata.atlas.ITextureAtlas;
 import swfdrawer.data.DrawingData;
+import utils.DisplayObjectUtils;
 
 class ShapeDrawer extends BitmapDrawer
 {
@@ -20,12 +19,12 @@ class ShapeDrawer extends BitmapDrawer
     {
         super(mousePoint);
         
-        this.textureAtlas = cast atlas;
+        this.textureAtlas = Lang.as2(atlas, BitmapTextureAtlas);
     }
     
     function set_atlas(value:ITextureAtlas):ITextureAtlas
     {
-        textureAtlas = cast value;
+        textureAtlas = Lang.as2(value, BitmapTextureAtlas);
         return value;
     }
     
@@ -41,7 +40,7 @@ class ShapeDrawer extends BitmapDrawer
         
         draginMatrix.concat(drawingData.transform);
         
-        var drawableAsShape:ShapeData = cast(drawable, ShapeData);
+        var drawableAsShape:ShapeData = DisplayObjectUtils.asShape2(drawable, ShapeData);
         
         drawRectangle(drawableAsShape._shapeBounds, draginMatrix);
         

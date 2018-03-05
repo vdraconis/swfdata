@@ -8,6 +8,7 @@ import swfdata.SpriteData;
 import swfdata.datatags.SwfPackerTag;
 import swfdata.datatags.SwfPackerTagPlaceObject;
 import swfparser.SwfParserContext;
+import utils.DisplayObjectUtils;
 /**
 	 * Обрабатывает установку дисплей обжекта в форейм для текущего спрайта
 	 * Тут может быть объявлены такие важные вещи как
@@ -158,18 +159,15 @@ class TagProcessorPlaceObject extends TagProcessorBase
     {
         super.processTag(tag);
         
-        var tagPlaceObject:SwfPackerTagPlaceObject = cast tag;
-        var currentDisplayObject:SpriteData = cast displayObjectContext.currentDisplayObject;
+        var tagPlaceObject:SwfPackerTagPlaceObject = Lang.as2(tag, SwfPackerTagPlaceObject);
+        var currentDisplayObject:SpriteData = Lang.as2(displayObjectContext.currentDisplayObject, SpriteData);
         
         if (currentDisplayObject == null) 
             return;  //probably main time line  ;
         
         var placedDO:DisplayObjectData = null;
         
-        var doAsMovieClip:MovieClipData = null;
-		
-		if (Std.is(currentDisplayObject, MovieClipData))
-			doAsMovieClip = cast currentDisplayObject;
+        var doAsMovieClip:MovieClipData = DisplayObjectUtils.asMovieClip2(currentDisplayObject);
 			
         var hasMatrix = tagPlaceObject.hasMatrix;
 		var hasColorTransform = tagPlaceObject.hasColorTransform;

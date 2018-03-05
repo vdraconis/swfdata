@@ -1,7 +1,7 @@
 package swfdata;
 
-import flash.geom.Matrix;
-import flash.geom.Point;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
 
 class Rectagon
 {

@@ -1,7 +1,6 @@
 package gl;
 
 import openfl.events.Event;
-import renderer.ProjectionMatrix;
 import gl.drawer.GLDisplayListDrawer;
 import openfl.display.Stage;
 import openfl.display3D.Context3D;
@@ -9,14 +8,16 @@ import openfl.events.MouseEvent;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import renderer.ProjectionMatrix;
 import renderer.Renderer;
 import swfdata.DisplayObjectContainer;
 import swfdata.DisplayObjectData;
 import swfdata.atlas.TextureStorage;
+import utils.DisplayObjectUtils;
 
 class GlStage extends DisplayObjectContainer
 {
-	//public var viewPort:Rectangle;
+	public var viewPort:Rectangle = new Rectangle(0, 0, 800, 800);
 	var viewPortBuffer:Rectangle = new Rectangle(0, 0, 0, 0);
 	
 	var drawingMatrix:Matrix = new Matrix();
@@ -35,28 +36,28 @@ class GlStage extends DisplayObjectContainer
 		super();
 		
 		this.stage = stage;
-
+		
+		
 		mouseData = new MouseData();
 		renderer = new Renderer(context3D, textureStorage);
+		@:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
+		
 		drawer = new GLDisplayListDrawer(textureStorage, mouseData.mousePosition);
 		drawer.target = renderer;
-
-        setViewPort();
-
+		
 		stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightDown);
 		stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightUp);
-        stage.addEventListener(Event.RESIZE, setViewPort);
+		stage.addEventListener(Event.RESIZE, onResize);
 	}
-
-    private function setViewPort(?_):Void {
-        //viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-        renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
-
+	
+	private function onResize(e:Event):Void
+    {
+        @:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
     }
 
-	private function onRightDown(e:MouseEvent):Void 
+	private function onRightDown(e:MouseEvent):Void
 	{
 		mouseData.isRightDown = true;
 		e.stopImmediatePropagation();
@@ -97,16 +98,10 @@ class GlStage extends DisplayObjectContainer
 		if (handleMouse)
 			onMouseMove();
 			
-	   for (i in 0...displayObjectsPlacedCount)
+		for (i in 0...displayObjectsPlacedCount)
 		{
-			var currentChild:DisplayObjectData = _displayObjects[i];
-			
-            if (Std.is(currentChild, IUpdatable)) 
-            {
-				cast (currentChild, IUpdatable).update();
-            }
+            DisplayObjectUtils.asUpdatable2(_displayObjects[i]).update();
         }
-		
 		
 		renderer.begin();
 		

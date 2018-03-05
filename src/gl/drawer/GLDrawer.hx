@@ -75,11 +75,11 @@ class GLDrawer implements IDrawer
 	 * Apply sub texture draw transform
 	 */
 	@:access(swfdata)
-    public function applyDrawStyle():Void
+    inline public function applyDrawStyle():Void
     {
         //trace('apply daraw', textureId);
         
-        currentSubTexture = cast(textureStorage.getGexture(textureId), GLSubTexture);
+        currentSubTexture = Lang.as2(textureStorage.getGexture(textureId), GLSubTexture);
         
         var transform:TextureTransform = currentSubTexture.transform;
         var mulX:Float = transform.positionMultiplierX;
@@ -167,6 +167,7 @@ class GLDrawer implements IDrawer
     public function drawRectangle(drawingBounds:Rectangle, transform:Matrix):Void
     {
         drawMatrix.identity();
+		
         drawMatrix.concat(transform);
         
         applyDrawStyle();

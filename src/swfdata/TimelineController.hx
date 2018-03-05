@@ -1,4 +1,5 @@
 package swfdata;
+import utils.DisplayObjectUtils;
 
 @:access(swfdata)
 class TimelineController implements ITimelineController
@@ -120,8 +121,9 @@ class TimelineController implements ITimelineController
 	
     inline public function setFrameByObject(frame:Dynamic):Void
     {
-        if (Std.is(frame, String)) 
-            _currentFrame = timeline.lablesMap.get(cast frame);
+		var asString = Lang.as2(frame, String);
+        if (asString != null) 
+            _currentFrame = timeline.lablesMap.get(asString);
         else 
         {
             _currentFrame = cast frame;
@@ -146,9 +148,10 @@ class TimelineController implements ITimelineController
         for (i in 0...displayObjectsCount)
 		{
             var currentDisplayObject:DisplayObjectData = displayObjectsList[i];
+			var currentUpdatableDisplayObject = DisplayObjectUtils.asUpdatable(currentDisplayObject);
             
-            if (Std.is(currentDisplayObject, IUpdatable)) 
-                cast(currentDisplayObject, IUpdatable).update();
+            if (currentUpdatableDisplayObject != null) 
+                currentUpdatableDisplayObject.update();
         }
     }
     

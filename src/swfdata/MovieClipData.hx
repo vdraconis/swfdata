@@ -3,6 +3,7 @@ package swfdata;
 import openfl.geom.Matrix;
 import swfdata.SpriteData;
 import swfdata.Timeline;
+import utils.DisplayObjectUtils;
 
 class MovieClipData extends SpriteData implements ITimeline
 {
@@ -165,9 +166,10 @@ class MovieClipData extends SpriteData implements ITimeline
         
         for (i in 0...frameChildsCount){
             currentDisplayObject = currentDisplayList[i];
+			var currentDisplayObjectContainer = DisplayObjectUtils.asDisplayObjectContainer2(currentDisplayObject);
             
-            if (Std.is(currentDisplayObject, IDisplayObjectContainer)) 
-                return cast(currentDisplayObject, IDisplayObjectContainer).getChildByName(name);
+            if(currentDisplayObjectContainer != null) 
+                return currentDisplayObjectContainer.getChildByName(name);
         }
         
         return null;
@@ -187,7 +189,7 @@ class MovieClipData extends SpriteData implements ITimeline
     {
         super.setDataTo(objectCloned);
         
-        var objestAsSpriteData:MovieClipData = cast(objectCloned, MovieClipData);
+        var objestAsSpriteData:MovieClipData = Lang.as2(objectCloned, MovieClipData);
 		objestAsSpriteData.transform = new Matrix();
         objestAsSpriteData.timeline = timeline;
 		objestAsSpriteData.timelineController = new TimelineController(timeline);

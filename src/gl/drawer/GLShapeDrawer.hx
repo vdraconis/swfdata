@@ -8,6 +8,7 @@ import swfdata.ShapeData;
 import swfdata.atlas.ITextureAtlas;
 import swfdata.atlas.TextureStorage;
 import swfdrawer.data.DrawingData;
+import utils.DisplayObjectUtils;
 
 class GLShapeDrawer extends GLDrawer
 {
@@ -28,13 +29,11 @@ class GLShapeDrawer extends GLDrawer
         _drawMatrix.identity();
         
         if (drawable.transform != null) 
-        {
-            GeomMath.concatMatrices(_drawMatrix, drawable.transform, _drawMatrix);
-        }
+            _drawMatrix.concat(drawable.transform);
         
-        GeomMath.concatMatrices(_drawMatrix, drawingData.transform, _drawMatrix);
+        _drawMatrix.concat(drawingData.transform);
         
-        var drawableAsShape:ShapeData = cast(drawable, ShapeData);
+        var drawableAsShape:ShapeData = DisplayObjectUtils.asShape2(drawable);
         
         drawRectangle(drawableAsShape._shapeBounds, _drawMatrix);
         

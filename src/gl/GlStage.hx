@@ -11,13 +11,11 @@ import openfl.geom.Rectangle;
 import renderer.ProjectionMatrix;
 import renderer.Renderer;
 import swfdata.DisplayObjectContainer;
-import swfdata.DisplayObjectData;
 import swfdata.atlas.TextureStorage;
 import utils.DisplayObjectUtils;
 
 class GlStage extends DisplayObjectContainer
 {
-	public var viewPort:Rectangle = new Rectangle(0, 0, 800, 800);
 	var viewPortBuffer:Rectangle = new Rectangle(0, 0, 0, 0);
 	
 	var drawingMatrix:Matrix = new Matrix();
@@ -37,7 +35,6 @@ class GlStage extends DisplayObjectContainer
 		
 		this.stage = stage;
 		
-		
 		mouseData = new MouseData();
 		renderer = new Renderer(context3D, textureStorage);
 		@:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
@@ -54,6 +51,7 @@ class GlStage extends DisplayObjectContainer
 	
 	private function onResize(e:Event):Void
     {
+        @:privateAccess renderer.isViewportUpdated = true;
         @:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
     }
 

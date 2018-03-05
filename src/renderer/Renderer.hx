@@ -51,7 +51,7 @@ class Renderer
 	
 	var context3D:Context3D;
 	
-	var projection:ProjectionMatrix = new ProjectionMatrix().ortho(800, 800, null);
+	public var projection:ProjectionMatrix;
     
     public function new(context3D:Context3D, textureStorage:TextureStorage)
     {

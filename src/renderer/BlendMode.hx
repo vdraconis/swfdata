@@ -1,6 +1,6 @@
 package renderer;
 
-import openfl.Vector;
+import haxe.ds.Vector;
 import openfl.display3D.Context3DBlendFactor;
 
 class BlendMode

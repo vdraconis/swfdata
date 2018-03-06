@@ -1,25 +1,20 @@
 package renderer;
 
-import openfl.Vector;
+import haxe.ds.Vector;
 import openfl.display3D.Context3D;
 import openfl.display3D.Context3DCompareMode;
 import openfl.display3D.Context3DProgramType;
-import openfl.display3D.Context3DTextureFilter;
-import openfl.display3D.Program3D;
 import openfl.display3D.textures.TextureBase;
 import openfl.geom.Matrix;
-import openfl.geom.Rectangle;
-import renderer.BaseAgalShader2;
 import renderer.BatchGeometry;
 import swfdata.ColorData;
 import swfdata.atlas.GLSubTexture;
-import swfdata.atlas.GLTextureAtlas;
 import swfdata.atlas.TextureStorage;
 
 class Renderer
 {
     public var smooth(get, set):Bool;
-    public var alphaThreshold(get, set):Float;
+    //public var alphaThreshold(get, set):Float;
 
     static inline var DEFAULT_THRESHOLD:Float = 0.1;
     public static inline var MAX_VERTEX_CONSTANTS:Int = 204;  //may change in different profiles  
@@ -33,15 +28,16 @@ class Renderer
     
     static var blendModes:Vector<BlendMode> = BlendMode.getBlendModesList();
 	
-	static var glProgram:BaseGlProgram;
-    static var drawingList:Array<DrawingList> = new Array<DrawingList>();
+	var glProgram:BaseGlProgram;
+    var drawingList:Array<DrawingList> = new Array<DrawingList>();
     
 	public var textureStorage:TextureStorage;
 	
     var fragmentData:Vector<Float>;
 	
     var drawingListSize:Int = 0;
-    
+    var currentDrawingList:DrawingList;
+	
     var currentTexture:TextureBase = null;
     var currentSamplerData:SamplerData;
 	
@@ -93,16 +89,16 @@ class Renderer
         return _smooth;
     }
     
-    private function set_alphaThreshold(value:Float):Float
-    {
-        fragmentData[3] = value;
-        return value;
-    }
+    //private function set_alphaThreshold(value:Float):Float
+    //{
+    //    fragmentData[3] = value;
+    //    return value;
+   // }
     
-    private function get_alphaThreshold():Float
-    {
-        return fragmentData[3];
-    }
+    //private function get_alphaThreshold():Float
+    //{
+    //    return fragmentData[3];
+    //}
     
     inline public function draw(texture:GLSubTexture, matrix:Matrix, colorData:ColorData, blendMode:Int = 0)
     {
@@ -123,14 +119,21 @@ class Renderer
         }
         
         //TODO: optimisation
-        var currentDrawingList:DrawingList = getDrawingList();
-		var currentDrawingTexture = currentDrawingList.texture;
-        if ((currentDrawingTexture != null && currentDrawingTexture.textureSource.glData != texture.textureSource.glData) || currentDrawingList.isFull || (useBlendModeRendering && currentDrawingList.blendMode != blendMode))
-        {
-            drawingListSize++;
-            currentDrawingList = getDrawingList();
-            currentDrawingList.blendMode = blendMode;
-        }
+        if (currentDrawingList != null)
+		{
+			var currentDrawingTexture = currentDrawingList.texture;
+			if ((currentDrawingTexture != null && currentDrawingTexture.textureSource.glData != texture.textureSource.glData) || currentDrawingList.isFull || (useBlendModeRendering && currentDrawingList.blendMode != blendMode))
+			{
+				drawingListSize++;
+				currentDrawingList = getDrawingList();
+				currentDrawingList.blendMode = blendMode;
+			}
+		}
+		else
+		{
+			currentDrawingList = getDrawingList();
+		}
+		
         currentDrawingList.addDrawingData(a, b, c, d, tx, ty, texture, colorData);
     }
     
@@ -171,7 +174,7 @@ class Renderer
 		{
 			isViewportUpdated = false;
 			context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, projection, true);
-			context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
+			//context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, fragmentData, 2);
 			context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
 		}
 		
@@ -211,6 +214,7 @@ class Renderer
         }
         
         currentTexture = null;
+        currentDrawingList = null;
         drawingListSize = 0;
     }
     

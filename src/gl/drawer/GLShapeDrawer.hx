@@ -37,7 +37,7 @@ class GLShapeDrawer extends GLDrawer
         
         drawRectangle(drawableAsShape._shapeBounds, _drawMatrix);
         
-        cleanDrawStyle();
+        //cleanDrawStyle();
     }
 }
 

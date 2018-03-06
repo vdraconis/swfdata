@@ -109,11 +109,11 @@ class GlStage extends DisplayObjectContainer
 			isCheckDrawingBounds = drawingBound.width == 0 && drawingBound.height == 0;
 			
 			if (!isCheckDrawingBounds && drawingBound.intersects(viewPortBuffer)) {
-				trace('not on view');
+				//trace('not on view');
 				continue;
 			}
 			if (!spriteData.visible) {
-				trace('sprite is invisible');
+				//trace('sprite is invisible');
 				continue;
 			}
 			

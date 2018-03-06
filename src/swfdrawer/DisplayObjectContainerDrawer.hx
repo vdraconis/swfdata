@@ -44,12 +44,12 @@ class DisplayObjectContainerDrawer implements IDrawer
             var childDisplayObject:DisplayObjectData = displayObjects[i];
             
             drawingData.transform = drawableTransformClone;
+			
+			var isBlendModeChange:Bool = childDisplayObject.blendMode != 0 && drawable.blendMode == 0;
             
             // TODO странная ситуация с затиранием и блендингами родителей.
-            if (childDisplayObject.blendMode != 0 && !(drawable.blendMode != 0))
-            {
+            if (isBlendModeChange)
                 drawingData.blendMode = childDisplayObject.blendMode;
-            }
             
             displayListDrawer.draw(childDisplayObject, drawingData);
             
@@ -57,12 +57,15 @@ class DisplayObjectContainerDrawer implements IDrawer
             drawingData.isMasked = currentMaskedState;
             
             drawingColorData.setFromData(colorDataBuffer);
+			
             // возвращаем дате родительский блендинг
-            drawingData.blendMode = drawable.blendMode;
+			if(isBlendModeChange)
+				drawingData.blendMode = drawable.blendMode;
         }
         //drawingData.blendMode = drawable.blendMode;
         
-        drawingColorData.setFromData(colorDataBuffer);
+		//TODO: is last iteration call already set data?
+        //drawingColorData.setFromData(colorDataBuffer);
         drawableTransformClone.dispose();
         colorDataBuffer.dispose();
     }

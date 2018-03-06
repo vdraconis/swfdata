@@ -6,9 +6,9 @@ class DrawerShader
 {
 	var __glFragmentSource:String = 
 		"
-		precision highp float;
-		uniform vec4 fc0;
-		uniform vec4 fc1;
+		precision mediump float;
+		//uniform vec4 fc0;
+		//uniform vec4 fc1;
 		varying vec4 v0;
 		varying vec4 v1;
 		varying vec4 v2;
@@ -17,13 +17,13 @@ class DrawerShader
 			vec4 ft0;
 			vec4 ft1;
 			ft0 = texture2D(sampler0, v0.xy); // tex
-			ft0 = max(ft0, fc1); // max
+			//ft0 = max(ft0, fc1); // max
 			ft0.xyz = ft0.xyz / ft0.www; // div
 			ft0 = ft0 * v1; // mul
 			ft0 = ft0 + v2; // add
 			ft0.xyz = ft0.xyz * ft0.www; // mul
-			ft1.w = ft0.w - fc0.w; // sub
-			if (any(lessThan(ft1.wwww, vec4(0)))) discard;
+			//ft1.w = ft0.w - fc0.w; // sub
+			//if (any(lessThan(ft1.wwww, vec4(0)))) discard;
 			gl_FragColor = ft0; // mov
 		}
 		";

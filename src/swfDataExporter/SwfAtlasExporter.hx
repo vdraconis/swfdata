@@ -22,7 +22,10 @@ using utils.ReadUtils;
 @:access(openfl.display)
 class SwfAtlasExporter
 {
+	#if textureFromBytes
+	#else
     private var bitmapBytes:ByteArray = new ByteArray();
+	#end
 	
 	var textureStorage:TextureStorage;
 	var textureManager:TextureManager;
@@ -74,18 +77,25 @@ class SwfAtlasExporter
 		var width:Int = input.readShort();
 		var height:Int = input.readShort();
 		
+		#if textureFromBytes
+		var bitmapBytes = new ByteArray();
+		#else
 		bitmapBytes.length = 0;
+		#end
 		
 		input.readBytes(bitmapBytes, 0, bitmapSize);
 		
 		if (width < 2 || height < 2) 
 			trace("Error: something wrong with atlas data");
 			
+		#if !textureFromBytes
 		var atlasData:BitmapData = new BitmapData(width, height, true, 0x0);
-		
 		atlasData.image.setPixels (@:privateAccess atlasData.rect.__toLimeRectangle(), bitmapBytes, PixelFormat.BGRA32, bitmapBytes.endian);
+		#else
+		var atlasData = bitmapBytes;
+		#end
 		
-		var textureSource = new TextureSource(atlasData, textureManager);
+		var textureSource = new TextureSource(atlasData, width, height, textureManager);
 		
 		var atlasId = textureStorage.getNextTextureId();
 		

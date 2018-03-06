@@ -14,11 +14,13 @@ import swfdataexporter.PlaceObjectExporter;
 import swfdataexporter.SwfPackerTagExporter;
 import swfdataexporter.SymbolClassExporter;
 
+using Lang;
+
 class SwfTagExporter
 {
-    private var exporters:Dynamic = { };
-    private var importers:Dynamic = { };
-    private var tagConstructorsObject:Dynamic = { };
+    private var exporters:Array<SwfPackerTagExporter> = new Array();
+    private var importers:Array<SwfPackerTagExporter> = new Array();
+    private var tagConstructorsObject:Array<Class<SwfPackerTag>> = new Array();
     
     public function new()
     {
@@ -33,7 +35,8 @@ class SwfTagExporter
         //trace(tags.join("\n"));
         //trace("==========================");
         
-        for (i in 0...tagsCount){
+        for (i in 0...tagsCount)
+		{
             var exporter:SwfPackerTagExporter = exporters[tags[i].type];
             
             if (exporter != null) 
@@ -67,8 +70,8 @@ class SwfTagExporter
         
         if (importer != null) 
         {
-            var constructor:Class<Dynamic> = tagConstructorsObject[tagType];
-            var tag:SwfPackerTag = Type.createInstance(constructor, []);
+            var constructor = tagConstructorsObject[tagType];
+            var tag = constructor.createInstance();
             importer.importTag(tag, input);
             
             return tag;
@@ -78,7 +81,7 @@ class SwfTagExporter
         
         return null;
     }
-    
+	
     private function initialize():Void
     {
         importers[ExporerTypes.END] = exporters[0] = new SwfPackerTagExporter(ExporerTypes.END);

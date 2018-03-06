@@ -32,7 +32,9 @@ class TagProcessorSymbolClassLight extends TagProcessorBase
             
             if (displayObject == null) 
             {
+				#if debug
                 trace("Error: no symbol for linkage(symbol=" + currentCharacter + ", linkage=" + currentLinkage + ")");
+				#end
 				continue;
             }
             

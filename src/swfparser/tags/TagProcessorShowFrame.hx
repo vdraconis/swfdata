@@ -23,6 +23,8 @@ class TagProcessorShowFrame extends TagProcessorBase
 	@:access(swfdata)
     override public function processTag(tag:SwfPackerTag):Void
     {
+		var displayObjectContext = this.displayObjectContext;
+		
         var currentDisplayObject:SpriteData = displayObjectContext.currentDisplayObject;
         
         if (currentDisplayObject == null) 

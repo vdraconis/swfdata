@@ -22,10 +22,6 @@ class TagProcessorDefineSprite extends TagProcessorBase
 {
     private var swfDataParser:ISWFDataParser;
     
-    public static var spritesDefined:Int = 0;
-    
-    private static var defaultMatrix:Matrix = new Matrix();
-    
     public function new(context:SwfParserContext, swfDataParser:ISWFDataParser)
     {
         super(context);
@@ -36,9 +32,7 @@ class TagProcessorDefineSprite extends TagProcessorBase
     {
         super.processTag(tag);
         
-        spritesDefined++;
-        
-        var tagDefineSprite:SwfPackerTagDefineSprite = Lang.as(tag, SwfPackerTagDefineSprite);
+        var tagDefineSprite:SwfPackerTagDefineSprite = Lang.as2(tag, SwfPackerTagDefineSprite);
         var characterId:Int = tagDefineSprite.characterId;
         var frameCount:Int = tagDefineSprite.frameCount;
         
@@ -46,6 +40,7 @@ class TagProcessorDefineSprite extends TagProcessorBase
         context.placedObjectsById = new Map<Int, Map<Int, DisplayObjectData>>();
         
         var currentDisplayObject:SpriteData;
+		var frames = tagDefineSprite.frames;
         
         if (frameCount > 1) 
         {
@@ -57,13 +52,13 @@ class TagProcessorDefineSprite extends TagProcessorBase
                 //var frame:RawFrameData = tagDefineSprite.frames[i];
                 //var frameData:FrameData = new FrameData(frame.frameIndex, frame.frameLabel, frame.numChildren);//на каждый фрейм создается фрейм дата
                 
-                var frameData:FrameData = tagDefineSprite.frames[i];
+                var frameData:FrameData = frames[i];
                 //trace('define sprite', characterId, i, frameData.displayObjects.length);
                 currentDisplayObjectAsMovieClip.addFrame(frameData);
             }
         }
         else 
-			currentDisplayObject = new SpriteData(characterId, DisplayObjectTypes.SPRITE_TYPE, true, tagDefineSprite.frames[0].numChildren);
+			currentDisplayObject = new SpriteData(characterId, DisplayObjectTypes.SPRITE_TYPE, true, frames[0].numChildren);
         
         context.library.addDisplayObject(currentDisplayObject.characterId, currentDisplayObject);
         displayObjectContext.setCurrentDisplayObject(currentDisplayObject);

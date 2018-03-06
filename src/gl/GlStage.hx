@@ -1,5 +1,6 @@
 package gl;
 
+import openfl.events.Event;
 import gl.drawer.GLDisplayListDrawer;
 import openfl.display.Stage;
 import openfl.display3D.Context3D;
@@ -10,13 +11,11 @@ import openfl.geom.Rectangle;
 import renderer.ProjectionMatrix;
 import renderer.Renderer;
 import swfdata.DisplayObjectContainer;
-import swfdata.DisplayObjectData;
 import swfdata.atlas.TextureStorage;
 import utils.DisplayObjectUtils;
 
 class GlStage extends DisplayObjectContainer
 {
-	public var viewPort:Rectangle = new Rectangle(0, 0, 800, 800);
 	var viewPortBuffer:Rectangle = new Rectangle(0, 0, 0, 0);
 	
 	var drawingMatrix:Matrix = new Matrix();
@@ -36,10 +35,9 @@ class GlStage extends DisplayObjectContainer
 		
 		this.stage = stage;
 		
-		
 		mouseData = new MouseData();
 		renderer = new Renderer(context3D, textureStorage);
-		@:privateAccess renderer.projection = new ProjectionMatrix().ortho(stage.stageWidth, stage.stageHeight, null);
+		@:privateAccess renderer.projection = ProjectionMatrix.getOrtho(stage.stageWidth, stage.stageHeight, null);
 		
 		drawer = new GLDisplayListDrawer(textureStorage, mouseData.mousePosition);
 		drawer.target = renderer;
@@ -48,9 +46,16 @@ class GlStage extends DisplayObjectContainer
 		stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightDown);
 		stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightUp);
+		stage.addEventListener(Event.RESIZE, onResize);
 	}
 	
-	private function onRightDown(e:MouseEvent):Void 
+	private function onResize(e:Event):Void
+    {
+        @:privateAccess renderer.isViewportUpdated = true;
+        @:privateAccess renderer.projection = ProjectionMatrix.getOrtho(stage.stageWidth, stage.stageHeight, null);
+    }
+
+	private function onRightDown(e:MouseEvent):Void
 	{
 		mouseData.isRightDown = true;
 		e.stopImmediatePropagation();

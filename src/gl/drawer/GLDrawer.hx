@@ -72,6 +72,7 @@ class GLDrawer implements IDrawer
         var mulX:Float = transform.positionMultiplierX;
         var mulY:Float = transform.positionMultiplierY;
         
+		var drawMatrix = this.drawMatrix;
         drawMatrix.a *= mulX;
         drawMatrix.d *= mulY;
         drawMatrix.b *= mulX;
@@ -112,7 +113,7 @@ class GLDrawer implements IDrawer
     {
         drawMatrix.identity();
 		
-        drawMatrix.concatInline(transform);
+        drawMatrix.concat(transform);
         
         applyDrawStyle();
         

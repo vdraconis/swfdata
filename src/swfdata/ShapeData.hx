@@ -1,6 +1,6 @@
 package swfdata;
 
-import flash.geom.*;
+import openfl.geom.Rectangle;
 import utils.DisplayObjectUtils;
 
 class ShapeData extends DisplayObjectData

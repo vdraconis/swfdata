@@ -16,7 +16,7 @@ class ReadUtils
         return Math.round(pixels * 100) / 100;
     }
 	
-	public static function readRectangle(input:ByteArray):Rectangle
+	inline public static function readRectangle(input:ByteArray):Rectangle
     {
         //var bits:uint = input.readBits(5);
 		
@@ -40,7 +40,7 @@ class ReadUtils
         return rect;
     }
 	
-	public static function readTextureTransform(input:ByteArray):TextureTransform
+	inline public static function readTextureTransform(input:ByteArray):TextureTransform
     {
         var scaleX:Float = 1;
         var scaleY:Float = 1;
@@ -66,7 +66,7 @@ class ReadUtils
         return new TextureTransform(scaleX, scaleY, translateX / 2000, translateY / 2000);
     }
 	
-	public static function writeRectangle(output:ByteArray, rectangle:Rectangle):Void
+	inline public static function writeRectangle(output:ByteArray, rectangle:Rectangle):Void
     {
         var xmin:Int = Std.int(rectangle.x * 20);
         var xmax:Int = Std.int(rectangle.width * 20);
@@ -90,7 +90,7 @@ class ReadUtils
         output.writeInt(ymax);
     }
     
-    public static function writeTextureTransform(output:ByteArray, transform:TextureTransform):Void
+    inline public static function writeTextureTransform(output:ByteArray, transform:TextureTransform):Void
     {
         var translateX:Int = Std.int(transform.tx * 2000);
         var translateY:Int = Std.int(transform.ty * 2000);

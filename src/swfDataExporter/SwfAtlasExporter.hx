@@ -78,9 +78,9 @@ class SwfAtlasExporter
 		var height:Int = input.readShort();
 		
 		#if textureFromBytes
-		var bitmapBytes = new ByteArray();
+		var bitmapBytes = new ByteArray(bitmapSize);
 		#else
-		bitmapBytes.length = 0;
+		bitmapBytes.length = bitmapSize;
 		#end
 		
 		input.readBytes(bitmapBytes, 0, bitmapSize);

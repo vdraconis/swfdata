@@ -30,8 +30,8 @@ class PlaceObjectExporter extends SwfPackerTagExporter
             //scaleX = input.readFixedBits(scaleBits);
             //scaleY = input.readFixedBits(scaleBits);
             
-            scaleX = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-            scaleY = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+            scaleX = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+            scaleY = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
         }
         
         var rotateSkew0:Float = 0;
@@ -44,16 +44,16 @@ class PlaceObjectExporter extends SwfPackerTagExporter
             //rotateSkew0 = input.readFixedBits(rotateBits);
             //rotateSkew1 = input.readFixedBits(rotateBits);
             
-            rotateSkew0 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-            rotateSkew1 = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+            rotateSkew0 = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+            rotateSkew1 = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
         }  
 		
 		//var translateY:Number = input.readBits(translateBits);   
 		//var translateX:Number = input.readBits(translateBits);  
 		//var translateBits:uint = input.readBits(5);  
         
-        var translateX:Float = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-        var translateY:Float = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+        var translateX:Float = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+        var translateY:Float = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
         
         tagAsPlaceObject.setMatrix(scaleX, rotateSkew0, rotateSkew1, scaleY, translateX, translateY);
     }
@@ -181,12 +181,12 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         output.writeInt(Std.int(tag.alphaOffset * ByteUtils.FIXED_PRECISSION_VALUE));*/
     }
 	
-	public function readColorTransform(tag:SwfPackerTagPlaceObject, input:ByteArray)
+	inline public function readColorTransform(tag:SwfPackerTagPlaceObject, input:ByteArray)
 	{
-		tag.redMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-		tag.greenMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-		tag.blueMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
-		tag.alphaMultiplier = input.readInt() / ByteUtils.FIXED_PRECISSION_VALUE;
+		tag.redMultiplier = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+		tag.greenMultiplier = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+		tag.blueMultiplier = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
+		tag.alphaMultiplier = input.readInt() * ByteUtils.FIXED_PRECISSION_VALUE_MULTIPLIER;
 		
 		tag.redAdd = input.readInt();
 		tag.blueAdd = input.readInt();
@@ -213,7 +213,7 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         
         var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as2(tag, SwfPackerTagPlaceObject);
         
-        
+        var bitMask = PlaceObjectExporter.bitMask;
         bitMask.mask = 0;
         
         if (tagAsPlaceObject.hasClipDepth) 
@@ -234,9 +234,9 @@ class PlaceObjectExporter extends SwfPackerTagExporter
         if (tagAsPlaceObject.hasColorTransform) 
             bitMask.setBit(4);  //	bitMask.setBit(11);    //if (tagAsPlaceObject.hasFilterList)    //	bitMask.setBit(10);    //if (tagAsPlaceObject.hasBlendMode)    //	bitMask.setBit(9);    //if (tagAsPlaceObject.hasImage)    //	bitMask.setBit(8);    //if (tagAsPlaceObject.hasVisible)    //	bitMask.setBit(7);    //if (tagAsPlaceObject.hasMove)    //  ;   
         
-        output[output.position++] = (bitMask.mask);
+        output[output.position++] = bitMask.mask;
         
-        output[output.position++] = (tagAsPlaceObject.placeMode);
+        output[output.position++] = tagAsPlaceObject.placeMode;
         output.writeShort(tagAsPlaceObject.depth);
         
         if (tagAsPlaceObject.depth > 65535) 
@@ -265,8 +265,8 @@ class PlaceObjectExporter extends SwfPackerTagExporter
     {
         var tagAsPlaceObject:SwfPackerTagPlaceObject = Lang.as2(tag, SwfPackerTagPlaceObject);
         
-        var mask:Int = input.readUnsignedByte();
-        bitMask.mask = mask;
+		var bitMask = bitMask;
+        bitMask.mask = input.readUnsignedByte();
         
         var placeMode:Int = input.readUnsignedByte();
         var depth:Int = input.readShort();

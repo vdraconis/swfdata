@@ -86,10 +86,10 @@ class TagProcessorPlaceObject extends TagProcessorBase
         
         placedStorage[depth] = placedDO;
         
+		#if debug
         if (placedDO == null) 
-        {
             trace("Дисплей объект не определен в библиотеке символов " + id);
-        }
+		#end
         
         return placedDO;
     }
@@ -104,14 +104,11 @@ class TagProcessorPlaceObject extends TagProcessorBase
         if (hasMatrix) 
         {
             if (prototype != null) 
-            {
                 placedDO = prototype.clone();
-            }
+			#if debug
             else 
-            {
-                
                 trace("Дисплей объект не определен в библиотеке символов " + id);
-            }
+			#end
         }
         else 
         {
@@ -129,9 +126,11 @@ class TagProcessorPlaceObject extends TagProcessorBase
         
         if (tag.hasMatrix) 
         {
+			#if debug
             if (isHaveTransform) 
                 trace("##### HAVE MATRIX ALREADY");
-            
+            #end
+			
             currentDisplayObject.setTransformMatrix(new Matrix(tag.a, tag.b, tag.c, tag.d, tag.tx, tag.ty));
         }
         else 
@@ -199,7 +198,9 @@ class TagProcessorPlaceObject extends TagProcessorBase
             
             if (preveousFrameDO == null)//не положили его в плейсинге т.к не было в библиотеке  
             {
+				#if debug
                 trace("placing error");
+				#end
                 return;
             }
             
@@ -227,7 +228,9 @@ class TagProcessorPlaceObject extends TagProcessorBase
             
             if (preveousFrameDO == null)//не положили его в плейсинге т.к не было в библиотеке  
             {
+				#if debug
                 trace("placing error");
+				#end
                 return;
             }
             

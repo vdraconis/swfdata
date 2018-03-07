@@ -16,7 +16,7 @@ class SwfParserLight implements ISWFDataParser
     public var context(get, set):SwfParserContext;
 
     private var _context:SwfParserContext;
-    private var tagsProcessors:Dynamic;
+    private var tagsProcessors:Array<TagProcessorBase>;
     private var isUseEndTag:Bool;
     
     public function new(isUseEndTag:Bool = false)
@@ -38,17 +38,17 @@ class SwfParserLight implements ISWFDataParser
         if (context.library == null) 
             context.library = new SymbolsLibrary()
         else 
-        context.library.clear(callDestroy);
+			context.library.clear(callDestroy);
         
         if (context.shapeLibrary == null) 
             context.shapeLibrary = new ShapeLibrary()
         else 
-        context.shapeLibrary.clear(callDestroy);
+			context.shapeLibrary.clear(callDestroy);
     }
     
     private function makeTagProcessorsMap():Void
     {
-        tagsProcessors = { };
+        tagsProcessors = new Array();
         
         tagsProcessors[39] = new TagProcessorDefineSprite(context, this);
         
@@ -68,16 +68,19 @@ class SwfParserLight implements ISWFDataParser
     
     public function processDisplayObject(tags:Array<SwfPackerTag>):Void
     {
+		var tagsProcessors = this.tagsProcessors;
+		
         for (i in 0...tags.length)
 		{
             var currentTag:SwfPackerTag = tags[i];
-			
             var tagProcessor:TagProcessorBase = tagsProcessors[currentTag.type];
             
             if (tagProcessor != null) 
-                tagProcessor.processTag(currentTag)
+                tagProcessor.processTag(currentTag);
+			#if debug
             else 
 				trace("no processor for", currentTag);
+			#end
         }
     }
     

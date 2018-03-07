@@ -79,28 +79,33 @@ class DefineSpriteExporter extends SwfPackerTagExporter
         tagAsSpriteDefine.frameCount = frameCount;
         
         if (frameCount > 0) 
-            tagAsSpriteDefine.frames = new Array<FrameData>();
+		{
+            var frames:Array<FrameData> = new Array();
+			tagAsSpriteDefine.frames = frames;
+			
+			for (i in 0...frameCount)
+			{
+				var numChildren = input.readShort();
+				var currentFrameData = new FrameData(i, null, numChildren);
+				
+				var isHaveLabel = input.readUnsignedByte() == 1;
+				
+				if (isHaveLabel) 
+					currentFrameData.frameLabel = input.readUTF();
+				
+				frames[i] = currentFrameData;
+			}
+		}
         
-        var i:Int;
-        
-        for (i in 0...frameCount) {
-            var numChildren:Int = input.readShort();
-            var currentFrameData:FrameData = new FrameData(i, null, numChildren);
-            
-            var isHaveLabel:Bool = input.readUnsignedByte() == 1;
-            
-            if (isHaveLabel) 
-                currentFrameData.frameLabel = input.readUTF();
-            
-            tagAsSpriteDefine.frames[i] = currentFrameData;
-        }
-        
+		var swfTagExporter = this.swfTagExporter;
         if (tagsCount > 0) 
         {
-            tagAsSpriteDefine.tags = new Array<SwfPackerTag>();
+			var tags:Array<SwfPackerTag> = new Array();
+            tagAsSpriteDefine.tags = tags;
             
-            for (i in 0...tagsCount){
-                tagAsSpriteDefine.tags[i] = swfTagExporter.importSingleTag(input);
+            for (i in 0...tagsCount)
+			{
+                tags[i] = swfTagExporter.importSingleTag(input);
             }
         }
     }

@@ -112,8 +112,9 @@ class GLDrawer implements IDrawer
     {
         drawMatrix.identity();
 		
-        drawMatrix.concatInline(transform);
-        
+        //drawMatrix.concatInline(transform);
+        drawMatrix.concat(transform);
+
         applyDrawStyle();
         
         var texture:GLSubTexture = currentSubTexture;

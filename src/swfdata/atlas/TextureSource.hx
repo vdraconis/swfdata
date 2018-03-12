@@ -7,19 +7,25 @@ import renderer.TextureManager;
 
 class TextureSource 
 {
-	public var source:BitmapData;
+	public var source:Dynamic;
 	public var glData:Texture;
+	
+	public var width:Int;
+	public var height:Int;
+	
 	var textureManager:TextureManager;
-
-	public function new(source:BitmapData, textureManager:TextureManager) 
+	
+	public function new(source:Dynamic, width:Int, height:Int, textureManager:TextureManager) 
 	{
+		this.height = height;
+		this.width = width;
 		this.textureManager = textureManager;
 		this.source = source;
 	}
 	
 	public function createGlData(format:Context3DTextureFormat)
 	{
-		glData = textureManager.createTexture(0, source, format);
+		glData = textureManager.createTexture(0, width, height, format);
 	}
 	
 	public function deleteGlData()
@@ -29,6 +35,9 @@ class TextureSource
 	
 	public function uploadToGpu()
 	{
-		glData.uploadFromBitmapData(source, 0);
+		if(Std.is(source, BitmapData))
+			glData.uploadFromBitmapData(source, 0);
+		else
+			glData.uploadFromByteArray(source, 0);
 	}
 }

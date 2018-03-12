@@ -39,23 +39,30 @@ class GLSubTexture implements ITexture
 		width = bounds.width * scaleFactor;
 		height = bounds.height * scaleFactor;
 		
-		u = bounds.x / textureSource.source.width;
-		v = bounds.y / textureSource.source.height;
+		u = bounds.x / textureSource.width;
+		v = bounds.y / textureSource.height;
 		
-		uscale = width / textureSource.source.width;
-		vscale = height / textureSource.source.height;
+		uscale = width / textureSource.width;
+		vscale = height / textureSource.height;
 	}
 	
 	public function getAlphaAtUV(u:Float, v:Float):Float
 	{
-		var bitmapData:BitmapData = textureSource.source;
+		var bitmapData = textureSource.source;
 		
         if (bitmapData == null)  
 			return 255;
 			
-		u = (u * width) / bitmapData.width;
-		v = (v * height) / bitmapData.height;
+		u = (u * width) / textureSource.width;
+		v = (v * height) / textureSource.height;
 		
-        return bitmapData.getPixel32(Std.int((this.u + u) * bitmapData.width), Std.int((this.v + v) * bitmapData.height)) >> 24 & 0xFF;
+		if (Std.is(bitmapData, BitmapData))
+			return bitmapData.getPixel32(Std.int((this.u + u) * textureSource.width), Std.int((this.v + v) * textureSource.height)) >> 24 & 0xFF;
+		else
+		{
+			//trace(Std.int(((this.u + u) * textureSource.width) * ((this.v + v) * textureSource.height)) >> 24 & 0xFF);
+			return bitmapData.getInt32(Std.int(((this.u + u) * textureSource.width) * ((this.v + v) * textureSource.height))) >> 24 & 0xFF;
+		}
+        
 	}
 }

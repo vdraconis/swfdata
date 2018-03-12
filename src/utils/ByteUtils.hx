@@ -3,9 +3,9 @@ package utils;
 class ByteUtils
 {
     public static inline var FIXED_PRECISSION_VALUE:Int = 65536;
-    public static var FIXED_PRECISSION_VALUE_MULTIPLIER:Float = 1 / 65536;
+    public static inline var FIXED_PRECISSION_VALUE_MULTIPLIER:Float = 1 / 65536;
 	
-    private static var LOG_2:Float = Math.log(2);
+    static inline var LOG_2:Float = 0.30102999566398119521373889472449;
     
     public function new()
     {
@@ -13,9 +13,7 @@ class ByteUtils
         
     }
     
-    @:meta(Inline())
-
-    public static function addBitsValue(mask:Int, value:Int):Int
+    inline public static function addBitsValue(mask:Int, value:Int):Int
     {
         if (value >= 0) 
             mask |= value
@@ -25,7 +23,7 @@ class ByteUtils
         return mask;
     }
     
-    public static function calculateMaxFixedBits(signed:Bool, a:Float, b:Float):Int
+    inline public static function calculateMaxFixedBits(signed:Bool, a:Float, b:Float):Int
     {
         return calculateMaxBits(signed, Std.int(a * FIXED_PRECISSION_VALUE), Std.int(b * FIXED_PRECISSION_VALUE));
     }
@@ -64,8 +62,7 @@ class ByteUtils
         
         return bits;
     }
-    
-    
+	
     public static function calculateMaxBits4(signed:Bool, a:Int, b:Int, c:Int, d:Int):Int
     {
         var i:Int = 0;
@@ -109,18 +106,14 @@ class ByteUtils
         return bits;
     }
     
-    @:meta(Inline())
-
-    public static function calculateBits(value:Int):Int
+    inline public static function calculateBits(value:Int):Int
     {
         if (value == 0) 
             return 1;
         
         return Math.floor((Math.log(value) / LOG_2) + 1);
     }
-    
-    @:meta(Inline())
-
+	
     public static function clampBitsToMaxBytes(value:Int):Int
     {
         var valueBitsSize:Int = calculateBits(value);

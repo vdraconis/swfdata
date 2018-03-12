@@ -17,4 +17,14 @@ class Lang
 			return value;
 		#end
 	}
+	
+	inline public static function createInstance<T:Dynamic>(cl:Class<T>):T
+	{
+		#if flash
+			return untyped new cl();
+		#elseif js
+			return untyped __js__('new {0}();', cl);
+		#end
+	}
+    
 }

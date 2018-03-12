@@ -13,9 +13,9 @@ class TextureManager
 		this.context3D = context3D;
 	}
 	
-	public function createTexture(id:Int, atlasData:BitmapData, format:String):Texture
+	public function createTexture(id:Int, width:Int, height:Int, format:String):Texture
 	{
-		return context3D.createTexture(atlasData.width, atlasData.height, format, false);
+		return context3D.createTexture(width, height, format, false);
 	}
 	
 }

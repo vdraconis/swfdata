@@ -161,23 +161,23 @@ class DisplayObjectData
     
     inline public static function setDataFrom(to:DisplayObjectData, from:DisplayObjectData):Void
     {
-        from.name = from.name;
-        from.depth = from.depth;
-        from.characterId = from.characterId;
-        from.libraryLinkage = from.libraryLinkage;
-        from.prototypeDisplayObjectData = from.prototypeDisplayObjectData;
-        from.colorTransform = from.colorTransform;
-        from.isMask = from.isMask;
-        from.mask = from.mask;
-        from._x = from._x;
-        from._y = from._y;
-        from.blendMode = from.blendMode;
+        to.name = from.name;
+        to.depth = from.depth;
+        to.characterId = from.characterId;
+        to.libraryLinkage = from.libraryLinkage;
+        to.prototypeDisplayObjectData = from.prototypeDisplayObjectData;
+        to.colorTransform = from.colorTransform;
+        to.isMask = from.isMask;
+        to.mask = from.mask;
+        to._x = from._x;
+        to._y = from._y;
+        to.blendMode = from.blendMode;
     }
     
     public function softClone():DisplayObjectData
     {
         var objectCloned:DisplayObjectData = new DisplayObjectData();
-		objectCloned.setDataFrom(this);
+        DisplayObjectData.setDataFrom(objectCloned, this);
         
         return objectCloned;
     }

@@ -216,7 +216,7 @@ class MovieClipData extends SpriteData implements ITimeline
 	
     override public function clone():DisplayObjectData
     {
-        var objectCloned:MovieClipData = softClone();
+        var objectCloned = softClone();
         
         return objectCloned;
     }

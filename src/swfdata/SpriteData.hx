@@ -107,14 +107,14 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 	override public function softClone():DisplayObjectData 
 	{
 		var objectCloned:SpriteData = new SpriteData(-1, DisplayObjectTypes.SPRITE_TYPE, false);
-        objectCloned.setDataFrom(this);
-		
+        SpriteData.setDataFrom(objectCloned, this);
+
         return objectCloned;
 	}
     
     override public function clone():DisplayObjectData
     {
-        return softClone();
+        return super.clone();
     }
     
     /* INTERFACE swfdata.IDisplayObjectContainer */

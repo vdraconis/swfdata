@@ -1,9 +1,12 @@
 package swfdata;
 
 import openfl.geom.Matrix;
+import swfdata.DisplayObjectData;
 import swfdata.SpriteData;
 import swfdata.Timeline;
 import utils.DisplayObjectUtils;
+
+using swfdata.MovieClipData;
 
 class MovieClipData extends SpriteData implements ITimeline
 {
@@ -185,28 +188,35 @@ class MovieClipData extends SpriteData implements ITimeline
         timelineController.advanceFrame(delta);
     }
     
-    override private function setDataTo(objectCloned:DisplayObjectData):Void
+    inline public static function setDataFrom(to:MovieClipData, from:MovieClipData):Void
     {
-        super.setDataTo(objectCloned);
+        SpriteData.setDataFrom(to, from);
         
-        var objestAsSpriteData:MovieClipData = Lang.as2(objectCloned, MovieClipData);
+        var objestAsSpriteData:MovieClipData = to;
 		objestAsSpriteData.transform = new Matrix();
-        objestAsSpriteData.timeline = timeline;
-		objestAsSpriteData.timelineController = new TimelineController(timeline);
+        objestAsSpriteData.timeline = from.timeline;
+		objestAsSpriteData.timelineController = new TimelineController(from.timeline);
     }
 
     inline public function inlineClone():DisplayObjectData
     {
         var objectCloned:MovieClipData = new MovieClipData(-1, 0);
-        setDataTo(objectCloned);
+        objectCloned.setDataFrom(this);
         
         return objectCloned;
     }
     
+	override public function softClone():DisplayObjectData 
+	{
+		var objectCloned:MovieClipData = new MovieClipData(-1, 0);
+        objectCloned.setDataFrom(this);
+        
+        return objectCloned;
+	}
+	
     override public function clone():DisplayObjectData
     {
-        var objectCloned:MovieClipData = new MovieClipData(-1, 0);
-        setDataTo(objectCloned);
+        var objectCloned:MovieClipData = softClone();
         
         return objectCloned;
     }

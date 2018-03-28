@@ -5,6 +5,8 @@ import openfl.geom.Rectangle;
 import swfdata.atlas.ITextureAtlas;
 import swfdata.atlas.TextureId;
 
+using swfdata.DisplayObjectData;
+
 class DisplayObjectData
 {
     public var alpha(get, set):Float;
@@ -157,30 +159,34 @@ class DisplayObjectData
             libraryLinkage = displayObject.libraryLinkage;
     }
     
-    function setDataTo(objectCloned:DisplayObjectData):Void
+    inline public static function setDataFrom(to:DisplayObjectData, from:DisplayObjectData):Void
     {
-        objectCloned.name = name;
-        objectCloned.depth = depth;
-        objectCloned.characterId = characterId;
-        objectCloned.libraryLinkage = libraryLinkage;
-        objectCloned.prototypeDisplayObjectData = prototypeDisplayObjectData;
-        objectCloned.colorTransform = colorTransform;
-        objectCloned.isMask = isMask;
-        objectCloned.mask = mask;
-        objectCloned._x = _x;
-        objectCloned._y = _y;
-        objectCloned.blendMode = blendMode;
+        from.name = from.name;
+        from.depth = from.depth;
+        from.characterId = from.characterId;
+        from.libraryLinkage = from.libraryLinkage;
+        from.prototypeDisplayObjectData = from.prototypeDisplayObjectData;
+        from.colorTransform = from.colorTransform;
+        from.isMask = from.isMask;
+        from.mask = from.mask;
+        from._x = from._x;
+        from._y = from._y;
+        from.blendMode = from.blendMode;
     }
     
-    public function deepClone():DisplayObjectData
+    public function softClone():DisplayObjectData
     {
-        return this;
+        var objectCloned:DisplayObjectData = new DisplayObjectData();
+		objectCloned.setDataFrom(this);
+        
+        return objectCloned;
     }
     
     public function clone():DisplayObjectData
     {
-        var objectCloned:DisplayObjectData = new DisplayObjectData();
-        setDataTo(objectCloned);
+        var objectCloned:DisplayObjectData = softClone();
+		objectCloned.transform = transform.clone();
+		//Clon color transform?
         
         return objectCloned;
     }

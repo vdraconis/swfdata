@@ -1,7 +1,10 @@
 package swfdata;
 
 import openfl.geom.Rectangle;
+import swfdata.DisplayObjectData;
 import utils.DisplayObjectUtils;
+
+using swfdata.ShapeData;
 
 class ShapeData extends DisplayObjectData
 {
@@ -60,24 +63,28 @@ class ShapeData extends DisplayObjectData
         return value;
     }
     
-    override private function setDataTo(objectCloned:DisplayObjectData):Void
+	inline public static function setDataFrom(to:ShapeData, from:ShapeData):Void
     {
-        super.setDataTo(objectCloned);
+        DisplayObjectData.setDataFrom(to, from);
         
-        var objectAsShapeData:ShapeData = DisplayObjectUtils.asShape2(objectCloned);
+        to.shapeBounds = from._shapeBounds;
         
-        objectAsShapeData.shapeBounds = _shapeBounds;
-        
-        objectAsShapeData.tx = tx;
-        objectAsShapeData.ty = ty;
+        to.tx = from.tx;
+        to.ty = from.ty;
     }
+	
+	
+	override public function softClone():DisplayObjectData 
+	{
+		var objectCloned:ShapeData = new ShapeData();
+        objectCloned.setDataFrom(this);
+        
+        return objectCloned;
+	}
     
     override public function clone():DisplayObjectData
     {
-        var objectCloned:ShapeData = new ShapeData();
-        setDataTo(objectCloned);
-        
-        return objectCloned;
+        return softClone();
     }
 	
 	override function get_x():Float 

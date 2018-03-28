@@ -69,7 +69,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
         
         if (isNeedClone) 
         {
-            placedDO = context.library.getDisplayObject(id).clone();
+            placedDO = context.library.getDisplayObject(id).softClone();
         }
         else 
         {
@@ -77,11 +77,11 @@ class TagProcessorPlaceObject extends TagProcessorBase
             
             if (placedDO == null) 
             {
-                placedDO = context.library.getDisplayObject(id).clone();
+                placedDO = context.library.getDisplayObject(id).softClone();
             }
             
             if (placedDO.transform != preveousTransform) 
-                placedDO = placedDO.clone();
+                placedDO = placedDO.softClone();
         }
         
         placedStorage[depth] = placedDO;
@@ -104,7 +104,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
         if (hasMatrix) 
         {
             if (prototype != null) 
-                placedDO = prototype.clone();
+                placedDO = prototype.softClone();
 			#if debug
             else 
                 trace("Дисплей объект не определен в библиотеке символов " + id);
@@ -236,7 +236,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
             
             if (isNeedClone) 
             {
-                placedDO = preveousFrameDO.clone();
+                placedDO = preveousFrameDO.softClone();
                 fillFromTag(placedDO, tagPlaceObject);
             }
             else 

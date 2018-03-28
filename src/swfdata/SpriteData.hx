@@ -1,5 +1,9 @@
 package swfdata;
+
+import swfdata.DisplayObjectData;
 import utils.DisplayObjectUtils;
+
+using swfdata.SpriteData;
 
 class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
 {
@@ -89,23 +93,28 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         }
     }
     
-    override private function setDataTo(objectCloned:DisplayObjectData):Void
+    inline public static function setDataFrom(to:SpriteData, from:SpriteData):Void
     {
-        super.setDataTo(objectCloned);
+        DisplayObjectData.setDataFrom(to, from);
         
-        if (displayContainer != null) 
+        if (from.displayContainer != null) 
         {
-            var objestAsSpriteData:SpriteData = DisplayObjectUtils.asSpriteData2(objectCloned);
-            objestAsSpriteData.displayContainer = displayContainer;  //.clone() as DisplayObjectContainer;  ;
+            var objestAsSpriteData:SpriteData = to;
+            objestAsSpriteData.displayContainer = from.displayContainer;  //.clone() as DisplayObjectContainer;  ;
         }
     }
+	
+	override public function softClone():DisplayObjectData 
+	{
+		var objectCloned:SpriteData = new SpriteData(-1, DisplayObjectTypes.SPRITE_TYPE, false);
+        objectCloned.setDataFrom(this);
+		
+        return objectCloned;
+	}
     
     override public function clone():DisplayObjectData
     {
-        var objectCloned:SpriteData = new SpriteData(-1, DisplayObjectTypes.SPRITE_TYPE, false);
-        setDataTo(objectCloned);
-        
-        return objectCloned;
+        return softClone();
     }
     
     /* INTERFACE swfdata.IDisplayObjectContainer */

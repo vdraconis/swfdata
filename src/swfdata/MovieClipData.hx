@@ -201,7 +201,7 @@ class MovieClipData extends SpriteData implements ITimeline
     inline public function inlineClone():DisplayObjectData
     {
         var objectCloned:MovieClipData = new MovieClipData(-1, 0);
-        objectCloned.setDataFrom(this);
+        MovieClipData.setDataFrom(objectCloned, this);
         
         return objectCloned;
     }
@@ -209,16 +209,14 @@ class MovieClipData extends SpriteData implements ITimeline
 	override public function softClone():DisplayObjectData 
 	{
 		var objectCloned:MovieClipData = new MovieClipData(-1, 0);
-        objectCloned.setDataFrom(this);
+        MovieClipData.setDataFrom(objectCloned, this);
         
         return objectCloned;
 	}
 	
     override public function clone():DisplayObjectData
     {
-        var objectCloned = softClone();
-        
-        return objectCloned;
+        return super.clone();
     }
 	
 	override public function destroy():Void

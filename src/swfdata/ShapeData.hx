@@ -77,14 +77,14 @@ class ShapeData extends DisplayObjectData
 	override public function softClone():DisplayObjectData 
 	{
 		var objectCloned:ShapeData = new ShapeData();
-        objectCloned.setDataFrom(this);
+        ShapeData.setDataFrom(objectCloned, this);
         
         return objectCloned;
 	}
     
     override public function clone():DisplayObjectData
     {
-        return softClone();
+        return super.clone();
     }
 	
 	override function get_x():Float 

@@ -25,15 +25,20 @@ class AtlasDrawer
     
     public function new(targetAtlas:BitmapTextureAtlas, scale:Float = 1, padding:Int = 4)
     {
-        this.targetAtlas = targetAtlas;
+       reset(targetAtlas, scale, padding);
+    }
+	
+	public function reset(targetAtlas:BitmapTextureAtlas, scale:Float = 1, padding:Int = 4)
+	{
+		this.targetAtlas = targetAtlas;
         this.padding = padding;
         this.scale = scale;
         atlasData = targetAtlas.atlasData;
-        
-        clean();
-    }
+		
+		clean();
+	}
     
-    public function clean():Void
+    public function clean()
     {
         lastPosition.setTo(padding, padding);
     }

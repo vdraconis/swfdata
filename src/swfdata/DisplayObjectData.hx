@@ -51,7 +51,7 @@ class DisplayObjectData
 	public var isUnderMouse:Bool = false;
     
     
-    public function new(characterId:Int = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
+    public function new(characterId:TextureId = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
     {
         this.displayObjectType = displayObjectType;
         this.characterId = characterId;

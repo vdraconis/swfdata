@@ -11,7 +11,7 @@ class TextureStorage
 		
 	}
 	
-	inline public function getGexture(id:TextureId)
+	inline public function getTexture(id:TextureId)
 	{
 		return textures.get(id);
 	}

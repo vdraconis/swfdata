@@ -9,7 +9,10 @@ import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
 import swfdata.atlas.AtlasDrawer;
 import swfdata.atlas.BitmapTextureAtlas;
-import swfdata.atlas.GLTextureAtlas;
+import swfdata.atlas.GLSubTexture;
+import swfdata.atlas.TextureId;
+import swfdata.atlas.TextureSource;
+import swfdata.atlas.TextureStorage;
 import swfdata.atlas.TextureTransform;
 
 class AtlasGenerator
@@ -21,11 +24,16 @@ class AtlasGenerator
 	var atlas:BitmapTextureAtlas;
 	var textBuffer:TextField = new TextField();
 	
-	
-	public function new(width:Int, height:Int) 
+	public function new() 
 	{
-		atlas = new BitmapTextureAtlas(width, height, 4);
+		atlas = new BitmapTextureAtlas(1, 1, 4);
 		atlasDrawer = new AtlasDrawer(atlas, 1, 4);
+	}
+	
+	public function setBitmapData(bitmapData:BitmapData)
+	{
+		atlas.reset(bitmapData);
+		atlasDrawer.reset(atlas, 1, 4);
 	}
 	
 	public function addText(text:String, format:TextFormat, id:Int) 
@@ -57,27 +65,17 @@ class AtlasGenerator
 		textBuffer.textColor = format.color;
 		texture.draw(textBuffer, null, null, null, null, true);
 		
-		addSubTexture(texture, id);
+		//addTexture(texture, id);
 	}
 	
-	public function addSubTexture(subData:BitmapData, id:Int, scaleX:Float = 1, scaleY:Float = 1)
+	public function addTexture(textureStorage:TextureStorage, textureId:TextureId, textureSource:TextureSource, subData:BitmapData, id:Int, scaleX:Float = 1, scaleY:Float = 1)
 	{
-		atlasDrawer.addShape(id, subData, new Rectangle(0, 0, subData.width * scaleX, subData.height * scaleY), new TextureTransform(scaleX, scaleY, 0, 0), false);
+		var textureTransform = new TextureTransform(scaleX, scaleY, 0, 0);
+		atlasDrawer.addShape(id, subData, new Rectangle(0, 0, subData.width * scaleX, subData.height * scaleY), textureTransform, false);
+		
+		var generatedTexture = atlas.getTexture(id);
+		
+		var texture:GLSubTexture = new GLSubTexture(textureId, generatedTexture.bounds, textureTransform, textureSource, 4, Context3DTextureFormat.BGRA);
+		textureStorage.putTexture(textureId, texture);
 	}
-	
-	public function createGlAtlas():GLTextureAtlas
-	{
-		var glTextureAtlas:GLTextureAtlas = new GLTextureAtlas("atlas", atlas.atlasData, Context3DTextureFormat.BGRA, 4);
-		
-		for (bitmapSubTexture in atlas.subTextures)
-		{
-			glTextureAtlas.createSubTexture2(bitmapSubTexture.id, bitmapSubTexture.bounds, 1, 1, 1);
-		}
-		
-		glTextureAtlas.uploadToGpu();
-		
-		return glTextureAtlas;
-	}
-	
-	
 }

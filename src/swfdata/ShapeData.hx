@@ -2,6 +2,7 @@ package swfdata;
 
 import openfl.geom.Rectangle;
 import swfdata.DisplayObjectData;
+import swfdata.atlas.TextureId;
 import utils.DisplayObjectUtils;
 
 using swfdata.ShapeData;
@@ -23,7 +24,7 @@ class ShapeData extends DisplayObjectData
     
     public var usedCount:Int = 0;
     
-    public function new(characterId:Int = -1, shapeBounds:Rectangle = null)
+    public function new(characterId:TextureId = -1, shapeBounds:Rectangle = null)
     {
         super(characterId, DisplayObjectTypes.SHAPE_TYPE);
         
@@ -87,6 +88,7 @@ class ShapeData extends DisplayObjectData
         return super.clone();
     }
 	
+	/*
 	override function get_x():Float 
 	{
 		return _shapeBounds.x;
@@ -106,6 +108,7 @@ class ShapeData extends DisplayObjectData
 	{
 		return _shapeBounds.y = value;
 	}
+	*/
 	
 	function get_height():Float 
 	{

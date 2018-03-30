@@ -58,7 +58,7 @@ class DisplayObjectUtils
 			return null;
 	}
 	
-	inline public static function asMovieClip2(instance:DisplayObjectData):Null<MovieClipData>
+	inline public static function asMovieClip2(instance:DisplayObjectData):MovieClipData
 	{
 		return untyped instance;
 	}

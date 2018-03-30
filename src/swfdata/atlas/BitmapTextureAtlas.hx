@@ -30,6 +30,14 @@ class BitmapTextureAtlas implements ITextureAtlas
         
         atlasData = new BitmapData(width, height, true, 0x0);
     }
+	
+	public function reset(bitmapData:BitmapData, padding:Int = 0)
+	{
+		atlasData = bitmapData;
+		this.width = atlasData.width;
+		this.height = atlasData.height;
+		_padding = padding;
+	}
     
     /**
 	 * @inheritDoc

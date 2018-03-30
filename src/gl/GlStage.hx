@@ -98,7 +98,10 @@ class GlStage extends DisplayObjectContainer
 			
 		for (i in 0...displayObjectsPlacedCount)
 		{
-            DisplayObjectUtils.asUpdatable2(_displayObjects[i]).update();
+           var updatable = DisplayObjectUtils.asUpdatable(_displayObjects[i]);
+		   
+		   if (updatable != null)
+				updatable.update();
         }
 		
 		renderer.begin();

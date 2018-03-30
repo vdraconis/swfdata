@@ -120,7 +120,7 @@ class GLDrawer implements IDrawer
         
         var texture:GLSubTexture = currentSubTexture;
         
-        var textureTransform:TextureTransform = currentSubTexture.transform;
+        var textureTransform:TextureTransform = texture.transform;
 		var textureScaleX = textureTransform.scaleX;
 		var textureScaleY = textureTransform.scaleY;
 		

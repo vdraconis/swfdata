@@ -24,7 +24,7 @@ class GlStage extends DisplayObjectContainer
 	var drawer:GLDisplayListDrawer;
 	var renderer:Renderer;
 	
-	var stage:Stage;
+	public var stage:Stage;
 	
 	var handleMouse:Bool = false;
 	var clickPosition:Point = new Point();

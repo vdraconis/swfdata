@@ -50,7 +50,7 @@ class GLDrawer implements IDrawer
     
 	@:access(swfdata) inline public function applyDrawStyle():Void
     {
-        currentTeture = Lang.as2(textureStorage.getGexture(textureId), GLSubTexture);
+        currentTeture = Lang.as2(textureStorage.getTexture(textureId), GLSubTexture);
         
         var transform:TextureTransform = currentTeture.transform;
         var mulX:Float = transform.positionMultiplierX;

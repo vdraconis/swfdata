@@ -42,7 +42,11 @@ abstract TextureId(Int) from Int to Int
 	
 	public function toString(format:Int = 10):String 
 	{
+		#if !cpp
 		return untyped (this:Int).toString(format);
+		#else
+		return textureId + ":" + atlasId;
+		#end
 	}
 	
 }

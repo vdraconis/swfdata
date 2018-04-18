@@ -5,7 +5,6 @@ import openfl.geom.Matrix;
 import openfl.geom.Point;
 import swfdata.DisplayObjectData;
 import swfdata.ShapeData;
-import swfdata.atlas.ITextureAtlas;
 import swfdata.atlas.TextureStorage;
 import swfdrawer.data.DrawingData;
 import utils.DisplayObjectUtils;

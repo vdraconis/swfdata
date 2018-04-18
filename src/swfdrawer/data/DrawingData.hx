@@ -19,6 +19,9 @@ class DrawingData
     
     public var transform:Matrix = null;
 	public var blendMode:Int = 0;
+	
+	public var hitTestResult:Bool = false;
+	public var hitTarget:DisplayObjectData;
     
     //public var isApplyColorTrasnform:Bool = false;
     //public var colorTransform:ColorMatrix = new ColorMatrix(null);

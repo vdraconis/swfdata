@@ -10,6 +10,7 @@ import renderer.BatchGeometry;
 import swfdata.ColorData;
 import swfdata.atlas.GLSubTexture;
 import swfdata.atlas.TextureStorage;
+import swfdrawer.data.DrawingData;
 
 class Renderer
 {
@@ -100,8 +101,11 @@ class Renderer
     //    return fragmentData[3];
     //}
     
-    inline public function draw(texture:GLSubTexture, matrix:Matrix, colorData:ColorData, blendMode:Int = 0)
+    inline public function draw(texture:GLSubTexture, matrix:Matrix, drawingData:DrawingData)
     {
+		var blendMode = drawingData.blendMode;
+		var colorData = drawingData.colorData;
+		
         var a:Float = matrix.a;
         var b:Float = matrix.b;
         var c:Float = matrix.c;

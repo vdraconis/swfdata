@@ -25,7 +25,6 @@ class GLDisplayListDrawer implements IDrawer
     public var debugDraw(never, set):Bool;
     public var isHitMouse(get, never):Bool;
     public var hightlightSize(get, set):Int;
-    public var hightlight(never, set):Bool;
     public var debugConvas(never, set):Graphics;
     public var smooth(never, set):Bool;
 	
@@ -52,7 +51,7 @@ class GLDisplayListDrawer implements IDrawer
 	 */
     function set_checkBounds(value:Bool):Bool
     {
-        shapeDrawer.checkBounds = value;
+        shapeDrawer.drawerOptions.isCheckBounds = value;
         return value;
     }
     
@@ -62,7 +61,7 @@ class GLDisplayListDrawer implements IDrawer
 	 */
     function set_checkMouseHit(value:Bool):Bool
     {
-        shapeDrawer.checkMouseHit = value;
+        shapeDrawer.drawerOptions.isCheckMouseHit = value;
         return value;
     }
     
@@ -71,13 +70,13 @@ class GLDisplayListDrawer implements IDrawer
 	 */
     function set_debugDraw(value:Bool):Bool
     {
-        shapeDrawer.isDebugDraw = value;
+        shapeDrawer.drawerOptions.isDebugDraw = value;
         return value;
     }
     
     function get_isHitMouse():Bool
     {
-        return shapeDrawer.hitTestResult;
+        return drawingData.hitTestResult;
     }
     
     function initialize():Void
@@ -160,25 +159,19 @@ class GLDisplayListDrawer implements IDrawer
         return value;
     }
     
-    function set_hightlight(value:Bool):Bool
-    {
-        shapeDrawer.hightlight = value;
-        return value;
-    }
-    
     /**
 	 * Задает таргет для отрисовки дебаг даты
 	 */
     function set_debugConvas(value:Graphics):Graphics
     {
-        shapeDrawer.convas = value;
+        //shapeDrawer.convas = value;
         return value;
     }
     
     //Фильтринг linear, nearest
     function set_smooth(value:Bool):Bool
     {
-        shapeDrawer.smooth = value;
+        shapeDrawer.drawerOptions.smooth = value;
         return value;
     }
 	

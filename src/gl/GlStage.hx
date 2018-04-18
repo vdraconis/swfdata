@@ -144,13 +144,16 @@ class GlStage extends DisplayObjectContainer
 				//	currentActor.onRightMouseDown();
 				//else
 				if (mouseData.isLeftDown)
-					trace('mouseDown');
+					trace('mouseDown ${@:privateAccess drawer.drawingData.hitTarget}');
+					
+					@:privateAccess drawer.drawingData.hitTarget.setColorData(3, 1, 1, 1, 0, 0, 0, 0);
 					//spriteData.onMouseDown();
 			}
 			
 			if (drawer.isHitMouse == false && spriteData.isUnderMouse == true)
 			{
 				trace('moueUp');
+				@:privateAccess drawer.drawingData.hitTarget.setColorData(1, 1, 1, 1, 0, 0, 0, 0);
 				//spriteData.onMouseUp();
 				//currentActor.onRightMouseUp();
 			}

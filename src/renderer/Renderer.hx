@@ -182,7 +182,12 @@ class Renderer
 			context3D.setDepthTest(false, Context3DCompareMode.ALWAYS);
 		}
 		
+		//drawingGeometry and currentTexture reseted if we have OpenFL rendere calls wich work not like "adobe stage3D"
+		//also need to reset texture in slot because OpenFL didnt do that
+		context3D.setTextureAt(0, null);
+		currentTexture = null;
 		drawingGeometry.setToContext(context3D);
+		
 		currentSamplerData.apply(context3D, 0);
 	}
     

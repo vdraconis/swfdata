@@ -45,7 +45,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
             _displayObjects = null;
         }
     }
-    
+	
     public function addDisplayObject(displayObjectData:DisplayObjectData)
     {
         //if (!depthAndCharactersMapInitialize)
@@ -57,6 +57,12 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         
         _displayObjects[displayObjectsPlacedCount++] = displayObjectData;
     }
+	
+    public function removeDisplayObject(displayObjectData:DisplayObjectData)
+	{
+		if(_displayObjects.remove(displayObjectData))
+			displayObjectsPlacedCount--;
+	}
     
     public function getObjectByDepth(depth:Int):DisplayObjectData
     {

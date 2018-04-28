@@ -26,9 +26,6 @@ class DisplayObjectData
     public var characterId:TextureId;
     public var libraryLinkage:String;
     
-    var _x:Float = 0;
-    var _y:Float = 0;
-    
     public var transform:Matrix;
     
     public var bounds:Rectangle = new Rectangle();
@@ -110,23 +107,23 @@ class DisplayObjectData
     
     function get_x():Float
     {
-        return _x;
+        return transform.tx;
     }
     
     function set_x(value:Float):Float
     {
-        _x = value;
+        transform.tx = value;
         return value;
     }
     
     function get_y():Float
     {
-        return _y;
+        return transform.ty;
     }
     
     function set_y(value:Float):Float
     {
-        _y = value;
+        transform.ty = value;
         return value;
     }
     
@@ -169,8 +166,6 @@ class DisplayObjectData
         to.colorTransform = from.colorTransform;
         to.isMask = from.isMask;
         to.mask = from.mask;
-        to._x = from._x;
-        to._y = from._y;
         to.blendMode = from.blendMode;
     }
     

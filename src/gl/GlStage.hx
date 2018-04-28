@@ -109,7 +109,6 @@ class GlStage extends DisplayObjectContainer
 		drawer.checkMouseHit = mouseData.isLeftDown;
 		drawingBound.setTo(0, 0, 0, 0);
 		
-		
 		for (spriteData in _displayObjects)
 		{
 			var drawingBound:Rectangle = spriteData.bounds;
@@ -132,10 +131,7 @@ class GlStage extends DisplayObjectContainer
 			}
 			else
 				drawer.checkBounds = false;
-			
-			drawingMatrix.tx = spriteData.x;
-			drawingMatrix.ty = spriteData.y;
-			
+				
 			drawer.drawDisplayObject(spriteData, drawingMatrix, drawingBound);
 			
 			if (drawer.isHitMouse == true && spriteData.isUnderMouse == false)

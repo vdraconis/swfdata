@@ -123,6 +123,11 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
     {
         displayContainer.addDisplayObject(displayObjectData);
     }
+	
+	public function removeDisplayObject(displayObjectData:DisplayObjectData):Void 
+	{
+		displayContainer.removeDisplayObject(displayObjectData);
+	}
     
     //public function getObjectByCharacterId(characterId:int):DisplayObjectData
     //{
@@ -148,6 +153,7 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
     {
         return displayContainer.getChildByName(name);
     }
+	
     
     private function get_displayObjects():Array<DisplayObjectData>
     {

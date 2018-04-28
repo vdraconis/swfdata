@@ -9,6 +9,8 @@ interface IDisplayObjectContainer extends ITimelineContainer extends IUpdatable
     var displayObjects(get, never):Array<DisplayObjectData>;
     
     function addDisplayObject(displayObjectData:DisplayObjectData):Void;
+	
+	function removeDisplayObject(displayObjectData:DisplayObjectData):Void;
     
     function getObjectByDepth(depth:Int):DisplayObjectData;
     

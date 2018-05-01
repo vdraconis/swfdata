@@ -2,7 +2,6 @@ package swfdata;
 
 import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
-import swfdata.atlas.ITextureAtlas;
 import swfdata.atlas.TextureId;
 
 using swfdata.DisplayObjectData;
@@ -12,10 +11,20 @@ class DisplayObjectData
     public var alpha(get, set):Float;
     public var x(get, set):Float;
     public var y(get, set):Float;
-
-    private var isCalculatedInPrevFrame:Bool = false;
-    
-    public var prototypeDisplayObjectData:DisplayObjectData;
+    public var scaleX(get, set):Float;
+    public var scaleY(get, set):Float;
+    public var rotation(get, set):Float;
+	
+	var _x:Float = 0;
+	var _y:Float = 0;
+	
+	var _rotation:Float = 0;
+	
+	var _scaleX:Float = 1;
+	var _scaleY:Float = 1;
+	
+	var rotationCosine:Float = 0;
+	var rotationSine:Float = 0;
     
     //public var layer:LayerData;
     //public var frameData:FrameObjectData;
@@ -37,9 +46,6 @@ class DisplayObjectData
     
     public var isMask:Bool = false;
     public var mask:DisplayObjectData;
-    
-    public var hasMoved:Bool = false;
-    public var hasPlaced:Bool = false;
     
     public var name:String = null;
     public var blendMode:Int = 0;
@@ -67,7 +73,6 @@ class DisplayObjectData
     
     public function destroy():Void
     {
-        prototypeDisplayObjectData = null;
         mask = null;
         colorTransform = null;
         transform = null;
@@ -86,6 +91,7 @@ class DisplayObjectData
     public function setTransformMatrix(matrix:Matrix):Void
     {
         transform = matrix;
+		calculateTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty);
     }
     
     public function setTransformFromMatrix(matrix:Matrix):Void
@@ -103,7 +109,30 @@ class DisplayObjectData
         {
             transform.setTo(a, b, c, d, tx, ty);
         }
+		
+		calculateTransform(a, b, c, d, tx, ty);
     }
+	
+	function calculateTransform(a:Float, b:Float, c:Float, d:Float, tx:Float, ty:Float)
+	{
+		if (b == 0)
+			_scaleX = a;
+		else
+			_scaleX = Math.sqrt (a * a + b * b);
+			
+		if (c == 0) 
+			_scaleY = a;
+		else
+			_scaleY = Math.sqrt (c * c + d * d);
+			
+		_rotation = (180 / Math.PI) * Math.atan2 (d, c) - 90;
+		var radians = _rotation * (Math.PI / 180);
+		rotationSine = Math.sin(radians);
+		rotationCosine = Math.cos(radians);
+		
+		this._x = tx;
+		this._y = ty;
+	}
     
     function get_x():Float
     {
@@ -126,26 +155,83 @@ class DisplayObjectData
         transform.ty = value;
         return value;
     }
+	
+	function get_scaleY():Float
+    {
+        return _scaleY;
+    }
     
-    //public function draw(graphics:Graphics, color:uint):void
-    //{
-    //	graphics.lineStyle(1, 0);
-    //	graphics.beginFill(color, 0.5);
+    function set_scaleY(value:Float):Float
+    {
+        if (value != _scaleY)
+		{
+			_scaleY = value;
+			
+			if (transform.c == 0)
+			{
+				transform.d = value;
+			} 
+			else
+			{
+				transform.c = -rotationSine * value;
+				transform.d = rotationCosine * value;
+			}
+		}
+		
+        return value;
+    }
+	
+	function get_scaleX():Float
+    {
+        return _scaleX;
+    }
+	
+	function set_scaleX(value:Float):Float
+    {
+        if (value != _scaleX) 
+		{
+			_scaleX = value;
+			
+			if (transform.b == 0) 
+			{
+				transform.a = value;
+			} 
+			else
+			{
+				transform.a = rotationCosine * value;
+				transform.b = rotationSine * value;
+			}
+		}
+		
+        return value;
+    }
     
-    //	graphics.moveTo(bounds.resultTopLeft.x, bounds.resultTopLeft.y);
-    //	graphics.lineTo(bounds.resultTopRight.x, bounds.resultTopRight.y);
-    //	graphics.lineTo(bounds.resultBottomRight.x, bounds.resultBottomRight.y);
-    //	graphics.lineTo(bounds.resultBottomLeft.x, bounds.resultBottomLeft.y);
-    //	graphics.lineTo(bounds.resultTopLeft.x, bounds.resultTopLeft.y);
+    function get_rotation():Float
+    {
+        return _rotation;
+    }
     
-    //	graphics.lineStyle();
-    //	graphics.endFill();
-    //}
+    function set_rotation(value:Float):Float
+    {
+		if (_rotation != value) 
+		{
+			_rotation = value;
+			var radians = _rotation * (Math.PI / 180);
+			rotationSine = Math.sin(radians);
+			rotationCosine = Math.cos(radians);
+			
+			transform.a = rotationCosine * _scaleX;
+			transform.b = rotationSine * _scaleX;
+			transform.c = -rotationSine * _scaleY;
+			transform.d = rotationCosine * _scaleY;
+		}
+		
+        return value;
+    }
     
     public function fillFrom(displayObject:DisplayObjectData):Void
     {
         setTransformFromMatrix(displayObject.transform);
-        //setTransformMatrix(displayObject.transform);
         
         isMask = displayObject.isMask;
         
@@ -162,7 +248,6 @@ class DisplayObjectData
         to.depth = from.depth;
         to.characterId = from.characterId;
         to.libraryLinkage = from.libraryLinkage;
-        to.prototypeDisplayObjectData = from.prototypeDisplayObjectData;
         to.colorTransform = from.colorTransform;
         to.isMask = from.isMask;
         to.mask = from.mask;

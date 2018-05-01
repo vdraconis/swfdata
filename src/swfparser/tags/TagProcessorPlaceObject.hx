@@ -151,7 +151,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
 		if(currentDisplayObject.blendMode == 0 || tag.blendMode != 0)
 			currentDisplayObject.blendMode = tag.blendMode;
         
-        currentDisplayObject.hasMoved = tag.hasMove;
+        //currentDisplayObject.hasMoved = tag.hasMove;
     }
     
     override public function processTag(tag:SwfPackerTag)
@@ -259,7 +259,7 @@ class TagProcessorPlaceObject extends TagProcessorBase
                 placedDO.setTransformMatrix(new Matrix());
             }
             
-            placedDO.hasPlaced = true;
+            //placedDO.hasPlaced = true;
         }  //currentDisplayObject.depth = tag.clipDepth;    //}    //	currentDisplayObject.addMask(placedDO);    //	placedDO.maskData.maskId = tagPlaceObject.clipDepth;    //	placedDO.maskData.isMask = true;    //{    //if (tagPlaceObject.hasClipDepth)  
         
         if (tagPlaceObject.hasClipDepth) 

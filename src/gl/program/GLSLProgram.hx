@@ -23,7 +23,7 @@ class GLSLProgram
 	public function useProgram(program:Program3D, shader:DrawerShader)
 	{
 		GLProgram3D.program = program;
-		GLProgram3D.renderSession = context.__renderSession;
+		GLProgram3D.renderer = cast context.__renderer;
 		
 		//var samplerStates = new Vector<SamplerState> (Context3D.MAX_SAMPLERS);
 		var samplerStates = new Array<SamplerState> ();

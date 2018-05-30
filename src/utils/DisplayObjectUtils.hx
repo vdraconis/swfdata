@@ -13,7 +13,7 @@ class DisplayObjectUtils
 {
 	inline public static function asUpdatable(instance:DisplayObjectData):IUpdatable
 	{
-		if(instance.displayObjectType == DisplayObjectTypes.MOVIE_CLIP_TYPE)
+		if(instance.displayObjectType >= DisplayObjectTypes.SPRITE_TYPE)
 			return untyped instance;
 		else
 			return null;
@@ -26,7 +26,7 @@ class DisplayObjectUtils
 	
 	inline public static function asDisplayObjectContainer(instance:DisplayObjectData):Null<IDisplayObjectContainer>
 	{
-		if (instance.displayObjectType == DisplayObjectTypes.MOVIE_CLIP_TYPE)
+		if (instance.displayObjectType >= DisplayObjectTypes.SPRITE_TYPE)
 			return untyped instance;
 		else
 			return null;
@@ -39,7 +39,7 @@ class DisplayObjectUtils
 	
 	inline public static function asSpriteData(instance:DisplayObjectData):Null<SpriteData>
 	{
-		if (instance.displayObjectType == DisplayObjectTypes.MOVIE_CLIP_TYPE)
+		if (instance.displayObjectType >= DisplayObjectTypes.SPRITE_TYPE)
 			return untyped instance;
 		else
 			return null;

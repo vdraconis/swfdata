@@ -121,15 +121,18 @@ class TimelineController implements ITimelineController
 	
     inline public function setFrameByObject(frame:Dynamic):Void
     {
-		var asString = Lang.as2(frame, String);
-        if (asString != null) 
-            _currentFrame = timeline.lablesMap.get(asString);
-        else 
+        if (Std.is(frame, Int))
         {
             _currentFrame = cast frame;
         }
-        
-        if (_currentFrame >= framesCount) 
+        else
+        {
+            var asString = Lang.as2(frame, String);
+            if (timeline.lablesMap.exists(asString))
+                _currentFrame = timeline.lablesMap.get(asString);
+        }
+
+        if (_currentFrame >= framesCount)
         {
             _currentFrame = framesCount - 1;
         }

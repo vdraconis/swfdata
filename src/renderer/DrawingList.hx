@@ -9,7 +9,7 @@ class DrawingList
     static var RGB_VALUE_TO_SHADER:Float = 0.003921568627451;
     
     public var data:Vector<Float>;
-	private var __array:Vector<Float>;
+	private var __array:Array<Float>;
     
 	public var length:Int = 0;
     public var registersSize:Int = 0;
@@ -29,7 +29,7 @@ class DrawingList
         registersMaxSize = size;
         data = new Vector(registersMaxSize * 4, true);
 		
-		__array = data;
+		__array = untyped data.__array;
     }
 	
     inline public function clear():Void

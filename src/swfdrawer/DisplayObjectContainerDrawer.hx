@@ -1,73 +1,60 @@
 package swfdrawer;
 
-import openfl.geom.Matrix;
 import swfdata.ColorData;
 import swfdata.DisplayObjectData;
-import swfdata.IDisplayObjectContainer;
 import swfdrawer.data.DrawingData;
 import swfdrawer.data.PooledMatrix;
 import utils.DisplayObjectUtils;
 
 class DisplayObjectContainerDrawer implements IDrawer
 {
-    private var displayListDrawer:IDrawer;
-    
-    public function new(displayListDrawer:IDrawer)
-    {
-        this.displayListDrawer = displayListDrawer;
-    }
-    
-    public function draw(drawable:DisplayObjectData, drawingData:DrawingData)
-    {
-        var displayObjectContainer:IDisplayObjectContainer = DisplayObjectUtils.asDisplayObjectContainer2(drawable);
-        
-        var drawableTrasnform:Matrix = drawable.transform;
-        
-        var drawableTransformClone:PooledMatrix = PooledMatrix.get(drawableTrasnform.a, drawableTrasnform.b, drawableTrasnform.c, drawableTrasnform.d, drawableTrasnform.tx, drawableTrasnform.ty);
-        drawableTransformClone.concat(drawingData.transform);
-        
-        var objectsLenght:Int = displayObjectContainer.numChildren;
-        
-        drawingData.setFromDisplayObject(drawable);
-        drawingData.blendMode = drawable.blendMode;
-        
-        var drawingColorData:ColorData = drawingData.colorData;
-        var colorDataBuffer:ColorData = ColorData.getWith(drawingColorData);
-        
-        var currentMaskState:Bool = drawingData.isMask;
-        var currentMaskedState:Bool = drawingData.isMasked;
-        
-        var displayObjects:Array<DisplayObjectData> = displayObjectContainer.displayObjects;
-        
-        for (i in 0...objectsLenght)
-        {
-            var childDisplayObject:DisplayObjectData = displayObjects[i];
-            
-            drawingData.transform = drawableTransformClone;
+	private var displayListDrawer:IDrawer;
+	
+	public function new(displayListDrawer:IDrawer)
+	{
+		this.displayListDrawer = displayListDrawer;
+	}
+	
+	
+	public function draw(drawable:DisplayObjectData, drawingData:DrawingData)
+	{
+		var displayObjectContainer = DisplayObjectUtils.asDisplayObjectContainer2(drawable);
+		
+		var concentratedTransform = PooledMatrix.getWithAndConcat(drawable.transform, drawingData.transform);
+		var concentratedMaskState = drawingData.isMask || drawable.isMask;
+		//var concentratedMaskedState = drawingData.isMasked || (drawable.mask != null); TODO: mask drawing not worked
+		var concentratedBlendMode = drawable.blendMode;
+		var concentratedColorData = drawable.colorData != null? ColorData.getWithAndConcat(drawable.colorData, drawingData.colorData):drawingData.colorData;
+		
+		var displayObjects:Array<DisplayObjectData> = displayObjectContainer.displayObjects;
+		var childsCount = displayObjectContainer.numChildren;
+		
+		for (i in 0...childsCount)
+		{
+			var childDisplayObject:DisplayObjectData = displayObjects[i];
 			
-			var isBlendModeChange:Bool = childDisplayObject.blendMode != 0 && drawable.blendMode == 0;
-            
-            // TODO странная ситуация с затиранием и блендингами родителей.
-            if (isBlendModeChange)
-                drawingData.blendMode = childDisplayObject.blendMode;
-            
-            displayListDrawer.draw(childDisplayObject, drawingData);
-            
-            drawingData.isMask = currentMaskState;
-            drawingData.isMasked = currentMaskedState;
-            
-            drawingColorData.setFromData(colorDataBuffer);
+			drawingData.transform = concentratedTransform;
+			drawingData.colorData = concentratedColorData;
+			drawingData.isMask = concentratedMaskState;
+			//drawingData.isMasked = concentratedMaskedState;
 			
-            // возвращаем дате родительский блендинг
+			var isBlendModeChange:Bool = childDisplayObject.blendMode != 0 && concentratedBlendMode == 0;
+			
+			// TODO странная ситуация с затиранием и блендингами родителей.
+			if (isBlendModeChange)
+				drawingData.blendMode = childDisplayObject.blendMode;
+			
+			displayListDrawer.draw(childDisplayObject, drawingData);
+				
+			//возвращаем дате родительский блендинг
 			if(isBlendModeChange)
-				drawingData.blendMode = drawable.blendMode;
-        }
-        //drawingData.blendMode = drawable.blendMode;
-        
-		//TODO: is last iteration call already set data?
-        //drawingColorData.setFromData(colorDataBuffer);
-        drawableTransformClone.dispose();
-        colorDataBuffer.dispose();
-    }
+				drawingData.blendMode = concentratedBlendMode;
+		}
+		
+		concentratedTransform.free();
+		concentratedColorData.free();
+		
+		//drawingData.transform = null;
+		//drawingData.colorData = null;
+	}
 }
-

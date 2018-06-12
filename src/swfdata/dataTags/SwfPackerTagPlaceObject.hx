@@ -82,7 +82,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
         "\n" + alpha0 + "\t" + alpha1 + "\t" + alpha2 + "\t" + alpha3 + "\t" + alphaOffset + "\n]";
     }*/
     
-    //public var colorTransform:ColorMatrix;
+    //public var colorMatrix:ColorMatrix;
     
     public var placeMode:Int = PLACE_MODE_UNKNOWN;
     
@@ -113,7 +113,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     override public function clear():Void
     {
         //matrix = null;
-        //colorTransform = null;
+        //colorMatrix = null;
         instanceName = null;
     }
     
@@ -142,7 +142,7 @@ class SwfPackerTagPlaceObject extends SwfPackerTag
     
     /*private var colorMatrix:ColorMatrix;
     
-    public function getColorTransformMatrix():ColorMatrix
+    public function getColorMatrix():ColorMatrix
     {
         if (colorMatrix == null) 
         {

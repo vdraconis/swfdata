@@ -30,7 +30,7 @@ class GLDisplayListDrawer implements IDrawer
 	
 	@:isVar public var target(get, set):Renderer;
 
-    var drawersMap:Map<Int, IDrawer> = new Map<Int, IDrawer>();
+    var drawersMap:Array<IDrawer> = new Array<IDrawer>();
     var mousePoint:Point;
     var shapeDrawer:GLShapeDrawer;
     
@@ -102,6 +102,7 @@ class GLDisplayListDrawer implements IDrawer
     {
         clear();
         
+        drawingData.colorData = colorData;
         drawingData.transform = transform;
         drawingData.bound = bound;
         

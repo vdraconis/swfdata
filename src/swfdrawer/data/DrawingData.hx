@@ -23,21 +23,21 @@ class DrawingData
 	public var hitTestResult:Bool = false;
 	public var hitTarget:DisplayObjectData;
     
-    //public var isApplyColorTrasnform:Bool = false;
-    //public var colorTransform:ColorMatrix = new ColorMatrix(null);
+    //public var isApplyColorMatrix:Bool = false;
+    //public var colorMatrix:ColorMatrix = new ColorMatrix(null);
     
-    public var colorData:ColorData = new ColorData();
+    public var colorData:ColorData;
     
     public function new()
     {
 		
     }
     
-    /*public function addColorTransform(colorTransformToApply:ColorMatrix):Void
+    /*public function addColorMatrix(colorMatrixToApply:ColorMatrix):Void
     {
         isApplyColorTrasnform = true;
-        //this.colorTransform.reset();
-        this.colorTransform.premultiply(colorTransformToApply.matrix);
+        //this.colorMatrix.reset();
+        this.colorMatrix.premultiply(colorMatrixToApply.matrix);
     }*/
     
     public function clear():Void
@@ -46,10 +46,10 @@ class DrawingData
         //	return;
         
         //isClear = true;
-        colorData.clear();
+        colorData = null;
         
         //isApplyColorTrasnform = false;
-        //colorTransform.reset();// [0] = -1234;
+        //colorMatrix.reset();// [0] = -1234;
         
         maskId = -1;
         isMask = false;
@@ -63,7 +63,7 @@ class DrawingData
         //isClear = false;
         this.colorData.concat(colorData);
     }
-    
+	
     inline public function setFromDisplayObject(drawable:DisplayObjectData):Void
     {
         //isClear = false;
@@ -71,7 +71,7 @@ class DrawingData
         isMask = isMask || drawable.isMask;
         isMasked = isMasked || (drawable.mask != null);
 		
-		//TODO: в SpriteDrawer и MovieClipDrawer нужно сохранять состояние колора для каждого из потдеревьев потомков
+		//TODO: в SpriteDrawer и MovieClipDrawer нужно сохранять состояние колора для каждого из поддеревьев потомков
 		if(drawable.colorData != null)
 			colorData.preMultiply(drawable.colorData);
     }

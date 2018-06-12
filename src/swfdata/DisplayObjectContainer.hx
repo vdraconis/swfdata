@@ -133,7 +133,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
 			var currentChildAsUpdatable = DisplayObjectUtils.asUpdatable(currentChild);
 			
 			if(currentChildAsUpdatable != null)
-				untyped currentChild.update();
+				currentChildAsUpdatable.update();
         }
     }
     

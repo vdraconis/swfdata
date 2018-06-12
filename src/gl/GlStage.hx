@@ -1,15 +1,16 @@
 package gl;
 
-import openfl.events.Event;
 import gl.drawer.GLDisplayListDrawer;
 import openfl.display.Stage;
 import openfl.display3D.Context3D;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import renderer.ProjectionMatrix;
 import renderer.Renderer;
+import swfdata.ColorData;
 import swfdata.DisplayObjectContainer;
 import swfdata.atlas.TextureStorage;
 import utils.DisplayObjectUtils;
@@ -19,19 +20,22 @@ class GlStage extends DisplayObjectContainer
 	var viewPortBuffer:Rectangle = new Rectangle(0, 0, 0, 0);
 	
 	var drawingMatrix:Matrix = new Matrix();
+	var drawingColor:ColorData = new ColorData();
 	var mouseData:MouseData;
 	var drawingBound:Rectangle = new Rectangle();
 	var drawer:GLDisplayListDrawer;
-	var renderer:Renderer;
+	public var renderer:Renderer;
 	
 	public var stage:Stage;
 	
 	var handleMouse:Bool = false;
 	var clickPosition:Point = new Point();
+	public var textureStorage:TextureStorage;
 	
 	public function new(stage:Stage, context3D:Context3D, textureStorage:TextureStorage) 
 	{
 		super();
+		this.textureStorage = textureStorage;
 		
 		this.stage = stage;
 		
@@ -132,15 +136,15 @@ class GlStage extends DisplayObjectContainer
 			else
 				drawer.checkBounds = false;
 				
-			drawer.drawDisplayObject(spriteData, drawingMatrix, drawingBound);
+			drawer.drawDisplayObject(spriteData, drawingMatrix, drawingBound, drawingColor);
 			
 			if (drawer.isHitMouse == true && spriteData.isUnderMouse == false)
 			{
 				//if(mouseData.isRightDown)
 				//	currentActor.onRightMouseDown();
 				//else
-				if (mouseData.isLeftDown)
-					trace('mouseDown ${@:privateAccess drawer.drawingData.hitTarget}');
+				//if (mouseData.isLeftDown)
+				//	trace('mouseDown ${@:privateAccess drawer.drawingData.hitTarget}');
 					
 					@:privateAccess drawer.drawingData.hitTarget.setColorData(3, 1, 1, 1, 0, 0, 0, 0);
 					//spriteData.onMouseDown();

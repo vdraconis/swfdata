@@ -4,6 +4,14 @@ class ColorData
 {
 	static var availableInstance:ColorData;
 	
+	inline public static function getWithAndConcat(c1:ColorData, c2:ColorData):ColorData
+	{
+		var result = getWith(c2);
+		result.preMultiply(c1);
+		
+		return result;
+	}
+	
 	inline public static function getWith(data:ColorData):ColorData
 	{
 		return get(data.redMultiplier, data.greenMultiplier, data.blueMultiplier, data.alphaMultiplier, data.redAdd, data.greenAdd, data.blueAdd, data.alphaAdd);
@@ -17,7 +25,7 @@ class ColorData
 		{
 			ColorData.availableInstance = instance.nextInstance;
 			instance.nextInstance = null;
-			instance.disposed = false;
+			instance.isFree = false;
 			
 			instance.setTo(redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier, redAdd, greenAdd, blueAdd, alphaAdd);
 		}
@@ -31,7 +39,7 @@ class ColorData
 	
 	@:isVar public var color(get, set):Int;
 	
-	public var disposed:Bool = false;
+	public var isFree:Bool = false;
 	public var nextInstance:ColorData;
 	
 	public var alphaMultiplier:Float = 1;
@@ -57,15 +65,15 @@ class ColorData
 		this.alphaAdd = alphaAdd;
 	}
 	
-	inline public function dispose()
+	inline public function free()
 	{
-		if (disposed)
+		if (isFree)
 			return;
 		
 		this.nextInstance = ColorData.availableInstance;
 		ColorData.availableInstance = this;
 		
-		disposed = true;
+		isFree = true;
 	}
 	
 	public function setTo(redMultiplier:Float, greenMultiplier:Float, blueMultiplier:Float, alphaMultiplier:Float, redAdd:Int, greenAdd:Int, blueAdd:Int, alphaAdd:Int)
@@ -125,10 +133,10 @@ class ColorData
 	
 	inline public function preMultiply(colorData:ColorData)
 	{
-		this.redAdd += Std.int(colorData.redAdd * this.redMultiplier);
-		this.greenAdd += Std.int(colorData.greenAdd * this.greenMultiplier);
-		this.blueAdd += Std.int(colorData.blueAdd * this.blueMultiplier);
-		this.alphaAdd += Std.int(colorData.alphaAdd * this.alphaMultiplier);
+		this.redAdd = Std.int(colorData.redAdd * this.redMultiplier) + this.redAdd;
+		this.greenAdd = Std.int(colorData.greenAdd * this.greenMultiplier) + this.greenAdd;
+		this.blueAdd = Std.int(colorData.blueAdd * this.blueMultiplier) + this.blueAdd;
+		this.alphaAdd = Std.int(colorData.alphaAdd * this.alphaMultiplier) + this.alphaAdd;
 		
 		this.redMultiplier *= colorData.redMultiplier;
 		this.greenMultiplier *= colorData.greenMultiplier;

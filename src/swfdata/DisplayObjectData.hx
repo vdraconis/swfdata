@@ -39,9 +39,9 @@ class DisplayObjectData
     
     public var bounds:Rectangle = new Rectangle();
     
-    public var colorTransform:ColorMatrix;  // = new ColorTransform();  
+    //public var colorMatrix:ColorMatrix;  // = new ColorTransform();  
     
-	@:allow(swfdata) var colorData:ColorData;
+	public var colorData:ColorData;
 	@:allow(swfdata) var displayObjectType:Int;
     
     public var isMask:Bool = false;
@@ -52,7 +52,6 @@ class DisplayObjectData
     public var visible:Bool = true;
 	
 	public var isUnderMouse:Bool = false;
-    
     
     public function new(characterId:TextureId = -1, displayObjectType:Int = DisplayObjectTypes.DISPALY_OBJECT_TYPE)
     {
@@ -74,7 +73,7 @@ class DisplayObjectData
     public function destroy():Void
     {
         mask = null;
-        colorTransform = null;
+        //colorMatrix = null;
         transform = null;
         name = null;
         libraryLinkage = null;
@@ -248,7 +247,7 @@ class DisplayObjectData
         to.depth = from.depth;
         to.characterId = from.characterId;
         to.libraryLinkage = from.libraryLinkage;
-        to.colorTransform = from.colorTransform;
+        //to.colorMatrix = from.colorMatrix;
         to.isMask = from.isMask;
         to.mask = from.mask;
         to.blendMode = from.blendMode;

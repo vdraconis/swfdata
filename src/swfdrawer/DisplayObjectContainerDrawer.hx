@@ -24,7 +24,7 @@ class DisplayObjectContainerDrawer implements IDrawer
 		var concentratedMaskState = drawingData.isMask || drawable.isMask;
 		//var concentratedMaskedState = drawingData.isMasked || (drawable.mask != null); TODO: mask drawing not worked
 		var concentratedBlendMode = drawable.blendMode;
-		var concentratedColorData = drawable.colorData != null? ColorData.getWithAndConcat(drawable.colorData, drawingData.colorData):drawingData.colorData;
+		var concentratedColorData = drawable.colorData != null? ColorData.getWithAndConcat(drawable.colorData, drawingData.colorData):ColorData.getWith(drawingData.colorData);
 		
 		var displayObjects:Array<DisplayObjectData> = displayObjectContainer.displayObjects;
 		var childsCount = displayObjectContainer.numChildren;

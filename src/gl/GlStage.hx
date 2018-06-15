@@ -136,6 +136,8 @@ class GlStage extends DisplayObjectContainer
 			else
 				drawer.checkBounds = false;
 				
+			drawingColor.clear();
+			drawingMatrix.identity();
 			drawer.drawDisplayObject(spriteData, drawingMatrix, drawingBound, drawingColor);
 			
 			if (drawer.isHitMouse == true && spriteData.isUnderMouse == false)

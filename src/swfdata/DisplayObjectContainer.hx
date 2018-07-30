@@ -61,6 +61,22 @@ class DisplayObjectContainer implements IDisplayObjectContainer
             displayObjectData.dispatchEvent(new Event(Event.ADDED));
 
     }
+
+    public function addChildAt(displayObjectData:DisplayObjectData, index:Int)
+    {
+        //if (!depthAndCharactersMapInitialize)
+        //{
+        //depthMap = {};
+        //charactersMap = {};
+        //depthAndCharactersMapInitialize = true;
+        //}
+
+        _displayObjects.insert(index, displayObjectData);
+        displayObjectsPlacedCount++;
+        if (displayObjectData.hasEventListener(Event.ADDED))
+            displayObjectData.dispatchEvent(new Event(Event.ADDED));
+
+    }
 	
     public function removeChild(displayObjectData:DisplayObjectData)
 	{
@@ -69,6 +85,16 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         if (displayObjectData.hasEventListener(Event.REMOVED))
             displayObjectData.dispatchEvent(new Event(Event.REMOVED));
 	}
+
+    public function getChildIndex(displayObjectData:DisplayObjectData):Int
+    {
+        return _displayObjects.indexOf(displayObjectData);
+    }
+
+    public function getChildAt(index:Int):DisplayObjectData
+    {
+        return _displayObjects[index];
+    }
     
     public function getObjectByDepth(depth:Int):DisplayObjectData
     {

@@ -10,7 +10,7 @@ using swfdata.MovieClipData;
 
 class MovieClipData extends SpriteData implements ITimeline
 {
-    public var framesCount(get, never):Int;
+    public var totalFrames(get, never):Int;
     public var currentFrame(get, never):Int;
     public var isPlaying(get, never):Bool;
     public var currentFrameData(get, never):FrameData;
@@ -44,7 +44,7 @@ class MovieClipData extends SpriteData implements ITimeline
         return timelineController.currentFrameData;
     }
 	
-	function get_framesCount():Int
+	function get_totalFrames():Int
     {
         return timelineController.framesCount;
     }
@@ -138,7 +138,7 @@ class MovieClipData extends SpriteData implements ITimeline
     //	return null;
     //}
     
-    override public function addDisplayObject(displayObjectData:DisplayObjectData):Void
+    override public function addChild(displayObjectData:DisplayObjectData):Void
     {
         currentFrameData.addChild(displayObjectData);
     }

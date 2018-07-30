@@ -125,10 +125,25 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
         displayContainer.addChild(displayObjectData);
 
     }
+
+    public function addChildAt(displayObjectData:DisplayObjectData, index:Int)
+    {
+        displayContainer.addChildAt(displayObjectData, index);
+    }
+
+    public function getChildAt(index:Int):DisplayObjectData
+    {
+        return displayContainer.getChildAt(index);
+    }
 	
 	public function removeChild(displayObjectData:DisplayObjectData):Void
 	{
 		displayContainer.removeChild(displayObjectData);
+	}
+
+    public function getChildIndex(displayObjectData:DisplayObjectData):Int
+	{
+		return displayContainer.getChildIndex(displayObjectData);
 	}
     
     //public function getObjectByCharacterId(characterId:int):DisplayObjectData

@@ -1,5 +1,6 @@
 package swfdata;
 
+import openfl.events.Event;
 import swfdata.DisplayObjectData;
 import swfdata.IDisplayObjectContainer;
 import swfdata.ITimelineContainer;
@@ -46,7 +47,7 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         }
     }
 	
-    public function addDisplayObject(displayObjectData:DisplayObjectData)
+    public function addChild(displayObjectData:DisplayObjectData)
     {
         //if (!depthAndCharactersMapInitialize)
         //{
@@ -56,12 +57,17 @@ class DisplayObjectContainer implements IDisplayObjectContainer
         //}
         
         _displayObjects[displayObjectsPlacedCount++] = displayObjectData;
+        if (displayObjectData.hasEventListener(Event.ADDED))
+            displayObjectData.dispatchEvent(new Event(Event.ADDED));
+
     }
 	
-    public function removeDisplayObject(displayObjectData:DisplayObjectData)
+    public function removeChild(displayObjectData:DisplayObjectData)
 	{
 		if(_displayObjects.remove(displayObjectData))
 			displayObjectsPlacedCount--;
+        if (displayObjectData.hasEventListener(Event.REMOVED))
+            displayObjectData.dispatchEvent(new Event(Event.REMOVED));
 	}
     
     public function getObjectByDepth(depth:Int):DisplayObjectData

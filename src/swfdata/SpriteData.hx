@@ -1,5 +1,6 @@
 package swfdata;
 
+import openfl.events.Event;
 import swfdata.DisplayObjectData;
 import utils.DisplayObjectUtils;
 
@@ -119,14 +120,15 @@ class SpriteData extends DisplayObjectData implements IDisplayObjectContainer
     
     /* INTERFACE swfdata.IDisplayObjectContainer */
     
-    public function addDisplayObject(displayObjectData:DisplayObjectData):Void
+    public function addChild(displayObjectData:DisplayObjectData):Void
     {
-        displayContainer.addDisplayObject(displayObjectData);
+        displayContainer.addChild(displayObjectData);
+
     }
 	
-	public function removeDisplayObject(displayObjectData:DisplayObjectData):Void 
+	public function removeChild(displayObjectData:DisplayObjectData):Void
 	{
-		displayContainer.removeDisplayObject(displayObjectData);
+		displayContainer.removeChild(displayObjectData);
 	}
     
     //public function getObjectByCharacterId(characterId:int):DisplayObjectData

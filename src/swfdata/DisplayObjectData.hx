@@ -1,12 +1,13 @@
 package swfdata;
 
+import flash.events.EventDispatcher;
 import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
 import swfdata.atlas.TextureId;
 
 using swfdata.DisplayObjectData;
 
-class DisplayObjectData
+class DisplayObjectData extends EventDispatcher
 {
     public var alpha(get, set):Float;
     public var x(get, set):Float;

@@ -140,7 +140,7 @@ class MovieClipData extends SpriteData implements ITimeline
     
     override public function addDisplayObject(displayObjectData:DisplayObjectData):Void
     {
-        currentFrameData.addDisplayObject(displayObjectData);
+        currentFrameData.addChild(displayObjectData);
     }
     
     override public function getObjectByDepth(depth:Int):DisplayObjectData
